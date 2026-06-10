@@ -14,11 +14,9 @@ import {
   PackageCheck,
   PawPrint,
   Pill,
-  QrCode,
   Search,
   ShieldCheck,
   ShoppingCart,
-  Smartphone,
   Sprout,
   Star,
   Store,
@@ -47,7 +45,40 @@ const categories = [
   { name: "Equipment", icon: Sprout }
 ];
 
-const homepageProducts = getFeaturedProducts(4);
+const homepageProducts = getFeaturedProducts(8);
+
+const categoryTabs = [
+  "All Products",
+  "Animal Healthcare",
+  "Animal Feed",
+  "Animal feed supplement",
+  "Veterinary",
+  "Poultry Feed",
+  "Dog Food",
+  "Cat"
+];
+
+const tabPreviewProducts = categoryTabs.slice(1, 7).flatMap((category) =>
+  importedProducts.filter((product) => product.category === category).slice(0, 2)
+);
+
+const farmerAssurance = [
+  {
+    title: "Verified supply for farms",
+    text: "Every listed product is mapped from the current AnimKart catalog with price, brand and image checks.",
+    icon: ShieldCheck
+  },
+  {
+    title: "Bulk quote ready",
+    text: "Large orders can move to quote confirmation so farmers know freight and MOQ before payment.",
+    icon: Truck
+  },
+  {
+    title: "Vet-first buying",
+    text: "Health products are supported by consultation flows for poultry, dairy, pets and aquaculture.",
+    icon: HeartPulse
+  }
+];
 
 const brands = ["Virbac", "Intas", "MSD", "Bayer", "Vetoquinol", "Zydus", "Godrej", "Amul"];
 
@@ -83,9 +114,9 @@ export default function Home() {
                 <BookOpen size={15} />
                 Help
               </a>
-              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#app">
-                <Smartphone size={15} />
-                Download App
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#supplier">
+                <Truck size={15} />
+                Bulk Inquiry
               </a>
               <a className="flex items-center gap-1 hover:text-[#006b32]" href="#supplier">
                 <Store size={15} />
@@ -324,6 +355,90 @@ export default function Home() {
             );
           })}
         </div>
+        <div className="mt-8 text-center">
+          <a
+            className="inline-flex items-center justify-center rounded-xl bg-[#006b32] px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#008741]"
+            href="/products"
+          >
+            View all {importedProducts.length} imported products
+          </a>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6">
+        <div className="rounded-3xl border border-[#d3e4fe] bg-white p-5 shadow-sm sm:p-7">
+          <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+              <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#006b32]">
+                Product categories
+              </p>
+              <h2 className="text-3xl font-semibold text-[#0b1c30]">Choose by farm need</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#3e4a3f]">
+                Farmers can quickly compare medicine, feed, supplements and veterinary essentials before
+                moving to checkout or bulk quote.
+              </p>
+            </div>
+            <a className="text-sm font-bold text-[#006b32]" href="/products">
+              Open full catalog
+            </a>
+          </div>
+
+          <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
+            {categoryTabs.map((tab, index) => (
+              <a
+                className={
+                  index === 0
+                    ? "shrink-0 rounded-full bg-[#006b32] px-5 py-2.5 text-sm font-bold text-white"
+                    : "shrink-0 rounded-full border border-[#bdcabc] bg-[#f8f9ff] px-5 py-2.5 text-sm font-bold text-[#006b32]"
+                }
+                href="/products"
+                key={tab}
+              >
+                {tab}
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {tabPreviewProducts.slice(0, 8).map((product, index) => {
+              const discount = discountPercent(product);
+
+              return (
+                <article
+                  className="grid grid-cols-[94px_1fr] overflow-hidden rounded-2xl border border-[#d3e4fe] bg-[#f8f9ff] transition hover:-translate-y-1 hover:bg-white hover:shadow-xl"
+                  key={`${product.id}-${index}`}
+                >
+                  <div className="relative min-h-28 bg-[#e5eeff]">
+                    <Image
+                      alt={product.name}
+                      className="object-cover"
+                      fill
+                      sizes="96px"
+                      src={product.image}
+                    />
+                  </div>
+                  <div className="p-3">
+                    <p className="truncate text-[10px] font-bold uppercase text-[#006b32]">
+                      {product.category}
+                    </p>
+                    <h3 className="mt-1 line-clamp-2 text-sm font-semibold leading-5">{product.name}</h3>
+                    <div className="mt-3 flex items-end justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-extrabold">{formatINR(product.price)}</p>
+                        {discount ? (
+                          <p className="text-[10px] font-bold text-[#ba1a1a]">{discount}% saved</p>
+                        ) : null}
+                      </div>
+                      <button className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#006b32] text-white">
+                        <ShoppingCart size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6" id="supplier">
@@ -432,38 +547,45 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6" id="app">
-        <div className="overflow-hidden rounded-3xl bg-[#008741] p-8 text-white sm:p-12 lg:grid lg:grid-cols-[1fr_0.8fr] lg:items-center">
-          <div>
-            <h2 className="max-w-lg text-4xl font-extrabold leading-tight">The Marketplace in Your Pocket</h2>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/84">
-              Manage your livestock health from anywhere. Order refills, consult vets on video, and track
-              your bulk shipments in real-time.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <button className="rounded-lg bg-[#071a2f] px-5 py-3 text-xs font-bold text-white">Download on Google Play</button>
-              <button className="rounded-lg bg-[#071a2f] px-5 py-3 text-xs font-bold text-white">Download on App Store</button>
-            </div>
-            <div className="mt-8 flex items-center gap-4">
-              <span className="grid size-20 place-items-center rounded bg-white text-[#006b32]">
-                <QrCode size={44} />
-              </span>
-              <p className="text-xs font-semibold">
-                Scan to download for
-                <br />
-                Android & iOS
-              </p>
-            </div>
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6">
+        <div className="overflow-hidden rounded-3xl bg-[#0b1c30] text-white shadow-2xl lg:grid lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="relative min-h-[360px]">
+            <Image
+              alt="Indian farmer checking cattle health"
+              className="object-cover"
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=1000&q=90"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/70 to-transparent" />
           </div>
-          <div className="mt-10 hidden justify-center lg:flex">
-            <div className="w-[260px] rounded-[2.3rem] border-[8px] border-[#071a2f] bg-[#f8f9ff] p-4 shadow-2xl">
-              <div className="mx-auto mb-4 h-2 w-20 rounded-full bg-[#071a2f]" />
-              <div className="h-28 rounded-xl bg-[#cbdbf5]" />
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {[1, 2, 3, 4].map((item) => (
-                  <div className="h-20 rounded-lg bg-[#dce9ff]" key={item} />
-                ))}
-              </div>
+          <div className="p-8 sm:p-12">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6ddd8b]">
+              Built for farmer confidence
+            </p>
+            <h2 className="mt-3 max-w-2xl text-4xl font-extrabold leading-tight">
+              Products, advice and bulk supply that farmers can trust before they pay.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-white/76">
+              The new AnimKart homepage now makes the important trust signals visible: authentic product
+              catalog, verified supplier workflow, logistics clarity, and vet support for real farm decisions.
+            </p>
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {farmerAssurance.map((item) => (
+                <div className="rounded-2xl border border-white/10 bg-white/8 p-5" key={item.title}>
+                  <item.icon className="text-[#6ddd8b]" size={24} />
+                  <h3 className="mt-4 font-bold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/68">{item.text}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a className="rounded-xl bg-[#6ddd8b] px-5 py-3 text-sm font-bold text-[#00210b]" href="/products">
+                Browse real products
+              </a>
+              <a className="rounded-xl border border-white/20 px-5 py-3 text-sm font-bold text-white" href="#supplier">
+                Request bulk quote
+              </a>
             </div>
           </div>
         </div>
