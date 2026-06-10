@@ -280,7 +280,7 @@ export default function Home() {
                     ? "rounded-full bg-[#1B6B3A] px-4 py-2 text-white"
                     : "rounded-full border border-[#D1D1D1] bg-white px-4 py-2 hover:text-[#1B6B3A]"
                 }
-                href="/products"
+                href="/categories"
                 key={item}
               >
                 {item}
@@ -424,7 +424,7 @@ export default function Home() {
               <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Shop by animal</p>
               <h2 className="mt-1 text-2xl font-semibold">Find products faster</h2>
             </div>
-            <a className="text-sm font-semibold text-[#1B6B3A]" href="/products">
+            <a className="text-sm font-semibold text-[#1B6B3A]" href="/categories">
               View all
             </a>
           </div>
@@ -432,7 +432,7 @@ export default function Home() {
             {categories.map((category) => (
               <a
                 className="grid min-h-24 place-items-center rounded-lg border border-[#D1D1D1] bg-white p-3 text-center shadow-sm hover:border-[#1B6B3A]"
-                href="/products"
+                href="/categories"
                 key={category.name}
               >
                 <span className="grid size-12 place-items-center rounded-full bg-[#EDF7F1] text-[#1B6B3A]">
