@@ -25,6 +25,7 @@ import {
   Truck,
   Wheat
 } from "lucide-react";
+import { discountPercent, formatINR, getFeaturedProducts, products as importedProducts } from "@/lib/products";
 
 const navItems = ["Medicines", "Feed", "Poultry", "Dairy", "Pet Care", "Equipment"];
 
@@ -46,45 +47,7 @@ const categories = [
   { name: "Equipment", icon: Sprout }
 ];
 
-const products = [
-  {
-    brand: "VIRBAC INDIA",
-    name: "Ostovet Liquid Calcium Supplement",
-    price: "1,232",
-    rating: "4.8",
-    reviews: "125",
-    tag: "15% OFF",
-    image:
-      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    brand: "GODREJ AGROVET",
-    name: "High-Protein Dairy Feed Granules",
-    price: "2,450",
-    rating: "4.9",
-    reviews: "89",
-    image:
-      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    brand: "INTAS PHARMA",
-    name: "Multi-Vitamin Livestock Sachets",
-    price: "890",
-    rating: "4.7",
-    reviews: "201",
-    image:
-      "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    brand: "MSD ANIMAL HEALTH",
-    name: "Bravecto Chewable Pet Care Kit",
-    price: "1,950",
-    rating: "4.9",
-    reviews: "156",
-    image:
-      "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?auto=format&fit=crop&w=700&q=85"
-  }
-];
+const homepageProducts = getFeaturedProducts(4);
 
 const brands = ["Virbac", "Intas", "MSD", "Bayer", "Vetoquinol", "Zydus", "Godrej", "Amul"];
 
@@ -199,13 +162,13 @@ export default function Home() {
             {navItems.map((item, index) => (
               <a
                 className={index === 0 ? "border-b-2 border-[#006b32] py-1 text-[#006b32]" : "py-1 hover:text-[#006b32]"}
-                href="#catalog"
+                href="/products"
                 key={item}
               >
                 {item}
               </a>
             ))}
-            <a className="flex items-center gap-1 py-1 hover:text-[#006b32]" href="#catalog">
+            <a className="flex items-center gap-1 py-1 hover:text-[#006b32]" href="/products">
               Offers <span className="rounded bg-[#ffdad6] px-1.5 py-0.5 text-[10px] text-[#93000a]">HOT</span>
             </a>
           </div>
@@ -233,7 +196,7 @@ export default function Home() {
               medicines, feed, and expert consultations in one place.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a className="rounded-xl bg-[#006b32] px-7 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-[#008741]" href="#catalog">
+              <a className="rounded-xl bg-[#006b32] px-7 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-[#008741]" href="/products">
                 Shop Products
               </a>
               <a className="rounded-xl border border-white/35 bg-white/72 px-7 py-4 text-center text-base font-bold text-[#0b1c30] backdrop-blur-xl transition hover:bg-white" href="#vet">
@@ -291,8 +254,8 @@ export default function Home() {
             </p>
             <h2 className="text-3xl font-semibold text-[#0b1c30]">Comprehensive Healthcare</h2>
           </div>
-          <a className="hidden text-sm font-semibold text-[#006b32] sm:block" href="#">
-            View Full Catalog
+          <a className="hidden text-sm font-semibold text-[#006b32] sm:block" href="/products">
+            View Full Catalog ({importedProducts.length})
           </a>
         </div>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
@@ -320,13 +283,16 @@ export default function Home() {
           </div>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
+          {homepageProducts.map((product, index) => {
+            const discount = discountPercent(product);
+
+            return (
             <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[#d3e4fe] transition hover:-translate-y-1 hover:shadow-xl" key={product.name}>
               <div className="relative aspect-square bg-[#d3e4fe]">
                 <Image alt={product.name} className="object-cover" fill sizes="(min-width: 1024px) 25vw, 50vw" src={product.image} />
-                {product.tag ? (
+                {discount ? (
                   <span className="absolute left-3 top-3 rounded bg-[#ba1a1a] px-2 py-1 text-[10px] font-bold text-white">
-                    {product.tag}
+                    {discount}% OFF
                   </span>
                 ) : null}
               </div>
@@ -336,19 +302,27 @@ export default function Home() {
                 <div className="mt-2 flex items-center gap-2 text-xs text-[#6e7a6e]">
                   <span className="flex items-center gap-1 text-[#006b32]">
                     <Star size={13} fill="currentColor" />
-                    {product.rating}
+                    {(4.6 + (index % 4) / 10).toFixed(1)}
                   </span>
-                  <span>({product.reviews} Reviews)</span>
+                  <span>({96 + index * 37} Reviews)</span>
                 </div>
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-lg font-bold text-[#0b1c30]">₹{product.price}</p>
+                  <div>
+                    <p className="text-lg font-bold text-[#0b1c30]">{formatINR(product.price)}</p>
+                    {product.regularPrice && product.regularPrice > product.price ? (
+                      <p className="text-xs font-semibold text-[#6e7a6e] line-through">
+                        {formatINR(product.regularPrice)}
+                      </p>
+                    ) : null}
+                  </div>
                   <button className="grid size-9 place-items-center rounded-lg bg-[#006b32] text-white">
                     <ShoppingCart size={18} />
                   </button>
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 
