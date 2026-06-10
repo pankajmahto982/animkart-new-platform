@@ -13,20 +13,18 @@ import {
   Milk,
   PackageCheck,
   PawPrint,
-  Pill,
   Search,
   ShieldCheck,
   ShoppingCart,
   Sprout,
   Star,
   Store,
-  Truck,
-  Wheat
+  Truck
 } from "lucide-react";
 import { ProductImage } from "@/components/product-image";
 import { discountPercent, formatINR, getFeaturedProducts, products as importedProducts } from "@/lib/products";
 
-const navItems = ["Medicines", "Feed", "Poultry", "Dairy", "Pet Care", "Equipment"];
+const navItems = ["Poultry", "Pet", "Cattle", "Aqua", "Goat/Sheep", "Feed", "Medicines"];
 
 const trustItems = [
   { label: "Verified Suppliers", icon: ShieldCheck },
@@ -38,12 +36,11 @@ const trustItems = [
 ];
 
 const categories = [
-  { name: "Medicines", icon: Pill },
-  { name: "Feed", icon: Wheat },
   { name: "Poultry", icon: Egg },
-  { name: "Dairy", icon: Milk },
-  { name: "Pet Care", icon: PawPrint },
-  { name: "Equipment", icon: Sprout }
+  { name: "Pet", icon: PawPrint },
+  { name: "Cattle", icon: Milk },
+  { name: "Aqua", icon: Droplets },
+  { name: "Goat/Sheep", icon: Sprout }
 ];
 
 const homepageProducts = getFeaturedProducts(8);
@@ -115,6 +112,13 @@ const farmerAssurance = [
   }
 ];
 
+const topVendors = [
+  { name: "AnimKart Verified", category: "Animal Healthcare", products: 221, rating: "4.8" },
+  { name: "Whiskas", category: "Pet Nutrition", products: 54, rating: "4.7" },
+  { name: "Godrej Agrovet", category: "Feed & Supplements", products: 38, rating: "4.8" },
+  { name: "Virbac India", category: "Veterinary Care", products: 26, rating: "4.9" }
+];
+
 const brands = ["Virbac", "Intas", "MSD", "Bayer", "Vetoquinol", "Zydus", "Godrej", "Amul"];
 
 const articles = [
@@ -140,30 +144,30 @@ const articles = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
-      <header className="sticky top-0 z-50 border-b border-[#d3e4fe] bg-white/94 backdrop-blur-xl">
-        <div className="hidden bg-[#0b1c30] text-white md:block">
+    <main className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A]">
+      <header className="sticky top-0 z-50 border-b border-[#D1D1D1]/70 bg-white/95 backdrop-blur">
+        <div className="hidden bg-[#1B6B3A] text-white md:block">
           <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-2 text-xs font-semibold">
             <div className="flex items-center gap-6">
-              <a className="flex items-center gap-1 text-white/82 hover:text-white" href="#">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#">
                 <BookOpen size={15} />
                 Help
               </a>
-              <a className="flex items-center gap-1 text-white/82 hover:text-white" href="#supplier">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#supplier">
                 <Truck size={15} />
                 Bulk Inquiry
               </a>
-              <a className="flex items-center gap-1 text-white/82 hover:text-white" href="#supplier">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#supplier">
                 <Store size={15} />
                 Sell
               </a>
             </div>
             <div className="flex items-center gap-6">
-              <a className="flex items-center gap-1 text-white/82 hover:text-white" href="#vet">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#vet">
                 <HeartPulse size={15} />
                 Vet Consultation
               </a>
-              <a className="flex items-center gap-1 text-white/82 hover:text-white" href="#">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#">
                 <Truck size={15} />
                 Track Order
               </a>
@@ -171,50 +175,50 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-4 py-3 sm:px-6">
           <a className="flex shrink-0 items-center gap-2" href="#">
-            <span className="grid size-12 place-items-center rounded-xl bg-[#006b32] text-xl font-black text-white shadow-sm">
+            <span className="grid size-11 place-items-center rounded-lg bg-[#1B6B3A] text-xl font-black text-white shadow-sm">
               A
             </span>
             <span>
-              <span className="block text-2xl font-extrabold leading-6">AnimKart</span>
-              <span className="hidden text-[11px] font-bold uppercase tracking-wide text-[#006b32] sm:block">
+              <span className="block text-xl font-bold leading-6">AnimKart</span>
+              <span className="hidden text-[11px] font-semibold uppercase tracking-wide text-[#1B6B3A] sm:block">
                 Farmer trusted animal health
               </span>
             </span>
           </a>
 
-          <div className="hidden min-w-0 flex-1 items-center overflow-hidden rounded-2xl border border-[#bdcabc]/70 bg-[#f8f9ff] shadow-sm focus-within:border-[#006b32] lg:flex">
-            <Search className="ml-4 text-[#3e4a3f]" size={19} />
+          <div className="hidden min-w-0 flex-1 items-center overflow-hidden rounded-lg border border-[#D1D1D1] bg-white shadow-sm focus-within:border-[#1B6B3A] lg:flex">
+            <Search className="ml-4 text-[#6B6B6B]" size={19} />
             <input
               className="min-w-0 flex-1 border-0 bg-transparent px-3 py-3 text-sm font-medium outline-none"
               placeholder="Search Products, Suppliers, Brands, or Articles..."
             />
-            <button className="bg-[#006b32] px-6 py-3 text-xs font-extrabold text-white transition hover:bg-[#008741]">
+            <button className="bg-[#1B6B3A] px-6 py-3 text-xs font-bold text-white transition hover:bg-[#14522c]">
               SEARCH
             </button>
           </div>
 
-          <div className="ml-auto hidden items-center gap-2 text-[#3e4a3f] lg:flex">
+          <div className="ml-auto hidden items-center gap-2 text-[#3D3D3D] lg:flex">
             <MapPin size={20} />
             <div className="leading-tight">
               <p className="text-[10px] font-black uppercase">Deliver to</p>
-              <p className="text-xs font-bold text-[#0b1c30]">Bengaluru 560001</p>
+              <p className="text-xs font-semibold text-[#1A1A1A]">Bengaluru 560001</p>
             </div>
           </div>
 
-          <button className="hidden text-[#3e4a3f] hover:text-[#006b32] sm:block" aria-label="Notifications">
+          <button className="hidden text-[#3D3D3D] hover:text-[#1B6B3A] sm:block" aria-label="Notifications">
             <Bell size={23} />
           </button>
-          <button className="relative text-[#3e4a3f] hover:text-[#006b32]" aria-label="Cart">
+          <button className="relative text-[#3D3D3D] hover:text-[#1B6B3A]" aria-label="Cart">
             <ShoppingCart size={25} />
             <span className="absolute -right-2 -top-2 grid size-4 place-items-center rounded-full bg-[#ba1a1a] text-[10px] font-bold text-white">
               3
             </span>
           </button>
           <div className="hidden items-center gap-2 border-l border-[#bdcabc] pl-4 md:flex">
-            <button className="text-xs font-bold text-[#006b32]">Login</button>
-            <button className="rounded-lg bg-[#006b32] px-4 py-2 text-xs font-bold text-white shadow-sm">
+            <button className="text-xs font-bold text-[#1B6B3A]">Login</button>
+            <button className="rounded-lg bg-[#1B6B3A] px-4 py-2 text-xs font-bold text-white shadow-sm">
               Register
             </button>
           </div>
@@ -223,14 +227,14 @@ export default function Home() {
           </button>
         </div>
 
-        <nav className="border-t border-[#bdcabc]/30 bg-[#f8f9ff]">
-          <div className="mx-auto flex max-w-[1440px] gap-3 overflow-x-auto px-4 py-3 text-sm font-bold text-[#3e4a3f] sm:px-6">
+        <nav className="border-t border-[#D1D1D1]/60 bg-white">
+          <div className="mx-auto flex max-w-[1280px] gap-2 overflow-x-auto px-4 py-3 text-sm font-semibold text-[#3D3D3D] sm:px-6">
             {navItems.map((item, index) => (
               <a
                 className={
                   index === 0
-                    ? "rounded-full bg-[#006b32] px-4 py-2 text-white"
-                    : "rounded-full bg-white px-4 py-2 shadow-sm hover:text-[#006b32]"
+                    ? "rounded-full bg-[#1B6B3A] px-4 py-2 text-white"
+                    : "rounded-full border border-[#D1D1D1] bg-white px-4 py-2 hover:text-[#1B6B3A]"
                 }
                 href="/products"
                 key={item}
@@ -238,55 +242,55 @@ export default function Home() {
                 {item}
               </a>
             ))}
-            <a className="flex items-center gap-1 rounded-full bg-white px-4 py-2 shadow-sm hover:text-[#006b32]" href="/products">
+            <a className="flex items-center gap-1 rounded-full border border-[#D1D1D1] bg-white px-4 py-2 hover:text-[#1B6B3A]" href="/products">
               Offers <span className="rounded bg-[#ffdad6] px-1.5 py-0.5 text-[10px] text-[#93000a]">HOT</span>
             </a>
           </div>
         </nav>
       </header>
 
-      <section className="bg-[linear-gradient(135deg,#f8f9ff_0%,#edf7ee_45%,#dce9ff_100%)] px-4 py-8 sm:px-6 lg:py-12">
-        <div className="mx-auto grid max-w-[1440px] gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
-          <div className="flex flex-col justify-center rounded-[2rem] bg-white p-7 shadow-[0_20px_70px_rgba(11,28,48,0.10)] ring-1 ring-[#d3e4fe] sm:p-10 lg:p-12">
+      <section className="bg-[#EDF7F1] px-4 py-6 sm:px-6 lg:py-8">
+        <div className="mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-[1fr_0.92fr] lg:items-stretch">
+          <div className="flex min-h-[440px] flex-col justify-center rounded-xl bg-white p-6 shadow-sm ring-1 ring-[#D1D1D1]/70 sm:p-8 lg:p-10">
             <div className="mb-6 flex flex-wrap gap-3">
-              <span className="rounded-full bg-[#e9f8ee] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#006b32]">
+              <span className="rounded-full bg-[#EDF7F1] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">
                 849 imported products live
               </span>
-              <span className="rounded-full bg-[#eff4ff] px-4 py-2 text-xs font-extrabold uppercase tracking-wide text-[#213145]">
-                Vet + bulk support
+              <span className="rounded-full bg-[#FEF3DC] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1A1A1A]">
+                GST billing + bulk quote
               </span>
             </div>
-            <h1 className="max-w-3xl text-4xl font-black leading-[1.05] text-[#0b1c30] sm:text-5xl lg:text-6xl">
-              Trusted animal healthcare for Indian farmers.
+            <h1 className="max-w-3xl text-4xl font-bold leading-[1.08] text-[#1A1A1A] sm:text-5xl">
+              Animal healthcare products farmers can trust.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#3e4a3f]">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[#3D3D3D]">
               Buy verified medicines, feed, supplements and farm essentials from AnimKart&apos;s real
               catalog, with expert vet guidance and bulk quote support before large orders.
             </p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="mt-7 grid gap-3 sm:grid-cols-3">
               {[
                 ["10k+", "farmers served"],
                 ["849", "products imported"],
                 ["PAN India", "delivery ready"]
               ].map(([value, label]) => (
-                <div className="rounded-2xl bg-[#f8f9ff] p-4 ring-1 ring-[#d3e4fe]" key={label}>
-                  <p className="text-2xl font-black text-[#006b32]">{value}</p>
-                  <p className="mt-1 text-xs font-bold uppercase text-[#3e4a3f]">{label}</p>
+                <div className="rounded-lg bg-[#F5F5F5] p-4 ring-1 ring-[#D1D1D1]/70" key={label}>
+                  <p className="text-2xl font-bold text-[#1B6B3A]">{value}</p>
+                  <p className="mt-1 text-xs font-semibold uppercase text-[#6B6B6B]">{label}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a className="rounded-xl bg-[#006b32] px-7 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-[#008741]" href="/products">
-                Shop Products
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a className="rounded-lg bg-[#1B6B3A] px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition hover:bg-[#14522c]" href="/products">
+                Shop now
               </a>
-              <a className="rounded-xl border border-[#bdcabc] bg-white px-7 py-4 text-center text-base font-bold text-[#0b1c30] transition hover:border-[#006b32] hover:text-[#006b32]" href="#supplier">
-                Request Bulk Quote
+              <a className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center text-base font-semibold text-[#1B6B3A] transition hover:bg-[#EDF7F1]" href="#vet">
+                Book a vet
               </a>
             </div>
           </div>
 
           <div className="grid gap-5 lg:grid-rows-[1fr_auto]">
-            <div className="relative min-h-[430px] overflow-hidden rounded-[2rem] bg-[#0b1c30] shadow-[0_20px_70px_rgba(11,28,48,0.15)]">
+            <div className="relative min-h-[340px] overflow-hidden rounded-xl bg-[#1A1A1A] shadow-sm lg:min-h-[440px]">
               <Image
                 alt="Healthy dairy cattle on Indian farm"
                 className="object-cover"
@@ -295,25 +299,25 @@ export default function Home() {
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=1400&q=90"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c30]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/76 via-transparent to-transparent" />
               <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
                 {[
                   { label: "Authentic catalog", icon: PackageCheck },
                   { label: "GST billing", icon: BookOpen },
                   { label: "Freight quote", icon: Truck }
                 ].map((item) => (
-                  <div className="rounded-2xl border border-white/20 bg-white/88 p-4 backdrop-blur" key={item.label}>
-                    <item.icon className="text-[#006b32]" size={22} />
-                    <p className="mt-2 text-sm font-extrabold">{item.label}</p>
+                  <div className="rounded-lg border border-white/20 bg-white/90 p-4 backdrop-blur" key={item.label}>
+                    <item.icon className="text-[#1B6B3A]" size={22} />
+                    <p className="mt-2 text-sm font-bold">{item.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-[#d3e4fe] bg-white p-5 shadow-sm">
+            <div className="rounded-xl border border-[#D1D1D1] bg-white p-5 shadow-sm" id="vet">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-xl font-extrabold text-[#0b1c30]">Book Expert Vet</h2>
-                <span className="rounded-full bg-[#008741] px-3 py-1 text-xs font-bold text-white">Online Now</span>
+                <span className="rounded-full bg-[#16A34A] px-3 py-1 text-xs font-bold text-white">Waitlist open</span>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {[
@@ -322,11 +326,11 @@ export default function Home() {
                   { label: "Pet Care", icon: PawPrint }
                 ].map((item) => (
                   <button
-                    className="flex items-center justify-between rounded-2xl border border-[#bdcabc]/60 p-3 text-left transition hover:bg-[#006b32]/10"
+                    className="flex items-center justify-between rounded-lg border border-[#D1D1D1] p-3 text-left transition hover:bg-[#EDF7F1]"
                     key={item.label}
                   >
-                    <span className="flex items-center gap-2 font-bold text-[#0b1c30]">
-                      <item.icon className="text-[#006b32]" size={19} />
+                    <span className="flex items-center gap-2 font-semibold text-[#1A1A1A]">
+                      <item.icon className="text-[#1B6B3A]" size={19} />
                       {item.label}
                     </span>
                     <ChevronRight size={17} />
@@ -339,7 +343,7 @@ export default function Home() {
       </section>
 
       <section className="border-y border-[#bdcabc]/40 bg-white">
-        <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
           {trustItems.map((item) => (
             <div className="flex flex-col items-center gap-2 text-center" key={item.label}>
               <item.icon className="text-[#006b32]" size={26} />
@@ -349,13 +353,41 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6" id="catalog">
+      <section className="bg-white px-4 py-8 sm:px-6">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="mb-5 flex items-end justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Shop by animal</p>
+              <h2 className="mt-1 text-2xl font-semibold">Find products faster</h2>
+            </div>
+            <a className="text-sm font-semibold text-[#1B6B3A]" href="/products">
+              View all
+            </a>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {categories.map((category) => (
+              <a
+                className="grid min-w-24 place-items-center rounded-lg border border-[#D1D1D1] bg-white p-4 text-center shadow-sm hover:border-[#1B6B3A]"
+                href="/products"
+                key={category.name}
+              >
+                <span className="grid size-12 place-items-center rounded-full bg-[#EDF7F1] text-[#1B6B3A]">
+                  <category.icon size={24} />
+                </span>
+                <span className="mt-3 text-sm font-semibold">{category.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1280px] px-4 py-10 sm:px-6" id="catalog">
         <div className="mb-7 flex items-end justify-between gap-4">
           <div>
             <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#006b32]">
               Browse by animal
             </p>
-            <h2 className="text-3xl font-semibold text-[#0b1c30]">Comprehensive Healthcare</h2>
+            <h2 className="text-3xl font-semibold text-[#1A1A1A]">Comprehensive Healthcare</h2>
           </div>
           <a className="hidden text-sm font-semibold text-[#006b32] sm:block" href="/products">
             View Full Catalog ({importedProducts.length})
@@ -363,8 +395,8 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
           {categories.map((category) => (
-            <button className="rounded-2xl border border-[#d3e4fe] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl" key={category.name}>
-              <span className="mx-auto grid size-12 place-items-center rounded-full bg-[#e5eeff] text-[#006b32]">
+            <button className="rounded-lg border border-[#D1D1D1] bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#1B6B3A]" key={category.name}>
+              <span className="mx-auto grid size-12 place-items-center rounded-full bg-[#EDF7F1] text-[#1B6B3A]">
                 <category.icon size={22} />
               </span>
               <span className="mt-4 block font-semibold">{category.name}</span>
@@ -373,9 +405,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1440px] px-4 pb-14 sm:px-6" id="bestsellers">
+      <section className="mx-auto max-w-[1280px] px-4 pb-14 sm:px-6" id="bestsellers">
         <div className="mb-7 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-[#0b1c30]">Bestselling Healthcare Essentials</h2>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Featured products</p>
+            <h2 className="mt-1 text-2xl font-semibold text-[#1A1A1A]">Bestselling Healthcare Essentials</h2>
+          </div>
           <div className="hidden gap-2 sm:flex">
             <button className="grid size-8 place-items-center rounded-full border border-[#bdcabc] bg-white">
               <ChevronLeft size={17} />
@@ -390,8 +425,8 @@ export default function Home() {
             const discount = discountPercent(product);
 
             return (
-            <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[#d3e4fe] transition hover:-translate-y-1 hover:shadow-xl" key={product.name}>
-              <div className="relative aspect-square bg-[#d3e4fe]">
+            <article className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-[#D1D1D1] transition hover:-translate-y-1 hover:ring-[#1B6B3A]" key={product.name}>
+              <div className="relative aspect-[4/3] bg-white">
                 <ProductImage
                   alt={product.name}
                   category={product.category}
@@ -405,10 +440,16 @@ export default function Home() {
                 ) : null}
               </div>
               <div className="p-4">
-                <p className="text-[10px] font-bold uppercase text-[#6e7a6e]">{product.brand}</p>
-                <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold text-[#0b1c30]">{product.name}</h3>
-                <div className="mt-2 flex items-center gap-2 text-xs text-[#6e7a6e]">
-                  <span className="flex items-center gap-1 text-[#006b32]">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="truncate text-[10px] font-bold uppercase text-[#6B6B6B]">{product.brand}</p>
+                  <span className="rounded bg-[#EDF7F1] px-2 py-1 text-[10px] font-bold text-[#1B6B3A]">
+                    In stock
+                  </span>
+                </div>
+                <h3 className="mt-2 line-clamp-2 min-h-10 text-sm font-semibold text-[#1A1A1A]">{product.name}</h3>
+                <p className="mt-1 text-xs text-[#6B6B6B]">Vendor: AnimKart verified supplier</p>
+                <div className="mt-2 flex items-center gap-2 text-xs text-[#6B6B6B]">
+                  <span className="flex items-center gap-1 text-[#1B6B3A]">
                     <Star size={13} fill="currentColor" />
                     {(4.6 + (index % 4) / 10).toFixed(1)}
                   </span>
@@ -416,14 +457,15 @@ export default function Home() {
                 </div>
                 <div className="mt-4 flex items-center justify-between">
                   <div>
-                    <p className="text-lg font-bold text-[#0b1c30]">{formatINR(product.price)}</p>
+                    <p className="text-lg font-bold text-[#1A1A1A]">{formatINR(product.price)}</p>
                     {product.regularPrice && product.regularPrice > product.price ? (
-                      <p className="text-xs font-semibold text-[#6e7a6e] line-through">
+                      <p className="text-xs font-semibold text-[#6B6B6B] line-through">
                         {formatINR(product.regularPrice)}
                       </p>
                     ) : null}
+                    <p className="mt-1 text-[11px] text-[#6B6B6B]">Incl. GST</p>
                   </div>
-                  <button className="grid size-9 place-items-center rounded-lg bg-[#006b32] text-white">
+                  <button className="grid size-11 place-items-center rounded-lg bg-[#1B6B3A] text-white">
                     <ShoppingCart size={18} />
                   </button>
                 </div>
@@ -528,6 +570,64 @@ export default function Home() {
               <p className="mt-3 text-sm leading-6 text-[#3e4a3f]">{item.text}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1280px] px-4 pb-14 sm:px-6">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Top vendors</p>
+            <h2 className="mt-1 text-2xl font-semibold">Trusted supply partners</h2>
+          </div>
+          <a className="text-sm font-semibold text-[#1B6B3A]" href="/products">
+            View stores
+          </a>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {topVendors.map((vendor) => (
+            <article className="rounded-lg border border-[#D1D1D1] bg-white p-5 shadow-sm" key={vendor.name}>
+              <div className="flex items-center gap-3">
+                <span className="grid size-12 place-items-center rounded-lg bg-[#EDF7F1] text-lg font-bold text-[#1B6B3A]">
+                  {vendor.name.charAt(0)}
+                </span>
+                <div className="min-w-0">
+                  <h3 className="truncate font-semibold">{vendor.name}</h3>
+                  <p className="text-xs text-[#6B6B6B]">{vendor.category}</p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-between text-sm">
+                <span className="font-semibold text-[#1B6B3A]">{vendor.products} products</span>
+                <span className="flex items-center gap-1 text-[#3D3D3D]">
+                  <Star size={14} fill="#F0A500" className="text-[#F0A500]" />
+                  {vendor.rating}
+                </span>
+              </div>
+              <a className="mt-4 block rounded-lg border border-[#1B6B3A] px-4 py-2 text-center text-sm font-semibold text-[#1B6B3A]" href="/products">
+                View store
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1280px] px-4 pb-14 sm:px-6">
+        <div className="rounded-xl bg-[#EDF7F1] p-6 ring-1 ring-[#D1D1D1] sm:p-8 lg:flex lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Vet consultation</p>
+            <h2 className="mt-2 text-2xl font-semibold">Need help choosing the right medicine or feed?</h2>
+            <p className="mt-3 text-sm leading-6 text-[#3D3D3D]">
+              Vet consultation is opening soon. Join the waitlist for poultry, cattle, pet, aqua and
+              goat/sheep advisory support.
+            </p>
+          </div>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row lg:mt-0">
+            <a className="rounded-lg bg-[#1B6B3A] px-5 py-3 text-center text-sm font-semibold text-white" href="#vet">
+              Join waitlist
+            </a>
+            <a className="rounded-lg border border-[#1B6B3A] bg-white px-5 py-3 text-center text-sm font-semibold text-[#1B6B3A]" href="/products">
+              Browse products
+            </a>
+          </div>
         </div>
       </section>
 
