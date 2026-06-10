@@ -88,3 +88,17 @@ export function getFeaturedProducts(limit = 4) {
     limit
   );
 }
+
+export function getProductBySlug(slug: string) {
+  return products.find((product) => product.slug === slug);
+}
+
+export function getRelatedProducts(product: StoreProduct, limit = 4) {
+  return products
+    .filter((item) => item.id !== product.id && item.category === product.category)
+    .slice(0, limit);
+}
+
+export function getProductsByCategory(category: string, limit = 12) {
+  return products.filter((product) => product.category === category).slice(0, limit);
+}

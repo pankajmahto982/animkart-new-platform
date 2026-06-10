@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Bird,
-  ChevronLeft,
   Droplets,
   Egg,
   HeartPulse,
@@ -11,6 +10,8 @@ import {
   ShieldCheck,
   Sprout
 } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { getTopCategories, products } from "@/lib/products";
 
 const animalCategories = [
@@ -102,12 +103,9 @@ export const metadata = {
 export default function CategoriesPage() {
   return (
     <main className="min-h-screen bg-[#F5F5F5] text-[#1A1A1A]">
+      <SiteHeader />
       <header className="bg-white">
         <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6">
-          <Link className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-[#1B6B3A]" href="/">
-            <ChevronLeft size={17} />
-            Back to home
-          </Link>
           <div className="grid gap-5 lg:grid-cols-[1fr_0.75fr] lg:items-end">
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">AnimKart categories</p>
@@ -226,6 +224,7 @@ export default function CategoriesPage() {
           </Link>
         </div>
       </section>
+      <SiteFooter />
     </main>
   );
 }

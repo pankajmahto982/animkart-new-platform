@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import Image from "next/image";
 import {
   Bell,
@@ -61,9 +62,9 @@ const healthConcerns = [
 
 const quickServices = [
   { title: "Order Products", text: "Medicines, feed and supplements", icon: ShoppingCart, href: "/products" },
-  { title: "Bulk Quote", text: "25-100 kg farm orders", icon: Truck, href: "#supplier" },
-  { title: "Vet Guidance", text: "Poultry, cattle, pet and aqua", icon: HeartPulse, href: "#vet" },
-  { title: "Sell on AnimKart", text: "Supplier onboarding", icon: Store, href: "#supplier" }
+  { title: "Bulk Quote", text: "25-100 kg farm orders", icon: Truck, href: "/bulk-inquiry" },
+  { title: "Vet Guidance", text: "Poultry, cattle, pet and aqua", icon: HeartPulse, href: "/vet" },
+  { title: "Sell on AnimKart", text: "Supplier onboarding", icon: Store, href: "/supplier" }
 ];
 
 const homepageProducts = getFeaturedProducts(8);
@@ -197,21 +198,21 @@ export default function Home() {
                 <BookOpen size={15} />
                 Help
               </a>
-              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#supplier">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="/bulk-inquiry">
                 <Truck size={15} />
                 Bulk Inquiry
               </a>
-              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#supplier">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="/supplier/register">
                 <Store size={15} />
                 Sell
               </a>
             </div>
             <div className="flex items-center gap-6">
-              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#vet">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="/vet">
                 <HeartPulse size={15} />
                 Vet Consultation
               </a>
-              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="#">
+              <a className="flex items-center gap-1 text-white/85 hover:text-white" href="/orders">
                 <Truck size={15} />
                 Track Order
               </a>
@@ -220,7 +221,7 @@ export default function Home() {
         </div>
 
         <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-4 py-3 sm:px-6">
-          <a className="flex shrink-0 items-center gap-2" href="#">
+          <a className="flex shrink-0 items-center gap-2" href="/">
             <span className="grid size-11 place-items-center rounded-lg bg-[#1B6B3A] text-xl font-black text-white shadow-sm">
               A
             </span>
@@ -261,10 +262,10 @@ export default function Home() {
             </span>
           </button>
           <div className="hidden items-center gap-2 border-l border-[#bdcabc] pl-4 md:flex">
-            <button className="text-xs font-bold text-[#1B6B3A]">Login</button>
-            <button className="rounded-lg bg-[#1B6B3A] px-4 py-2 text-xs font-bold text-white shadow-sm">
+            <a className="text-xs font-bold text-[#1B6B3A]" href="/login">Login</a>
+            <a className="rounded-lg bg-[#1B6B3A] px-4 py-2 text-xs font-bold text-white shadow-sm" href="/login">
               Register
-            </button>
+            </a>
           </div>
           <button className="md:hidden" aria-label="Open menu">
             <Menu />
@@ -327,7 +328,7 @@ export default function Home() {
               <a className="rounded-lg bg-[#1B6B3A] px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition hover:bg-[#14522c]" href="/products">
                 Shop products
               </a>
-              <a className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center text-base font-semibold text-[#1B6B3A] transition hover:bg-[#EDF7F1]" href="#vet">
+              <a className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center text-base font-semibold text-[#1B6B3A] transition hover:bg-[#EDF7F1]" href="/vet">
                 Book a vet
               </a>
             </div>
@@ -704,7 +705,7 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row lg:mt-0">
-            <a className="rounded-lg bg-[#1B6B3A] px-5 py-3 text-center text-sm font-semibold text-white" href="#vet">
+            <a className="rounded-lg bg-[#1B6B3A] px-5 py-3 text-center text-sm font-semibold text-white" href="/vet">
               Join waitlist
             </a>
             <a className="rounded-lg border border-[#1B6B3A] bg-white px-5 py-3 text-center text-sm font-semibold text-[#1B6B3A]" href="/products">
@@ -984,7 +985,7 @@ export default function Home() {
               <a className="rounded-xl bg-[#6ddd8b] px-5 py-3 text-sm font-bold text-[#00210b]" href="/products">
                 Browse real products
               </a>
-              <a className="rounded-xl border border-white/20 px-5 py-3 text-sm font-bold text-white" href="#supplier">
+              <a className="rounded-xl border border-white/20 px-5 py-3 text-sm font-bold text-white" href="/bulk-inquiry">
                 Request bulk quote
               </a>
             </div>
@@ -1025,7 +1026,7 @@ export default function Home() {
         </div>
         <div className="mx-auto flex max-w-[1440px] flex-col gap-3 border-t border-white/10 px-4 py-6 text-xs text-[#eaf1ff]/55 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <span>Copyright 2026 AnimKart. India&apos;s Premier Animal Health Marketplace.</span>
-          <span>Payments · Banking · Cards</span>
+          <span>Payments - Banking - Cards</span>
         </div>
       </footer>
     </main>
