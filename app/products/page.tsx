@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, PackageCheck, Search, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
+import { ProductImage } from "@/components/product-image";
 import { discountPercent, formatINR, getTopCategories, products } from "@/lib/products";
 
 const visibleProducts = products.slice(0, 72);
@@ -73,13 +73,11 @@ export default function ProductsPage() {
                 key={product.id}
               >
                 <div className="relative aspect-square bg-[#d3e4fe]">
-                  <Image
+                  <ProductImage
                     alt={product.name}
+                    category={product.category}
                     className="object-contain p-3"
-                    fill
-                    sizes="(min-width: 1024px) 25vw, 50vw"
                     src={product.image}
-                    unoptimized
                   />
                   {discount ? (
                     <span className="absolute left-3 top-3 rounded bg-[#ba1a1a] px-2 py-1 text-[10px] font-bold text-white">
