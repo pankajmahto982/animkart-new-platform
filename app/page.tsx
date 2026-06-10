@@ -2,6 +2,7 @@ import Image from "next/image";
 import {
   Bell,
   BookOpen,
+  Bird,
   ChevronLeft,
   ChevronRight,
   Droplets,
@@ -24,7 +25,7 @@ import {
 import { ProductImage } from "@/components/product-image";
 import { discountPercent, formatINR, getFeaturedProducts, products as importedProducts } from "@/lib/products";
 
-const navItems = ["Poultry", "Pet", "Cattle", "Aqua", "Goat/Sheep", "Feed", "Medicines"];
+const navItems = ["Cow Medicines", "Buffalo", "Poultry", "Goat & Sheep", "Feed", "Dog Care", "Cat Care"];
 
 const trustItems = [
   { label: "Verified Suppliers", icon: ShieldCheck },
@@ -36,11 +37,33 @@ const trustItems = [
 ];
 
 const categories = [
+  { name: "Cows", icon: Milk },
+  { name: "Buffalo", icon: Milk },
   { name: "Poultry", icon: Egg },
-  { name: "Pet", icon: PawPrint },
-  { name: "Cattle", icon: Milk },
-  { name: "Aqua", icon: Droplets },
-  { name: "Goat/Sheep", icon: Sprout }
+  { name: "Goat & Sheep", icon: Sprout },
+  { name: "Horses", icon: ShieldCheck },
+  { name: "Feed", icon: PackageCheck },
+  { name: "Dog", icon: PawPrint },
+  { name: "Cat", icon: PawPrint },
+  { name: "Bird", icon: Bird }
+];
+
+const healthConcerns = [
+  "Digestion",
+  "Fertility",
+  "Mastitis",
+  "Muscle Growth",
+  "Milk Yield",
+  "Immunity",
+  "Weight Gain",
+  "Skin Care"
+];
+
+const quickServices = [
+  { title: "Order Products", text: "Medicines, feed and supplements", icon: ShoppingCart, href: "/products" },
+  { title: "Bulk Quote", text: "25-100 kg farm orders", icon: Truck, href: "#supplier" },
+  { title: "Vet Guidance", text: "Poultry, cattle, pet and aqua", icon: HeartPulse, href: "#vet" },
+  { title: "Sell on AnimKart", text: "Supplier onboarding", icon: Store, href: "#supplier" }
 ];
 
 const homepageProducts = getFeaturedProducts(8);
@@ -91,6 +114,27 @@ const seasonalCare = [
     title: "Farm operations",
     text: "Bulk quote, GST billing and freight confirmation before large orders move ahead.",
     icon: Truck
+  }
+];
+
+const problemSolvers = [
+  {
+    title: "Cow not giving milk?",
+    subtitle: "Milk yield support",
+    text: "Explore calcium, bypass fat, mineral mixture and feed products trusted by dairy farmers.",
+    href: "#animal-feed-products"
+  },
+  {
+    title: "Weight gain for goat & sheep",
+    subtitle: "Growth and digestion",
+    text: "Find supplements and tonics for better body condition and farm productivity.",
+    href: "#animal-healthcare-products"
+  },
+  {
+    title: "Complete poultry health",
+    subtitle: "Immunity and flock care",
+    text: "Browse poultry medicines, feed support and vet-guided care categories.",
+    href: "#poultry-feed-products"
   }
 ];
 
@@ -254,24 +298,24 @@ export default function Home() {
           <div className="flex min-h-[440px] flex-col justify-center rounded-xl bg-white p-6 shadow-sm ring-1 ring-[#D1D1D1]/70 sm:p-8 lg:p-10">
             <div className="mb-6 flex flex-wrap gap-3">
               <span className="rounded-full bg-[#EDF7F1] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">
-                849 imported products live
+                Trusted by farmers across India
               </span>
               <span className="rounded-full bg-[#FEF3DC] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1A1A1A]">
                 GST billing + bulk quote
               </span>
             </div>
             <h1 className="max-w-3xl text-4xl font-bold leading-[1.08] text-[#1A1A1A] sm:text-5xl">
-              Animal healthcare products farmers can trust.
+              Trusted veterinary medicines & supplements for your farm.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-[#3D3D3D]">
-              Buy verified medicines, feed, supplements and farm essentials from AnimKart&apos;s real
-              catalog, with expert vet guidance and bulk quote support before large orders.
+              Shop livestock medicines, poultry care, cattle feed, pet products and farm essentials
+              from AnimKart&apos;s real catalog, with vet guidance and bulk quote support.
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
               {[
                 ["10k+", "farmers served"],
-                ["849", "products imported"],
-                ["PAN India", "delivery ready"]
+                ["849", "catalog products"],
+                ["Fast", "pan-India support"]
               ].map(([value, label]) => (
                 <div className="rounded-lg bg-[#F5F5F5] p-4 ring-1 ring-[#D1D1D1]/70" key={label}>
                   <p className="text-2xl font-bold text-[#1B6B3A]">{value}</p>
@@ -281,7 +325,7 @@ export default function Home() {
             </div>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <a className="rounded-lg bg-[#1B6B3A] px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition hover:bg-[#14522c]" href="/products">
-                Shop now
+                Shop products
               </a>
               <a className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center text-base font-semibold text-[#1B6B3A] transition hover:bg-[#EDF7F1]" href="#vet">
                 Book a vet
@@ -342,6 +386,26 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-white px-4 py-6 sm:px-6">
+        <div className="mx-auto grid max-w-[1280px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {quickServices.map((service) => (
+            <a
+              className="flex items-center gap-4 rounded-lg border border-[#D1D1D1] bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-[#1B6B3A]"
+              href={service.href}
+              key={service.title}
+            >
+              <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-[#EDF7F1] text-[#1B6B3A]">
+                <service.icon size={23} />
+              </span>
+              <span>
+                <span className="block font-semibold">{service.title}</span>
+                <span className="mt-1 block text-sm text-[#6B6B6B]">{service.text}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <section className="border-y border-[#bdcabc]/40 bg-white">
         <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
           {trustItems.map((item) => (
@@ -364,10 +428,10 @@ export default function Home() {
               View all
             </a>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9">
             {categories.map((category) => (
               <a
-                className="grid min-w-24 place-items-center rounded-lg border border-[#D1D1D1] bg-white p-4 text-center shadow-sm hover:border-[#1B6B3A]"
+                className="grid min-h-24 place-items-center rounded-lg border border-[#D1D1D1] bg-white p-3 text-center shadow-sm hover:border-[#1B6B3A]"
                 href="/products"
                 key={category.name}
               >
@@ -377,6 +441,25 @@ export default function Home() {
                 <span className="mt-3 text-sm font-semibold">{category.name}</span>
               </a>
             ))}
+          </div>
+          <div className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-semibold">Shop by health concern</h3>
+              <a className="text-sm font-semibold text-[#1B6B3A]" href="/products">
+                See all
+              </a>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {healthConcerns.map((concern) => (
+                <a
+                  className="shrink-0 rounded-full border border-[#D1D1D1] bg-[#F5F5F5] px-4 py-2 text-sm font-semibold text-[#3D3D3D] hover:border-[#1B6B3A] hover:text-[#1B6B3A]"
+                  href="/products"
+                  key={concern}
+                >
+                  {concern}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -628,6 +711,49 @@ export default function Home() {
               Browse products
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1280px] px-4 pb-14 sm:px-6">
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">Problem solver</p>
+          <h2 className="mt-1 text-2xl font-semibold">Shop by common farm problems</h2>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {problemSolvers.map((item, index) => (
+            <article
+              className={
+                index === 0
+                  ? "rounded-xl bg-[#1B6B3A] p-6 text-white"
+                  : "rounded-xl border border-[#D1D1D1] bg-white p-6 shadow-sm"
+              }
+              key={item.title}
+            >
+              <span
+                className={
+                  index === 0
+                    ? "rounded-full bg-white/15 px-3 py-1 text-xs font-bold"
+                    : "rounded-full bg-[#EDF7F1] px-3 py-1 text-xs font-bold text-[#1B6B3A]"
+                }
+              >
+                {item.subtitle}
+              </span>
+              <h3 className="mt-5 text-2xl font-semibold">{item.title}</h3>
+              <p className={index === 0 ? "mt-3 text-sm leading-6 text-white/80" : "mt-3 text-sm leading-6 text-[#3D3D3D]"}>
+                {item.text}
+              </p>
+              <a
+                className={
+                  index === 0
+                    ? "mt-6 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#1B6B3A]"
+                    : "mt-6 inline-flex rounded-lg bg-[#1B6B3A] px-4 py-2 text-sm font-semibold text-white"
+                }
+                href={item.href}
+              >
+                Shop solutions
+              </a>
+            </article>
+          ))}
         </div>
       </section>
 
