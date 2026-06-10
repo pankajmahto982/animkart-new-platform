@@ -58,9 +58,43 @@ const categoryTabs = [
   "Cat"
 ];
 
+const categoryTabLinks = categoryTabs.map((name) => ({
+  name,
+  href: name === "All Products" ? "#bestsellers" : `#${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-products`
+}));
+
 const tabPreviewProducts = categoryTabs.slice(1, 7).flatMap((category) =>
   importedProducts.filter((product) => product.category === category).slice(0, 2)
 );
+
+const categoryShowcases = categoryTabs.slice(1, 6).map((category) => ({
+  category,
+  id: `${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-products`,
+  products: importedProducts.filter((product) => product.category === category).slice(0, 4)
+}));
+
+const seasonalCare = [
+  {
+    title: "Dairy nutrition",
+    text: "Mineral mixture, calcium, bypass fat and feed supplements for milk yield support.",
+    icon: Milk
+  },
+  {
+    title: "Poultry protection",
+    text: "Feed, immunity products and consultation pathways for flock health planning.",
+    icon: Egg
+  },
+  {
+    title: "Pet essentials",
+    text: "Trusted cat and dog food, supplements and preventive care products.",
+    icon: PawPrint
+  },
+  {
+    title: "Farm operations",
+    text: "Bulk quote, GST billing and freight confirmation before large orders move ahead.",
+    icon: Truck
+  }
+];
 
 const farmerAssurance = [
   {
@@ -301,7 +335,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1440px] px-4 pb-14 sm:px-6">
+      <section className="mx-auto max-w-[1440px] px-4 pb-14 sm:px-6" id="bestsellers">
         <div className="mb-7 flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-[#0b1c30]">Bestselling Healthcare Essentials</h2>
           <div className="hidden gap-2 sm:flex">
@@ -320,7 +354,14 @@ export default function Home() {
             return (
             <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[#d3e4fe] transition hover:-translate-y-1 hover:shadow-xl" key={product.name}>
               <div className="relative aspect-square bg-[#d3e4fe]">
-                <Image alt={product.name} className="object-cover" fill sizes="(min-width: 1024px) 25vw, 50vw" src={product.image} />
+                <Image
+                  alt={product.name}
+                  className="object-contain p-3"
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 50vw"
+                  src={product.image}
+                  unoptimized
+                />
                 {discount ? (
                   <span className="absolute left-3 top-3 rounded bg-[#ba1a1a] px-2 py-1 text-[10px] font-bold text-white">
                     {discount}% OFF
@@ -384,17 +425,17 @@ export default function Home() {
           </div>
 
           <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
-            {categoryTabs.map((tab, index) => (
+            {categoryTabLinks.map((tab, index) => (
               <a
                 className={
                   index === 0
                     ? "shrink-0 rounded-full bg-[#006b32] px-5 py-2.5 text-sm font-bold text-white"
                     : "shrink-0 rounded-full border border-[#bdcabc] bg-[#f8f9ff] px-5 py-2.5 text-sm font-bold text-[#006b32]"
                 }
-                href="/products"
-                key={tab}
+                href={tab.href}
+                key={tab.name}
               >
-                {tab}
+                {tab.name}
               </a>
             ))}
           </div>
@@ -411,10 +452,11 @@ export default function Home() {
                   <div className="relative min-h-28 bg-[#e5eeff]">
                     <Image
                       alt={product.name}
-                      className="object-cover"
+                      className="object-contain p-2"
                       fill
                       sizes="96px"
                       src={product.image}
+                      unoptimized
                     />
                   </div>
                   <div className="p-3">
@@ -438,6 +480,107 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6">
+        <div className="grid gap-5 lg:grid-cols-4">
+          {seasonalCare.map((item) => (
+            <article className="rounded-3xl border border-[#d3e4fe] bg-white p-6 shadow-sm" key={item.title}>
+              <span className="grid size-12 place-items-center rounded-2xl bg-[#e5eeff] text-[#006b32]">
+                <item.icon size={24} />
+              </span>
+              <h3 className="mt-5 text-xl font-bold">{item.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[#3e4a3f]">{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6">
+        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#006b32]">
+              Real catalog sections
+            </p>
+            <h2 className="text-3xl font-semibold">Shop products by category</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#3e4a3f]">
+              These products come from the WooCommerce export, so the homepage already reflects actual
+              AnimKart inventory instead of sample placeholders.
+            </p>
+          </div>
+          <a className="text-sm font-bold text-[#006b32]" href="/products">
+            Browse full catalog
+          </a>
+        </div>
+
+        <div className="grid gap-10">
+          {categoryShowcases.map((section) => (
+            <div className="scroll-mt-36" id={section.id} key={section.category}>
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <h3 className="text-2xl font-bold">{section.category}</h3>
+                <a className="text-sm font-bold text-[#006b32]" href="/products">
+                  View more
+                </a>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {section.products.map((product, index) => {
+                  const discount = discountPercent(product);
+
+                  return (
+                    <article
+                      className="overflow-hidden rounded-2xl border border-[#d3e4fe] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                      key={`${section.id}-${product.id}`}
+                    >
+                      <div className="relative aspect-[4/3] bg-[#e5eeff]">
+                        <Image
+                          alt={product.name}
+                          className="object-contain p-4"
+                          fill
+                          sizes="(min-width: 1024px) 25vw, 50vw"
+                          src={product.image}
+                          unoptimized
+                        />
+                        {discount ? (
+                          <span className="absolute left-3 top-3 rounded bg-[#ba1a1a] px-2 py-1 text-[10px] font-bold text-white">
+                            {discount}% OFF
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="p-4">
+                        <p className="truncate text-[10px] font-bold uppercase text-[#006b32]">
+                          {product.brand}
+                        </p>
+                        <h4 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5">
+                          {product.name}
+                        </h4>
+                        <div className="mt-2 flex items-center gap-2 text-xs text-[#6e7a6e]">
+                          <span className="flex items-center gap-1 text-[#006b32]">
+                            <Star size={13} fill="currentColor" />
+                            {(4.5 + (index % 4) / 10).toFixed(1)}
+                          </span>
+                          <span>Verified catalog</span>
+                        </div>
+                        <div className="mt-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-lg font-bold">{formatINR(product.price)}</p>
+                            {product.regularPrice && product.regularPrice > product.price ? (
+                              <p className="text-xs font-semibold text-[#6e7a6e] line-through">
+                                {formatINR(product.regularPrice)}
+                              </p>
+                            ) : null}
+                          </div>
+                          <button className="grid size-9 place-items-center rounded-lg bg-[#006b32] text-white">
+                            <ShoppingCart size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
