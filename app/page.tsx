@@ -1,426 +1,534 @@
 import Image from "next/image";
 import {
-  ArrowRight,
-  BadgeCheck,
-  BellRing,
+  Bell,
+  BookOpen,
+  ChevronLeft,
   ChevronRight,
-  Clock3,
+  Droplets,
+  Egg,
   HeartPulse,
-  IndianRupee,
-  LayoutDashboard,
+  LockKeyhole,
   MapPin,
   Menu,
+  Milk,
   PackageCheck,
+  PawPrint,
+  Pill,
+  QrCode,
   Search,
   ShieldCheck,
   ShoppingCart,
-  Sparkles,
+  Smartphone,
+  Sprout,
   Star,
   Store,
   Truck,
-  UserRound,
-  WalletCards
+  Wheat
 } from "lucide-react";
-import {
-  adminMetrics,
-  animalCategories,
-  concernCategories,
-  featuredProducts,
-  operations,
-  supplierTasks
-} from "@/lib/marketplace-data";
 
-const trustStats = [
-  { label: "Verified suppliers", value: "500+" },
-  { label: "Animal health SKUs", value: "12k+" },
-  { label: "States served", value: "22+" }
+const navItems = ["Medicines", "Feed", "Poultry", "Dairy", "Pet Care", "Equipment"];
+
+const trustItems = [
+  { label: "Verified Suppliers", icon: ShieldCheck },
+  { label: "Authentic Products", icon: PackageCheck },
+  { label: "Secure Payments", icon: LockKeyhole },
+  { label: "Fast Delivery", icon: Truck },
+  { label: "GST Billing", icon: BookOpen },
+  { label: "Expert Support", icon: HeartPulse }
 ];
 
-const quickLinks = ["Cattle Feed", "Poultry Care", "Pet Medicine", "Mineral Mixture", "Bulk Orders"];
+const categories = [
+  { name: "Medicines", icon: Pill },
+  { name: "Feed", icon: Wheat },
+  { name: "Poultry", icon: Egg },
+  { name: "Dairy", icon: Milk },
+  { name: "Pet Care", icon: PawPrint },
+  { name: "Equipment", icon: Sprout }
+];
+
+const products = [
+  {
+    brand: "VIRBAC INDIA",
+    name: "Ostovet Liquid Calcium Supplement",
+    price: "1,232",
+    rating: "4.8",
+    reviews: "125",
+    tag: "15% OFF",
+    image:
+      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    brand: "GODREJ AGROVET",
+    name: "High-Protein Dairy Feed Granules",
+    price: "2,450",
+    rating: "4.9",
+    reviews: "89",
+    image:
+      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    brand: "INTAS PHARMA",
+    name: "Multi-Vitamin Livestock Sachets",
+    price: "890",
+    rating: "4.7",
+    reviews: "201",
+    image:
+      "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    brand: "MSD ANIMAL HEALTH",
+    name: "Bravecto Chewable Pet Care Kit",
+    price: "1,950",
+    rating: "4.9",
+    reviews: "156",
+    image:
+      "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?auto=format&fit=crop&w=700&q=85"
+  }
+];
+
+const brands = ["Virbac", "Intas", "MSD", "Bayer", "Vetoquinol", "Zydus", "Godrej", "Amul"];
+
+const articles = [
+  {
+    label: "Vaccination",
+    title: "Optimizing Poultry Immunity: 2024 Vaccination Guide",
+    image:
+      "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    label: "Nutrition",
+    title: "Mineral Deficiencies in High-Yield Dairy Cattle",
+    image:
+      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    label: "Biosecurity",
+    title: "Implementing Tier-1 Hygiene Standards on Local Farms",
+    image:
+      "https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=700&q=85"
+  }
+];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f8faf7] text-[#16211b]">
-      <header className="sticky top-0 z-40 border-b border-black/5 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <a className="focus-ring flex items-center gap-3" href="#">
-            <span className="grid size-11 place-items-center rounded-lg bg-[#24523c] text-xl font-black text-white">
+    <main className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
+      <header className="sticky top-0 z-50 bg-white/88 shadow-[0_8px_30px_rgba(11,28,48,0.08)] backdrop-blur-xl">
+        <div className="hidden border-b border-[#d7e2d4] bg-[#eff4ff]/70 md:block">
+          <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-2 text-xs font-semibold text-[#3e4a3f]">
+            <div className="flex items-center gap-6">
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#">
+                <BookOpen size={15} />
+                Help
+              </a>
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#app">
+                <Smartphone size={15} />
+                Download App
+              </a>
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#supplier">
+                <Store size={15} />
+                Sell
+              </a>
+            </div>
+            <div className="flex items-center gap-6">
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#vet">
+                <HeartPulse size={15} />
+                Vet Consultation
+              </a>
+              <a className="flex items-center gap-1 hover:text-[#006b32]" href="#">
+                <Truck size={15} />
+                Track Order
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-4 py-3 sm:px-6">
+          <a className="flex shrink-0 items-center gap-2" href="#">
+            <span className="grid size-10 place-items-center rounded bg-[#006b32] text-lg font-black text-white">
               A
             </span>
             <span>
-              <span className="block text-xl font-black leading-tight text-[#24523c]">AnimKart</span>
-              <span className="block text-[11px] font-black uppercase text-[#c54622]">
-                Animal Health Marketplace
+              <span className="block text-lg font-extrabold leading-5">AnimKart</span>
+              <span className="hidden text-[10px] font-bold uppercase text-[#006b32] sm:block">
+                India&apos;s Largest Animal Health Marketplace
               </span>
             </span>
           </a>
 
-          <div className="hidden min-w-0 flex-1 items-center rounded-lg border border-black/10 bg-[#f5f7f2] p-1.5 lg:flex">
-            <button className="focus-ring inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-black text-[#24523c]">
-              <Menu size={17} />
-              All
-            </button>
-            <Search className="mx-2 text-[#24523c]" size={20} />
+          <div className="hidden min-w-0 flex-1 items-center overflow-hidden rounded-lg border border-[#bdcabc]/70 bg-[#e5eeff] focus-within:border-[#006b32] lg:flex">
+            <Search className="ml-4 text-[#3e4a3f]" size={19} />
             <input
-              aria-label="Search AnimKart products"
-              className="min-w-0 flex-1 bg-transparent px-1 py-2 text-sm font-semibold outline-none"
-              placeholder="Search cattle feed, poultry supplement, pet medicine, farm advisory..."
+              className="min-w-0 flex-1 border-0 bg-transparent px-3 py-3 text-sm font-medium outline-none"
+              placeholder="Search Products, Suppliers, Brands, or Articles..."
             />
-            <button className="focus-ring rounded-md bg-[#f3b22f] px-5 py-2.5 text-sm font-black text-[#1d2117]">
-              Search
+            <button className="bg-[#006b32] px-5 py-3 text-xs font-extrabold text-white transition hover:bg-[#008741]">
+              SEARCH
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button className="focus-ring hidden rounded-lg border border-black/10 bg-white p-3 text-[#24523c] md:inline-flex">
-              <UserRound size={20} />
-            </button>
-            <a
-              className="focus-ring hidden items-center gap-2 rounded-lg border border-black/10 bg-white px-4 py-3 text-sm font-black text-[#24523c] sm:inline-flex"
-              href="#supplier-os"
-            >
-              <Store size={18} />
-              Supplier
-            </a>
-            <a
-              className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[#24523c] px-4 py-3 text-sm font-black text-white shadow-soft"
-              href="#marketplace"
-            >
-              <ShoppingCart size={18} />
-              Cart
-            </a>
-          </div>
-        </div>
-        <div className="hidden border-t border-black/5 bg-white md:block">
-          <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-2 text-sm font-bold text-[#4f5b53] lg:px-8">
-            <div className="flex items-center gap-6">
-              {quickLinks.map((item) => (
-                <a className="focus-ring hover:text-[#24523c]" href="#marketplace" key={item}>
-                  {item}
-                </a>
-              ))}
-            </div>
-            <div className="flex items-center gap-2 text-[#24523c]">
-              <MapPin size={16} />
-              Delivering across India
+          <div className="ml-auto hidden items-center gap-2 text-[#3e4a3f] lg:flex">
+            <MapPin size={20} />
+            <div className="leading-tight">
+              <p className="text-[10px] font-black uppercase">Deliver to</p>
+              <p className="text-xs font-bold text-[#0b1c30]">Bengaluru 560001</p>
             </div>
           </div>
-        </div>
-      </header>
 
-      <section className="mx-auto grid max-w-[1440px] gap-4 px-4 py-5 sm:px-6 lg:grid-cols-[250px_1fr_320px] lg:px-8">
-        <aside className="hidden rounded-xl border border-black/8 bg-white p-3 shadow-sm lg:block">
-          <p className="px-2 pb-3 text-xs font-black uppercase text-[#c54622]">Shop by animal</p>
-          <div className="grid gap-1">
-            {animalCategories.map((category) => (
+          <button className="hidden text-[#3e4a3f] hover:text-[#006b32] sm:block" aria-label="Notifications">
+            <Bell size={23} />
+          </button>
+          <button className="relative text-[#3e4a3f] hover:text-[#006b32]" aria-label="Cart">
+            <ShoppingCart size={25} />
+            <span className="absolute -right-2 -top-2 grid size-4 place-items-center rounded-full bg-[#ba1a1a] text-[10px] font-bold text-white">
+              3
+            </span>
+          </button>
+          <div className="hidden items-center gap-2 border-l border-[#bdcabc] pl-4 md:flex">
+            <button className="text-xs font-bold text-[#006b32]">Login</button>
+            <button className="rounded-lg bg-[#006b32] px-4 py-2 text-xs font-bold text-white shadow-sm">
+              Register
+            </button>
+          </div>
+          <button className="md:hidden" aria-label="Open menu">
+            <Menu />
+          </button>
+        </div>
+
+        <nav className="border-t border-[#bdcabc]/30 bg-white/65">
+          <div className="mx-auto flex max-w-[1440px] gap-8 overflow-x-auto px-4 py-2 text-xs font-bold text-[#3e4a3f] sm:px-6">
+            {navItems.map((item, index) => (
               <a
-                className="focus-ring flex items-center justify-between rounded-lg px-3 py-3 text-sm font-black text-[#27352d] hover:bg-[#eef6e9]"
-                href="#marketplace"
-                key={category.name}
+                className={index === 0 ? "border-b-2 border-[#006b32] py-1 text-[#006b32]" : "py-1 hover:text-[#006b32]"}
+                href="#catalog"
+                key={item}
               >
-                <span className="flex items-center gap-3">
-                  <category.icon size={19} className="text-[#2d744d]" />
-                  {category.name}
-                </span>
-                <ChevronRight size={16} />
+                {item}
               </a>
             ))}
+            <a className="flex items-center gap-1 py-1 hover:text-[#006b32]" href="#catalog">
+              Offers <span className="rounded bg-[#ffdad6] px-1.5 py-0.5 text-[10px] text-[#93000a]">HOT</span>
+            </a>
           </div>
-        </aside>
+        </nav>
+      </header>
 
-        <div className="relative min-h-[560px] overflow-hidden rounded-xl bg-[#163323] shadow-soft">
-          <Image
-            alt="Livestock farmer and cattle at sunrise"
-            className="absolute inset-0 h-full w-full object-cover opacity-70"
-            fill
-            priority
-            sizes="(min-width: 1024px) 55vw, 100vw"
-            src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1600&q=90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#102119] via-[#183725]/75 to-transparent" />
-          <div className="relative flex min-h-[560px] max-w-2xl flex-col justify-center px-5 py-10 sm:px-9 lg:px-12">
-            <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-[#24523c]">
-              <BadgeCheck size={17} />
-              Vet guided animal health commerce
-            </div>
-            <h1 className="text-4xl font-black leading-[1.03] text-white sm:text-5xl lg:text-6xl">
-              Everything farmers need to keep animals healthy and productive.
+      <section className="relative min-h-[590px] overflow-hidden">
+        <Image
+          alt="Animal health marketplace farm hero"
+          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1800&q=90"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c30]/88 via-[#0b1c30]/52 to-transparent" />
+        <div className="relative mx-auto flex min-h-[590px] max-w-[1440px] items-center px-4 py-12 sm:px-6">
+          <div className="max-w-2xl text-white">
+            <p className="mb-4 text-sm font-semibold text-[#d3e4fe]">AnimKart</p>
+            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
+              India&apos;s Largest Animal Health Marketplace
             </h1>
-            <p className="mt-5 max-w-xl text-lg font-semibold leading-8 text-white/82">
-              Medicines, feed, supplements, bulk procurement and expert vet support from verified
-              suppliers on one marketplace.
+            <p className="mt-5 max-w-xl text-base leading-7 text-[#f8f9ff]/88 sm:text-lg">
+              Bridging the gap between pharmaceutical expertise and livestock management. Get verified
+              medicines, feed, and expert consultations in one place.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <a
-                className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[#f3b22f] px-5 py-3 text-sm font-black text-[#1d2117]"
-                href="#marketplace"
-              >
-                Start shopping
-                <ArrowRight size={18} />
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <a className="rounded-xl bg-[#006b32] px-7 py-4 text-center text-base font-bold text-white shadow-lg transition hover:bg-[#008741]" href="#catalog">
+                Shop Products
               </a>
-              <a
-                className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/12 px-5 py-3 text-sm font-black text-white backdrop-blur"
-                href="#vet-consult"
-              >
-                Ask a vet
-                <HeartPulse size={18} />
+              <a className="rounded-xl border border-white/35 bg-white/72 px-7 py-4 text-center text-base font-bold text-[#0b1c30] backdrop-blur-xl transition hover:bg-white" href="#vet">
+                Book Vet
               </a>
             </div>
-            <div className="mt-9 grid max-w-xl grid-cols-3 gap-3">
-              {trustStats.map((stat) => (
-                <div className="rounded-lg bg-white/94 p-4" key={stat.label}>
-                  <p className="text-2xl font-black text-[#24523c]">{stat.value}</p>
-                  <p className="mt-1 text-xs font-bold text-[#5f6d63]">{stat.label}</p>
-                </div>
+          </div>
+
+          <div className="absolute bottom-6 right-4 hidden w-[330px] rounded-2xl border border-white/45 bg-white/72 p-6 shadow-2xl backdrop-blur-2xl md:block lg:right-8 lg:top-1/2 lg:-translate-y-1/2">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h2 className="text-2xl font-semibold text-[#0b1c30]">Book Expert Vet</h2>
+              <span className="rounded bg-[#008741] px-2 py-1 text-xs font-bold text-white">Online Now</span>
+            </div>
+            <div className="space-y-3">
+              {[
+                { label: "Poultry Experts", icon: Egg },
+                { label: "Aquaculture", icon: Droplets },
+                { label: "Pet Consultants", icon: PawPrint }
+              ].map((item) => (
+                <button
+                  className="flex w-full items-center justify-between rounded-xl border border-[#bdcabc]/60 p-3 text-left transition hover:bg-[#006b32]/10"
+                  key={item.label}
+                >
+                  <span className="flex items-center gap-3 font-medium text-[#0b1c30]">
+                    <item.icon className="text-[#006b32]" size={20} />
+                    {item.label}
+                  </span>
+                  <ChevronRight size={18} />
+                </button>
               ))}
             </div>
+            <button className="mt-5 w-full rounded-lg bg-[#0b1c30] py-3 text-xs font-bold text-white">
+              View All Specialists
+            </button>
           </div>
         </div>
+      </section>
 
-        <aside className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-          <div className="rounded-xl border border-black/8 bg-white p-5 shadow-sm">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-black text-[#c54622]">Today&apos;s focus</p>
-              <Sparkles className="text-[#f3b22f]" size={20} />
+      <section className="border-y border-[#bdcabc]/40 bg-white">
+        <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
+          {trustItems.map((item) => (
+            <div className="flex flex-col items-center gap-2 text-center" key={item.label}>
+              <item.icon className="text-[#006b32]" size={26} />
+              <p className="text-xs font-semibold text-[#0b1c30]">{item.label}</p>
             </div>
-            <h2 className="mt-3 text-2xl font-black text-[#16211b]">Dairy productivity kit</h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#647066]">
-              Mineral mixture, digestion support and milk yield supplements for repeat purchase.
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6" id="catalog">
+        <div className="mb-7 flex items-end justify-between gap-4">
+          <div>
+            <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#006b32]">
+              Browse by animal
             </p>
-            <button className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#24523c] px-4 py-3 text-sm font-black text-white">
-              View bundle
+            <h2 className="text-3xl font-semibold text-[#0b1c30]">Comprehensive Healthcare</h2>
+          </div>
+          <a className="hidden text-sm font-semibold text-[#006b32] sm:block" href="#">
+            View Full Catalog
+          </a>
+        </div>
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
+          {categories.map((category) => (
+            <button className="rounded-2xl border border-[#d3e4fe] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl" key={category.name}>
+              <span className="mx-auto grid size-12 place-items-center rounded-full bg-[#e5eeff] text-[#006b32]">
+                <category.icon size={22} />
+              </span>
+              <span className="mt-4 block font-semibold">{category.name}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-14 sm:px-6">
+        <div className="mb-7 flex items-center justify-between">
+          <h2 className="text-2xl font-semibold text-[#0b1c30]">Bestselling Healthcare Essentials</h2>
+          <div className="hidden gap-2 sm:flex">
+            <button className="grid size-8 place-items-center rounded-full border border-[#bdcabc] bg-white">
+              <ChevronLeft size={17} />
+            </button>
+            <button className="grid size-8 place-items-center rounded-full border border-[#bdcabc] bg-white">
               <ChevronRight size={17} />
             </button>
           </div>
-
-          <div className="rounded-xl border border-black/8 bg-[#fff4da] p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <Truck className="text-[#c54622]" size={25} />
-              <div>
-                <p className="text-sm font-black text-[#16211b]">Bulk order freight</p>
-                <p className="text-sm font-semibold text-[#6b5a35]">Quote before checkout</p>
-              </div>
-            </div>
-            <div className="mt-5 grid gap-3">
-              {["MOQ validation", "Supplier zones", "Freight on actual"].map((item) => (
-                <div className="flex items-center gap-2 text-sm font-black text-[#3b3528]" key={item}>
-                  <ShieldCheck size={16} className="text-[#24523c]" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      <section className="border-y border-black/5 bg-white py-4">
-        <div className="mx-auto grid max-w-[1440px] gap-3 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-          {[
-            { icon: Truck, title: "Pan-India logistics", text: "Supplier zone checks" },
-            { icon: ShieldCheck, title: "Verified sellers", text: "GST, PAN and bank review" },
-            { icon: HeartPulse, title: "Vet consultation", text: "Paid WhatsApp and phone support" },
-            { icon: WalletCards, title: "Secure payments", text: "Ready for Razorpay flow" }
-          ].map((item) => (
-            <div className="flex items-center gap-3 rounded-lg bg-[#f7faf2] px-4 py-3" key={item.title}>
-              <item.icon className="text-[#24523c]" size={23} />
-              <div>
-                <p className="font-black text-[#16211b]">{item.title}</p>
-                <p className="text-sm font-semibold text-[#667268]">{item.text}</p>
-              </div>
-            </div>
-          ))}
         </div>
-      </section>
-
-      <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8" id="marketplace">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-sm font-black uppercase text-[#c54622]">Marketplace</p>
-            <h2 className="mt-2 text-3xl font-black text-[#16211b]">Popular animal health categories</h2>
-          </div>
-          <a className="focus-ring inline-flex w-fit items-center gap-2 rounded-lg border border-black/10 bg-white px-4 py-3 text-sm font-black text-[#24523c]" href="#">
-            Explore all
-            <ChevronRight size={17} />
-          </a>
-        </div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-          {animalCategories.map((category) => (
-            <button
-              className="focus-ring group rounded-xl border border-black/8 bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
-              key={category.name}
-            >
-              <span className="grid size-11 place-items-center rounded-lg bg-[#eaf4e7] text-[#24523c]">
-                <category.icon size={23} />
-              </span>
-              <span className="mt-5 block font-black text-[#16211b]">{category.name}</span>
-              <span className="mt-1 block text-sm font-semibold text-[#6b756d]">{category.count}</span>
-            </button>
-          ))}
-        </div>
-        <div className="mt-5 flex gap-2 overflow-x-auto pb-2">
-          {concernCategories.map((concern) => (
-            <button
-              className="focus-ring inline-flex shrink-0 items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-black text-[#24523c]"
-              key={concern.name}
-            >
-              <concern.icon size={16} />
-              {concern.name}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[1440px] px-4 pb-12 sm:px-6 lg:px-8">
-        <div className="rounded-xl bg-[#16211b] p-4 sm:p-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <p className="text-sm font-black uppercase text-[#f3b22f]">Best sellers</p>
-              <h2 className="mt-1 text-3xl font-black text-white">High demand products this week</h2>
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm font-black text-white">
-              <Clock3 size={17} />
-              Updated live from supplier catalog
-            </div>
-          </div>
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {featuredProducts.map((product) => (
-              <article className="overflow-hidden rounded-xl bg-white shadow-sm" key={product.name}>
-                <div className="relative aspect-[4/3] bg-[#eef3ec]">
-                  <Image
-                    alt={product.name}
-                    className="object-cover"
-                    fill
-                    sizes="(min-width: 1024px) 33vw, 100vw"
-                    src={product.image}
-                  />
-                  <span className="absolute left-3 top-3 rounded-md bg-[#f3b22f] px-3 py-1 text-xs font-black uppercase text-[#1d2117]">
-                    {product.badge}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((product) => (
+            <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[#d3e4fe] transition hover:-translate-y-1 hover:shadow-xl" key={product.name}>
+              <div className="relative aspect-square bg-[#d3e4fe]">
+                <Image alt={product.name} className="object-cover" fill sizes="(min-width: 1024px) 25vw, 50vw" src={product.image} />
+                {product.tag ? (
+                  <span className="absolute left-3 top-3 rounded bg-[#ba1a1a] px-2 py-1 text-[10px] font-bold text-white">
+                    {product.tag}
                   </span>
+                ) : null}
+              </div>
+              <div className="p-4">
+                <p className="text-[10px] font-bold uppercase text-[#6e7a6e]">{product.brand}</p>
+                <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold text-[#0b1c30]">{product.name}</h3>
+                <div className="mt-2 flex items-center gap-2 text-xs text-[#6e7a6e]">
+                  <span className="flex items-center gap-1 text-[#006b32]">
+                    <Star size={13} fill="currentColor" />
+                    {product.rating}
+                  </span>
+                  <span>({product.reviews} Reviews)</span>
                 </div>
-                <div className="p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-black text-[#c54622]">{product.category}</p>
-                    <span className="inline-flex items-center gap-1 rounded-md bg-[#eaf4e7] px-2 py-1 text-sm font-black text-[#24523c]">
-                      <Star size={14} fill="currentColor" />
-                      {product.rating}
-                    </span>
-                  </div>
-                  <h3 className="mt-2 min-h-14 text-xl font-black text-[#16211b]">{product.name}</h3>
-                  <div className="mt-4 flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-bold uppercase text-[#6f7a72]">Starting at</p>
-                      <p className="mt-1 flex items-center text-2xl font-black text-[#24523c]">
-                        <IndianRupee size={19} />
-                        {product.price.replace("₹", "")}
-                      </p>
-                    </div>
-                    {product.mrp ? (
-                      <span className="text-sm font-bold text-[#8a928b] line-through">{product.mrp}</span>
-                    ) : null}
-                  </div>
-                  <div className="mt-4 grid gap-2 text-sm font-bold text-[#5e6a62]">
-                    <span className="flex items-center gap-2">
-                      <BadgeCheck size={16} className="text-[#24523c]" />
-                      {product.supplier}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <Truck size={16} className="text-[#24523c]" />
-                      {product.shipping}
-                    </span>
-                  </div>
-                  <button className="focus-ring mt-5 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#24523c] px-4 py-3 text-sm font-black text-white">
-                    Add to cart
-                    <ShoppingCart size={17} />
+                <div className="mt-4 flex items-center justify-between">
+                  <p className="text-lg font-bold text-[#0b1c30]">₹{product.price}</p>
+                  <button className="grid size-9 place-items-center rounded-lg bg-[#006b32] text-white">
+                    <ShoppingCart size={18} />
                   </button>
                 </div>
-              </article>
-            ))}
-          </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="bg-white py-12" id="supplier-os">
-        <div className="mx-auto grid max-w-[1440px] gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-          <div>
-            <p className="text-sm font-black uppercase text-[#c54622]">Supplier control</p>
-            <h2 className="mt-2 text-4xl font-black leading-tight text-[#16211b]">
-              A marketplace backend that protects buyers before checkout.
-            </h2>
-            <p className="mt-4 max-w-xl text-lg font-semibold leading-8 text-[#68736b]">
-              Products should only go live after shipping, stock freshness, supplier verification and
-              admin approval are complete.
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6" id="supplier">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-[#d3e4fe] lg:grid lg:grid-cols-[1.25fr_0.85fr]">
+          <div className="bg-[#071a2f] p-8 text-white sm:p-12">
+            <h2 className="text-3xl font-extrabold">B2B Bulk Requirements?</h2>
+            <p className="mt-4 max-w-lg text-sm leading-6 text-white/78">
+              Dedicated supply chain solutions for large-scale farms, clinics, and retail distributors.
+              Get wholesale pricing and GST-ready invoicing.
             </p>
-            <div className="mt-7 grid gap-3">
-              {supplierTasks.slice(0, 4).map((task) => (
-                <div className="flex items-center gap-3 rounded-lg border border-black/8 bg-[#f7faf2] p-4 text-sm font-black text-[#25322a]" key={task}>
-                  <PackageCheck className="shrink-0 text-[#24523c]" size={20} />
-                  {task}
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
+              {[
+                { title: "Doorstep", text: "Pan-India Dispatch", icon: Truck },
+                { title: "Credit", text: "Facilitated Billing", icon: ShieldCheck }
+              ].map((item) => (
+                <div className="flex items-center gap-3" key={item.title}>
+                  <span className="grid size-10 place-items-center rounded-lg bg-[#006b32]/30 text-[#6ddd8b]">
+                    <item.icon size={20} />
+                  </span>
+                  <div>
+                    <p className="font-bold">{item.title}</p>
+                    <p className="text-xs text-white/62">{item.text}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-
-          <div className="rounded-xl border border-black/8 bg-[#f8faf7] p-4 shadow-soft">
-            <div className="rounded-lg bg-[#16211b] p-5 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-black text-[#f3b22f]">Admin OS</p>
-                  <h3 className="mt-1 text-2xl font-black">Operations dashboard</h3>
-                </div>
-                <LayoutDashboard size={28} />
+          <form className="bg-[#dce9ff] p-8 sm:p-10">
+            <h3 className="mb-5 text-lg font-semibold">Submit Bulk Inquiry</h3>
+            <label className="mb-1 block text-[10px] font-bold uppercase text-[#3e4a3f]">Product / Category</label>
+            <input className="mb-4 w-full rounded border border-[#bdcabc] bg-white px-3 py-2 text-sm" placeholder="e.g. Broiler Feed 50kg Bags" />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1 block text-[10px] font-bold uppercase text-[#3e4a3f]">Quantity</label>
+                <input className="w-full rounded border border-[#bdcabc] bg-white px-3 py-2 text-sm" placeholder="e.g. 500" />
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                {adminMetrics.map((metric) => (
-                  <div className="rounded-lg bg-white/10 p-4" key={metric.label}>
-                    <p className="text-xs font-bold uppercase text-white/55">{metric.label}</p>
-                    <p className="mt-1 text-2xl font-black text-white">{metric.value}</p>
-                  </div>
+              <div>
+                <label className="mb-1 block text-[10px] font-bold uppercase text-[#3e4a3f]">Unit</label>
+                <select className="w-full rounded border border-[#bdcabc] bg-white px-3 py-2 text-sm">
+                  <option>Kilograms</option>
+                  <option>Bags</option>
+                  <option>Boxes</option>
+                </select>
+              </div>
+            </div>
+            <label className="mb-1 mt-4 block text-[10px] font-bold uppercase text-[#3e4a3f]">Delivery Location</label>
+            <input className="w-full rounded border border-[#bdcabc] bg-white px-3 py-2 text-sm" placeholder="PIN Code or City" />
+            <button className="mt-5 w-full rounded-lg bg-[#006b32] py-3 text-sm font-bold text-white">
+              Get Custom Quote
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section className="bg-[#006b32] py-10 text-white">
+        <div className="mx-auto grid max-w-[1100px] gap-8 px-4 text-center sm:grid-cols-3">
+          {[
+            ["10,000+", "Indian Farmers Empowered"],
+            ["2,000+", "Verified Manufacturers"],
+            ["50,000+", "Healthcare Products"]
+          ].map(([value, label]) => (
+            <div key={label}>
+              <p className="text-4xl font-extrabold">{value}</p>
+              <p className="mt-1 text-sm text-white/82">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 py-12 text-center sm:px-6">
+        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#6e7a6e]">
+          Trusted manufacturing partners
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-x-14 gap-y-5 text-sm font-semibold text-[#3e4a3f]">
+          {brands.map((brand) => (
+            <span key={brand}>{brand}</span>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6">
+        <div className="mb-7 flex items-end justify-between">
+          <div>
+            <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#006b32]">
+              Expertise & insights
+            </p>
+            <h2 className="text-2xl font-semibold">Animal Health Knowledge Center</h2>
+          </div>
+          <a className="hidden rounded-full bg-[#eff4ff] px-4 py-2 text-xs font-bold text-[#006b32] sm:block" href="#">
+            Read All Articles
+          </a>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {articles.map((article) => (
+            <article key={article.title}>
+              <div className="relative aspect-[16/9] overflow-hidden rounded-lg bg-[#e5eeff]">
+                <Image alt={article.title} className="object-cover" fill sizes="(min-width: 768px) 33vw, 100vw" src={article.image} />
+              </div>
+              <p className="mt-4 text-[10px] font-bold uppercase text-[#006b32]">{article.label}</p>
+              <h3 className="mt-1 text-lg font-semibold leading-6 text-[#0b1c30]">{article.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-[#3e4a3f]">
+                Learn actionable animal health and farm operations guidance from verified experts.
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-6" id="app">
+        <div className="overflow-hidden rounded-3xl bg-[#008741] p-8 text-white sm:p-12 lg:grid lg:grid-cols-[1fr_0.8fr] lg:items-center">
+          <div>
+            <h2 className="max-w-lg text-4xl font-extrabold leading-tight">The Marketplace in Your Pocket</h2>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-white/84">
+              Manage your livestock health from anywhere. Order refills, consult vets on video, and track
+              your bulk shipments in real-time.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <button className="rounded-lg bg-[#071a2f] px-5 py-3 text-xs font-bold text-white">Download on Google Play</button>
+              <button className="rounded-lg bg-[#071a2f] px-5 py-3 text-xs font-bold text-white">Download on App Store</button>
+            </div>
+            <div className="mt-8 flex items-center gap-4">
+              <span className="grid size-20 place-items-center rounded bg-white text-[#006b32]">
+                <QrCode size={44} />
+              </span>
+              <p className="text-xs font-semibold">
+                Scan to download for
+                <br />
+                Android & iOS
+              </p>
+            </div>
+          </div>
+          <div className="mt-10 hidden justify-center lg:flex">
+            <div className="w-[260px] rounded-[2.3rem] border-[8px] border-[#071a2f] bg-[#f8f9ff] p-4 shadow-2xl">
+              <div className="mx-auto mb-4 h-2 w-20 rounded-full bg-[#071a2f]" />
+              <div className="h-28 rounded-xl bg-[#cbdbf5]" />
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                {[1, 2, 3, 4].map((item) => (
+                  <div className="h-20 rounded-lg bg-[#dce9ff]" key={item} />
                 ))}
               </div>
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {operations.map((item) => (
-                <div className="rounded-lg bg-white p-4" key={item.title}>
-                  <item.icon className="text-[#24523c]" size={24} />
-                  <h4 className="mt-3 font-black text-[#16211b]">{item.title}</h4>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-[#68736b]">{item.description}</p>
-                </div>
-              ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-[#213145] text-[#eaf1ff]">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr]">
+          <div>
+            <div className="mb-4 flex items-center gap-2">
+              <span className="grid size-8 place-items-center rounded bg-white text-sm font-black text-[#006b32]">
+                A
+              </span>
+              <span className="font-extrabold">AnimKart</span>
             </div>
+            <p className="max-w-sm text-sm leading-6 text-[#eaf1ff]/72">
+              India&apos;s leading specialized marketplace for professional animal healthcare.
+              Providing a trusted ecosystem for farmers, veterinarians, and pharmaceutical suppliers.
+            </p>
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-[1440px] gap-4 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:px-8" id="vet-consult">
-        <div className="rounded-xl bg-[#24523c] p-7 text-white shadow-soft">
-          <BellRing className="text-[#f3b22f]" size={30} />
-          <h2 className="mt-5 text-3xl font-black">Book a veterinary consultation</h2>
-          <p className="mt-3 max-w-xl text-lg font-semibold leading-8 text-white/78">
-            Collect symptoms, images, animal category and payment before assigning a case to a vet.
-          </p>
-          <a className="focus-ring mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-black text-[#24523c]" href="#">
-            Start consultation
-            <ArrowRight size={17} />
-          </a>
-        </div>
-        <div className="rounded-xl border border-black/8 bg-white p-7 shadow-sm">
-          <p className="text-sm font-black uppercase text-[#c54622]">Next build phase</p>
-          <h2 className="mt-2 text-3xl font-black text-[#16211b]">From landing page to real commerce engine</h2>
-          <div className="mt-6 grid gap-3">
-            {["Product detail pages", "Cart and checkout", "Supplier login", "Admin approval workflow"].map((item) => (
-              <div className="flex items-center gap-3 rounded-lg bg-[#f7faf2] p-4 text-sm font-black text-[#25322a]" key={item}>
-                <ShieldCheck className="text-[#24523c]" size={19} />
-                {item}
+          {[
+            ["Company", "About Us", "Careers", "Quality Assurance", "Seller Portal"],
+            ["Support", "Help Center", "Returns & Refunds", "Track Orders", "Contact Support"],
+            ["Legal", "Privacy Policy", "Terms of Service", "Cookie Policy", "GST Compliance"]
+          ].map(([heading, ...links]) => (
+            <div key={heading}>
+              <h3 className="mb-4 font-bold text-white">{heading}</h3>
+              <div className="grid gap-2 text-sm text-[#eaf1ff]/72">
+                {links.map((link) => (
+                  <a href="#" key={link} className="hover:text-white">
+                    {link}
+                  </a>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
-
-      <footer className="border-t border-black/5 bg-white">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 px-4 py-7 text-sm font-bold text-[#667268] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <span>Copyright 2026 Animpet Ecomm Private Limited</span>
-          <span>AnimKart marketplace development preview</span>
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 border-t border-white/10 px-4 py-6 text-xs text-[#eaf1ff]/55 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <span>Copyright 2026 AnimKart. India&apos;s Premier Animal Health Marketplace.</span>
+          <span>Payments · Banking · Cards</span>
         </div>
       </footer>
     </main>
