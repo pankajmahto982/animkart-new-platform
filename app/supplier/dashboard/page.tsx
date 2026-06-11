@@ -10,14 +10,23 @@ import {
   Settings,
   ShoppingCart,
   Store,
-  Truck,
-  Wallet
+  Truck
 } from "lucide-react";
 import { DashboardBarChart } from "@/components/role-dashboard/dashboard-chart";
 import { DashboardSidebar } from "@/components/role-dashboard/dashboard-sidebar";
-import { MetricPanel, RoleActivityFeed } from "@/components/role-dashboard/role-panels";
+import { RoleActivityFeed } from "@/components/role-dashboard/role-panels";
 import { RoleKpiCard } from "@/components/role-dashboard/role-kpi-card";
-import { RoleTable } from "@/components/role-dashboard/role-table";
+import {
+  InventoryAlertsPanel,
+  ProductManagementTable,
+  ProductPerformanceTable,
+  RecentOrdersTable,
+  SettlementSummary,
+  ShippingSetupPanel,
+  StoreHealthScore,
+  SupplierDashboard,
+  SupplierSalesChart
+} from "@/components/dashboard/supplier";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,22 +35,21 @@ import {
   supplierActivityFeed,
   supplierChartData,
   supplierKpis,
-  supplierPanels,
-  supplierProductRows,
-  supplierQuickActions,
-  tableColumns
+  supplierQuickActions
 } from "@/lib/role-dashboard-data";
 
 const sidebarItems = [
   { label: "Dashboard", href: "/supplier/dashboard", icon: LayoutDashboard },
   { label: "My Store", href: "#store", icon: Store },
   { label: "Products", href: "#products", icon: Package },
+  { label: "Add Product", href: "#product-management", icon: Package },
+  { label: "Bulk Upload", href: "#bulk-upload", icon: FileText },
   { label: "Inventory", href: "#inventory", icon: FileText },
   { label: "Orders", href: "#orders", icon: ShoppingCart },
   { label: "Shipping", href: "#shipping", icon: Truck },
   { label: "Payments", href: "#payments", icon: CreditCard },
-  { label: "Settlements", href: "#settlements", icon: Wallet },
-  { label: "Reports", href: "#reports", icon: BarChart3 },
+  { label: "Analytics", href: "#analytics", icon: BarChart3 },
+  { label: "Reviews", href: "#reviews", icon: Store },
   { label: "Support", href: "#support", icon: Headphones },
   { label: "Settings", href: "#settings", icon: Settings }
 ];
@@ -53,6 +61,7 @@ export const metadata = {
 
 export default function SupplierDashboardPage() {
   return (
+    <SupplierDashboard>
     <main className="min-h-screen bg-slate-100 text-slate-950">
       <div className="flex min-h-screen">
         <DashboardSidebar active="Dashboard" eyebrow="Supplier OS" items={sidebarItems} />
@@ -108,14 +117,16 @@ export default function SupplierDashboardPage() {
               ))}
             </section>
 
-            <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_420px]">
+            <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_420px]" id="analytics">
               <Card>
                 <CardHeader>
-                  <CardTitle>Supplier Catalog Performance</CardTitle>
+                  <CardTitle>Sales Graph</CardTitle>
                   <CardDescription>Real product prices for this supplier/brand catalog group.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <DashboardBarChart data={supplierChartData} />
+                  <SupplierSalesChart>
+                    <DashboardBarChart data={supplierChartData} />
+                  </SupplierSalesChart>
                 </CardContent>
               </Card>
               <Card>
@@ -132,11 +143,11 @@ export default function SupplierDashboardPage() {
             <section className="mt-6 grid gap-6 xl:grid-cols-3">
               <Card id="orders">
                 <CardHeader>
-                  <CardTitle>Order Operations</CardTitle>
+                  <CardTitle>Recent Orders</CardTitle>
                   <CardDescription>Confirm orders, prepare shipments and handle returns.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <MetricPanel metrics={supplierPanels.orders} />
+                  <RecentOrdersTable />
                 </CardContent>
               </Card>
               <Card id="inventory">
@@ -145,16 +156,16 @@ export default function SupplierDashboardPage() {
                   <CardDescription>Update stock and resolve missing catalog assets.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <MetricPanel metrics={supplierPanels.inventory} />
+                  <InventoryAlertsPanel />
                 </CardContent>
               </Card>
-              <Card id="settlements">
+              <Card id="payments">
                 <CardHeader>
                   <CardTitle>Payments & Settlements</CardTitle>
                   <CardDescription>Payouts, invoices and deductions once payment tables are connected.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <MetricPanel metrics={supplierPanels.settlements} />
+                  <SettlementSummary />
                 </CardContent>
               </Card>
             </section>
@@ -162,19 +173,32 @@ export default function SupplierDashboardPage() {
             <section className="mt-6 grid gap-6" id="products">
               <Card>
                 <CardHeader>
-                  <CardTitle>My Product Catalog</CardTitle>
+                  <CardTitle>Product Performance</CardTitle>
                   <CardDescription>Real products mapped to the supplier/brand group.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RoleTable columns={tableColumns.supplierProducts} rows={supplierProductRows} />
+                  <ProductPerformanceTable />
+                </CardContent>
+              </Card>
+              <ProductManagementTable />
+              <Card id="shipping">
+                <CardHeader>
+                  <CardTitle>Shipping Setup Status</CardTitle>
+                  <CardDescription>
+                    Product goes live only when shipping is configured or marked Freight on Actual. Priority: product, pincode, city, state, weight, default.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ShippingSetupPanel />
                 </CardContent>
               </Card>
             </section>
 
             <section className="mt-6 grid gap-4 md:grid-cols-4">
               {[
-                ["Shipping", "Setup pending", "shipping"],
-                ["Reports", "Catalog report ready", "reports"],
+                ["Store Health Score", "Calculated from catalog readiness", "store-health"],
+                ["Bulk Upload", "CSV/XLSX workflow ready", "bulk-upload"],
+                ["Reviews", "Reviews table pending", "reviews"],
                 ["Support", "0 open messages", "support"],
                 ["Settings", "KYC and bank setup pending", "settings"]
               ].map(([title, detail, id]) => (
@@ -186,9 +210,21 @@ export default function SupplierDashboardPage() {
                 </Card>
               ))}
             </section>
+            <section className="mt-6" id="store-health">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Store Health Score</CardTitle>
+                  <CardDescription>Inventory, image readiness, stock status and supplier setup health.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StoreHealthScore />
+                </CardContent>
+              </Card>
+            </section>
           </div>
         </section>
       </div>
     </main>
+    </SupplierDashboard>
   );
 }

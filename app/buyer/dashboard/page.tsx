@@ -18,7 +18,16 @@ import { DashboardAreaChart } from "@/components/role-dashboard/dashboard-chart"
 import { DashboardSidebar } from "@/components/role-dashboard/dashboard-sidebar";
 import { MetricPanel, RoleActivityFeed } from "@/components/role-dashboard/role-panels";
 import { RoleKpiCard } from "@/components/role-dashboard/role-kpi-card";
-import { RoleTable } from "@/components/role-dashboard/role-table";
+import {
+  BuyerDashboard,
+  BuyerShippingUxPanel,
+  RecentOrders,
+  RepeatPurchaseSuggestions,
+  SavedSuppliers,
+  SupportTickets,
+  TrackOrderPanel,
+  VetConsultationHistory
+} from "@/components/dashboard/buyer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,21 +37,20 @@ import {
   buyerChartData,
   buyerKpis,
   buyerPanels,
-  buyerProductRows,
   buyerQuickActions,
-  tableColumns
 } from "@/lib/role-dashboard-data";
 
 const sidebarItems = [
   { label: "Dashboard", href: "/buyer/dashboard", icon: LayoutDashboard },
   { label: "My Orders", href: "#orders", icon: ShoppingCart },
-  { label: "Recommended Products", href: "#reorder", icon: Package },
+  { label: "Wishlist", href: "#wishlist", icon: HeartPulse },
+  { label: "Repeat Orders", href: "#reorder", icon: Package },
+  { label: "Saved Suppliers", href: "#saved-suppliers", icon: ShieldCheck },
+  { label: "Bulk Inquiries", href: "#b2b", icon: ShieldCheck },
   { label: "Vet Consultations", href: "#vet", icon: Stethoscope },
-  { label: "B2B Quotes", href: "#b2b", icon: ShieldCheck },
-  { label: "Invoices", href: "#invoices", icon: FileText },
+  { label: "Addresses", href: "#addresses", icon: Truck },
   { label: "Payments", href: "#payments", icon: CreditCard },
-  { label: "Delivery", href: "#delivery", icon: Truck },
-  { label: "Care Reminders", href: "#care", icon: HeartPulse },
+  { label: "Invoices", href: "#invoices", icon: FileText },
   { label: "Support", href: "#support", icon: Headphones },
   { label: "Profile", href: "#profile", icon: UserRound },
   { label: "Settings", href: "#settings", icon: Settings }
@@ -55,6 +63,7 @@ export const metadata = {
 
 export default function BuyerDashboardPage() {
   return (
+    <BuyerDashboard>
     <main className="min-h-screen bg-slate-100 text-slate-950">
       <div className="flex min-h-screen">
         <DashboardSidebar active="Dashboard" eyebrow="Buyer Account" items={sidebarItems} />
@@ -134,20 +143,20 @@ export default function BuyerDashboardPage() {
             <section className="mt-6 grid gap-6 xl:grid-cols-3">
               <Card id="orders">
                 <CardHeader>
-                  <CardTitle>My Orders</CardTitle>
+                  <CardTitle>Track Order Panel</CardTitle>
                   <CardDescription>Open, delivered, invoice and support status.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <MetricPanel metrics={buyerPanels.orders} />
+                  <TrackOrderPanel />
                 </CardContent>
               </Card>
               <Card id="vet">
                 <CardHeader>
-                  <CardTitle>Vet Consultation Hub</CardTitle>
+                  <CardTitle>Vet Consultation History</CardTitle>
                   <CardDescription>Upcoming consults, active cases, prescriptions and reminders.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <MetricPanel metrics={buyerPanels.vet} />
+                  <VetConsultationHistory />
                 </CardContent>
               </Card>
               <Card id="profile">
@@ -164,21 +173,49 @@ export default function BuyerDashboardPage() {
             <section className="mt-6 grid gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Recommended Products</CardTitle>
+                  <CardTitle>Recent Orders</CardTitle>
+                  <CardDescription>Order structure ready for Supabase, with buyer shipping UX states.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RecentOrders />
+                </CardContent>
+              </Card>
+              <Card id="wishlist">
+                <CardHeader>
+                  <CardTitle>Recommended Products & Repeat Purchase Suggestions</CardTitle>
                   <CardDescription>Real AnimKart catalog products for reorder and discovery.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RoleTable columns={tableColumns.buyerProducts} rows={buyerProductRows} />
+                  <RepeatPurchaseSuggestions />
+                </CardContent>
+              </Card>
+              <Card id="saved-suppliers">
+                <CardHeader>
+                  <CardTitle>Saved Suppliers</CardTitle>
+                  <CardDescription>Supplier cards derived from real product catalog brands.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <SavedSuppliers />
+                </CardContent>
+              </Card>
+              <BuyerShippingUxPanel />
+              <Card id="support">
+                <CardHeader>
+                  <CardTitle>Support Tickets</CardTitle>
+                  <CardDescription>Support flows for shipping availability, invoices, freight and supplier contact.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <SupportTickets />
                 </CardContent>
               </Card>
             </section>
 
             <section className="mt-6 grid gap-4 md:grid-cols-4">
               {[
-                ["B2B Quotes", "0 live inquiries", "b2b"],
+                ["Bulk Inquiry Status", "0 live inquiries", "b2b"],
                 ["Invoices", "0 connected invoices", "invoices"],
-                ["Delivery", "Tracking table pending", "delivery"],
-                ["Care / Support / Settings", "Ready", "care"]
+                ["Addresses", "Address table pending", "addresses"],
+                ["Payments / Profile / Settings", "Ready", "payments"]
               ].map(([title, detail, id]) => (
                 <Card id={id} key={id}>
                   <CardContent className="p-5">
@@ -192,5 +229,6 @@ export default function BuyerDashboardPage() {
         </section>
       </div>
     </main>
+    </BuyerDashboard>
   );
 }
