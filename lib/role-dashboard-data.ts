@@ -73,6 +73,21 @@ export type AddProductStep = {
   status: "Ready" | "Required";
 };
 
+export type HealthScore = {
+  label: string;
+  score: number;
+  detail: string;
+  status: "healthy" | "watch" | "critical";
+};
+
+export type AdminAlert = {
+  title: string;
+  detail: string;
+  count: string;
+  severity: "healthy" | "watch" | "critical";
+  action: string;
+};
+
 const validProducts = products.filter((product) => product.price > 0);
 const inStockProducts = validProducts.filter((product) => product.inStock);
 const outOfStockProducts = validProducts.filter((product) => !product.inStock);
@@ -174,6 +189,12 @@ export const visitorChartData: ChartDatum[] = [
   { label: "Suppliers", value: suppliers.size }
 ];
 
+export const orderTrendData: ChartDatum[] = topCategoryEntries(7).map(([category, items]) => ({
+  label: shortLabel(category),
+  value: items.filter((product) => product.inStock).length,
+  secondary: items.length
+}));
+
 export const supplierChartData: ChartDatum[] = primarySupplierProducts.slice(0, 8).map((product) => ({
   label: shortLabel(product.category || product.name),
   value: product.price
@@ -217,6 +238,27 @@ export const productApprovalRows: TableRow[] = (imageMissingProducts.length ? im
     price: formatINR(product.price),
     action: "Approve / fix"
   }));
+
+export const topProductRows: TableRow[] = [...validProducts]
+  .sort((a, b) => b.price - a.price)
+  .slice(0, 8)
+  .map((product) => ({
+    product: product.name,
+    category: product.category,
+    supplier: product.brand || "AnimKart Verified",
+    price: formatINR(product.price),
+    stock: product.inStock ? "Live" : "Out of stock",
+    image: product.image ? "Ready" : "Missing"
+  }));
+
+export const topCategoryRows: TableRow[] = topCategoryEntries(8).map(([category, items]) => ({
+  category,
+  products: items.length,
+  liveProducts: items.filter((product) => product.inStock).length,
+  catalogValue: formatCompactINR(sumPrice(items)),
+  missingImages: items.filter((product) => !product.image).length,
+  action: "Monitor"
+}));
 
 export const supplierProductRows: TableRow[] = primarySupplierProducts.slice(0, 8).map((product) => ({
   product: product.name,
@@ -338,6 +380,92 @@ export const adminActivityFeed: ActivityItem[] = [
   { title: "Product approval queue", detail: `${imageMissingProducts.length} products need image/catalog review`, time: "Live", status: imageMissingProducts.length ? "warning" : "success" },
   { title: "Order events", detail: "Orders table not connected yet", time: "Pending", status: "info" },
   { title: "Vet cases", detail: "Vet consultation table not connected yet", time: "Pending", status: "info" }
+];
+
+export const adminHealthScores: HealthScore[] = [
+  {
+    label: "Marketplace Health Score",
+    score: Math.round((inventoryScore + (imageMissingProducts.length ? 72 : 94) + 82) / 3),
+    detail: "Catalog, inventory, supplier readiness and operating risk",
+    status: imageMissingProducts.length || outOfStockProducts.length ? "watch" : "healthy"
+  },
+  {
+    label: "Inventory Health Score",
+    score: inventoryScore,
+    detail: `${outOfStockProducts.length} out-of-stock products from imported catalog`,
+    status: outOfStockProducts.length ? "critical" : "healthy"
+  },
+  {
+    label: "Shipping Health Score",
+    score: 68,
+    detail: "Supplier shipping setup table pending connection",
+    status: "watch"
+  },
+  {
+    label: "Supplier Health Score",
+    score: Math.min(96, Math.max(62, suppliers.size ? Math.round((inStockProducts.length / suppliers.size) * 2) : 62)),
+    detail: `${suppliers.size.toLocaleString("en-IN")} supplier/brand records in catalog`,
+    status: "healthy"
+  }
+];
+
+export const adminAlerts: AdminAlert[] = [
+  {
+    title: "Suppliers Not Updating Inventory",
+    detail: "Use out-of-stock catalog records as the first reminder queue",
+    count: outOfStockProducts.length.toString(),
+    severity: outOfStockProducts.length ? "critical" : "healthy",
+    action: "Send inventory reminder"
+  },
+  {
+    title: "Suppliers Without Shipping Setup",
+    detail: "Shipping rules table is ready but supplier setup data is pending",
+    count: "0",
+    severity: "watch",
+    action: "Send shipping reminder"
+  },
+  {
+    title: "Orders Stuck",
+    detail: "Supplier confirmation queue will populate from orders table",
+    count: "0",
+    severity: "watch",
+    action: "Open order command"
+  },
+  {
+    title: "Failed Deliveries",
+    detail: "Logistics failure events pending Supabase integration",
+    count: "0",
+    severity: "watch",
+    action: "Review shipping"
+  },
+  {
+    title: "Products Pending Approval",
+    detail: "Products needing image/catalog review",
+    count: imageMissingProducts.length.toString(),
+    severity: imageMissingProducts.length ? "watch" : "healthy",
+    action: "Approve product"
+  },
+  {
+    title: "Vet Cases Pending Assignment",
+    detail: "Vet case queue will populate from consultation bookings",
+    count: "0",
+    severity: "watch",
+    action: "Assign vet"
+  }
+];
+
+export const notificationCenterRows: TableRow[] = [
+  { channel: "WhatsApp Notifications", queue: "Inventory reminders", status: "Ready", action: "Send WhatsApp" },
+  { channel: "Email Notifications", queue: "Supplier approvals and reports", status: "Ready", action: "Send Email" },
+  { channel: "SMS Notifications", queue: "Order and delivery alerts", status: "Ready", action: "Send SMS" },
+  { channel: "Push Notifications", queue: "Buyer offers and vet reminders", status: "Ready", action: "Send Push" }
+];
+
+export const recentTransactionRows: TableRow[] = [
+  { transaction: "Payment webhook", buyer: "Pending", supplier: "Pending", amount: "Rs 0", status: "Supabase pending" },
+  { transaction: "Supplier settlement", buyer: "Platform", supplier: primarySupplierName, amount: "Rs 0", status: "Settlement pending" },
+  { transaction: "Refund review", buyer: "Pending", supplier: "Pending", amount: "Rs 0", status: "Ready" },
+  { transaction: "Vet consultation", buyer: "Pending", supplier: "Vet network", amount: "Rs 0", status: "Case table pending" }
 ];
 
 export const supplierActivityFeed: ActivityItem[] = [
@@ -467,6 +595,35 @@ export const tableColumns = {
     { key: "issue", label: "Issue" },
     { key: "price", label: "Price" },
     { key: "action", label: "Action" }
+  ],
+  topProducts: [
+    { key: "product", label: "Product" },
+    { key: "category", label: "Category" },
+    { key: "supplier", label: "Supplier" },
+    { key: "price", label: "Price" },
+    { key: "stock", label: "Stock" },
+    { key: "image", label: "Image" }
+  ],
+  topCategories: [
+    { key: "category", label: "Category" },
+    { key: "products", label: "Products" },
+    { key: "liveProducts", label: "Live Products" },
+    { key: "catalogValue", label: "Catalog Value" },
+    { key: "missingImages", label: "Missing Images" },
+    { key: "action", label: "Action" }
+  ],
+  notificationCenter: [
+    { key: "channel", label: "Channel" },
+    { key: "queue", label: "Queue" },
+    { key: "status", label: "Status" },
+    { key: "action", label: "Action" }
+  ],
+  recentTransactions: [
+    { key: "transaction", label: "Transaction" },
+    { key: "buyer", label: "Buyer" },
+    { key: "supplier", label: "Supplier" },
+    { key: "amount", label: "Amount" },
+    { key: "status", label: "Status" }
   ],
   supplierProducts: [
     { key: "product", label: "Product" },
