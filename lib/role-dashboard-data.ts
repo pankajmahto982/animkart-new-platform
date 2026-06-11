@@ -475,6 +475,78 @@ export const supplierActivityFeed: ActivityItem[] = [
   { title: "Order confirmations", detail: "Supplier order queue pending Supabase table", time: "Pending", status: "info" }
 ];
 
+export const supplierHealthScores: HealthScore[] = [
+  {
+    label: "Store Health Score",
+    score: Math.round((supplierInventoryScore + (primarySupplierProducts.some((product) => !product.image) ? 72 : 94) + 68) / 3),
+    detail: "Catalog readiness, image quality, inventory and shipping setup",
+    status: primarySupplierProducts.some((product) => !product.image || !product.inStock) ? "watch" : "healthy"
+  },
+  {
+    label: "Inventory Score",
+    score: supplierInventoryScore,
+    detail: `${primarySupplierProducts.filter((product) => !product.inStock).length} out-of-stock supplier products`,
+    status: primarySupplierProducts.some((product) => !product.inStock) ? "critical" : "healthy"
+  },
+  {
+    label: "Shipping Setup",
+    score: 68,
+    detail: "State, city, pincode, slab and freight rules need setup",
+    status: "watch"
+  },
+  {
+    label: "Catalog Quality",
+    score: primarySupplierProducts.some((product) => !product.image) ? 74 : 95,
+    detail: `${primarySupplierProducts.filter((product) => !product.image).length} products missing image assets`,
+    status: primarySupplierProducts.some((product) => !product.image) ? "watch" : "healthy"
+  }
+];
+
+export const supplierAlerts: AdminAlert[] = [
+  {
+    title: "Products missing shipping",
+    detail: "Products cannot go live unless shipping is configured or Freight on Actual is enabled",
+    count: "0",
+    severity: "watch",
+    action: "Configure shipping"
+  },
+  {
+    title: "Inventory not updated",
+    detail: "Confirm availability regularly to keep marketplace trust high",
+    count: "Required",
+    severity: "watch",
+    action: "Update inventory"
+  },
+  {
+    title: "Low stock products",
+    detail: "Stock quantity table is ready for Supabase integration",
+    count: "0",
+    severity: "watch",
+    action: "Review stock"
+  },
+  {
+    title: "Orders pending acceptance",
+    detail: "Supplier order queue will populate when orders table is connected",
+    count: "0",
+    severity: "watch",
+    action: "Accept orders"
+  },
+  {
+    title: "Payment pending",
+    detail: "Settlement and payout tables are Supabase-ready",
+    count: "Rs 0",
+    severity: "watch",
+    action: "View payments"
+  },
+  {
+    title: "Shipping issue orders",
+    detail: "Failed shipping events will appear once logistics is connected",
+    count: "0",
+    severity: "healthy",
+    action: "Review shipping"
+  }
+];
+
 export const buyerActivityFeed: ActivityItem[] = [
   { title: "Recommendations ready", detail: `${buyerProducts.length} products selected from real catalog`, time: "Live", status: "success" },
   { title: "Order history", detail: "Buyer order table not connected yet", time: "Pending", status: "info" },
