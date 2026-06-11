@@ -42,6 +42,12 @@ export type BroadcastAction = {
   count: string;
 };
 
+export type ControlRoomSummary = {
+  label: string;
+  value: string;
+  detail: string;
+};
+
 const validProducts = products.filter((product) => product.price > 0);
 const inStockProducts = validProducts.filter((product) => product.inStock);
 const outOfStockProducts = validProducts.filter((product) => !product.inStock);
@@ -69,6 +75,29 @@ export const controlRoomKpis: ControlRoomKpi[] = [
   { id: "inventory-alerts", label: "Inventory Alerts", value: outOfStockProducts.length.toString(), status: outOfStockProducts.length ? "critical" : "healthy", helper: "Out-of-stock imported products" },
   { id: "vet-cases", label: "Vet Cases", value: "0", status: "watch", helper: "Awaiting vet consultation table" },
   { id: "revenue", label: "Revenue Today", value: "Rs 0", status: "watch", helper: `Catalog base ${formatCompactINR(catalogValue)}` }
+];
+
+export const controlRoomSummary: ControlRoomSummary[] = [
+  {
+    label: "Real Products",
+    value: validProducts.length.toLocaleString("en-IN"),
+    detail: "WooCommerce catalog SKUs"
+  },
+  {
+    label: "Supplier Brands",
+    value: suppliers.size.toLocaleString("en-IN"),
+    detail: "Mapped from product export"
+  },
+  {
+    label: "Catalog Value",
+    value: formatCompactINR(catalogValue),
+    detail: "Sum of real product prices"
+  },
+  {
+    label: "Inventory Score",
+    value: `${inventoryScore}%`,
+    detail: `${inStockProducts.length.toLocaleString("en-IN")} products in stock`
+  }
 ];
 
 export const healthMetrics: HealthMetric[] = [

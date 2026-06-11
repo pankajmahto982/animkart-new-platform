@@ -36,6 +36,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import {
   broadcastActions,
+  controlRoomSummary,
   controlRoomKpis,
   healthMetrics,
   inventoryMetrics,
@@ -50,9 +51,9 @@ import {
 } from "@/lib/control-room-data";
 
 const sidebarItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Control Room", href: "/admin/control-room", icon: MonitorDot },
-  { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { label: "Dashboard", href: "#overview", icon: LayoutDashboard },
+  { label: "Control Room", href: "#control-room", icon: MonitorDot },
+  { label: "Analytics", href: "#health", icon: BarChart3 },
   { label: "Suppliers", href: "#suppliers", icon: Building2 },
   { label: "Buyers", href: "#buyers", icon: Users },
   { label: "Products", href: "#products", icon: Package },
@@ -90,31 +91,20 @@ export default function ControlRoomPage() {
               </Link>
             </div>
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-              {sidebarItems.map((item) =>
-                item.href.startsWith("#") ? (
-                  <a
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/8 hover:text-white"
-                    href={item.href}
-                    key={item.label}
-                  >
-                    <item.icon size={18} />
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
-                    className={
-                      item.label === "Control Room"
-                        ? "flex items-center gap-3 rounded-lg bg-[#0B8F47] px-3 py-2.5 text-sm font-semibold text-white"
-                        : "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/8 hover:text-white"
-                    }
-                    href={item.href}
-                    key={item.label}
-                  >
-                    <item.icon size={18} />
-                    {item.label}
-                  </Link>
-                )
-              )}
+              {sidebarItems.map((item) => (
+                <a
+                  className={
+                    item.label === "Control Room"
+                      ? "flex items-center gap-3 rounded-lg bg-[#0B8F47] px-3 py-2.5 text-sm font-semibold text-white"
+                      : "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/8 hover:text-white"
+                  }
+                  href={item.href}
+                  key={item.label}
+                >
+                  <item.icon size={18} />
+                  {item.label}
+                </a>
+              ))}
             </nav>
             <div className="m-4 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
               <p className="text-xs font-bold uppercase tracking-wide text-emerald-300">Operating mode</p>
@@ -157,25 +147,34 @@ export default function ControlRoomPage() {
             </div>
           </header>
 
-          <div className="px-4 py-6 sm:px-6">
-            <section className="rounded-2xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-300/40">
-              <div className="grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+          <div className="px-4 py-6 sm:px-6" id="overview">
+            <section className="rounded-2xl bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/40" id="control-room">
+              <div className="grid gap-5 2xl:grid-cols-[1fr_560px] 2xl:items-center">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Main operating screen</p>
-                  <h2 className="mt-3 max-w-4xl text-3xl font-bold leading-tight">
-                    Control suppliers, products, inventory, shipping, vet operations and marketplace risk from one room.
+                  <h2 className="mt-3 max-w-5xl text-2xl font-bold leading-tight sm:text-3xl">
+                    AnimKart marketplace control room for catalog, suppliers, inventory, shipping and service queues.
                   </h2>
-                  <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
-                    Current values use real AnimKart catalog data where available. Event queues are structured for Supabase tables and stay honest until connected.
+                  <p className="mt-3 max-w-4xl text-sm leading-6 text-slate-300">
+                    Real product catalog data is connected now. Order, vet, payment and shipping counters are ready for Supabase event tables and do not show dummy numbers.
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {quickActions.map((action) => (
-                    <Button className="border-white/15 bg-white/10 text-white hover:bg-white/15" key={action} variant="outline">
-                      {action}
-                    </Button>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {controlRoomSummary.map((item) => (
+                    <div className="rounded-xl border border-white/10 bg-white/8 p-4" key={item.label}>
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-emerald-300">{item.label}</p>
+                      <p className="mt-2 text-2xl font-bold">{item.value}</p>
+                      <p className="mt-1 text-xs text-slate-400">{item.detail}</p>
+                    </div>
                   ))}
                 </div>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-2 border-t border-white/10 pt-4">
+                {quickActions.map((action) => (
+                  <Button className="h-9 border-white/15 bg-white/10 px-3 text-xs text-white hover:bg-white/15" key={action} variant="outline">
+                    {action}
+                  </Button>
+                ))}
               </div>
             </section>
 
@@ -185,7 +184,7 @@ export default function ControlRoomPage() {
               ))}
             </section>
 
-            <section className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_0.85fr]">
+            <section className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_0.85fr]" id="health">
               <MarketplaceHealthScore metrics={healthMetrics} score={platformScore} />
               <Card>
                 <CardHeader>
@@ -198,7 +197,7 @@ export default function ControlRoomPage() {
               </Card>
             </section>
 
-            <section className="mt-6 grid gap-6 2xl:grid-cols-[0.95fr_1.05fr]">
+            <section className="mt-6 grid gap-6 2xl:grid-cols-[0.95fr_1.05fr]" id="actions">
               <Card>
                 <CardHeader>
                   <CardTitle>Pending Actions Panel</CardTitle>
