@@ -1,3 +1,5 @@
+import { formatINR, products } from "@/lib/products";
+
 export type AnalyticsKpi = {
   id: string;
   label: string;
@@ -38,106 +40,302 @@ export type LiveActivity = {
   severity: "success" | "info" | "warning" | "critical";
 };
 
+type ProductLike = (typeof products)[number];
+
+const validProducts = products.filter((product) => product.price > 0);
+const activeProducts = validProducts.filter((product) => product.inStock);
+const imageBackedProducts = validProducts.filter((product) => Boolean(product.image));
+const discountProducts = validProducts.filter(
+  (product) => product.regularPrice && product.regularPrice > product.price
+);
+
+const categoryMap = groupBy(validProducts, (product) => cleanLabel(product.category || "Uncategorized"));
+const brandMap = groupBy(validProducts, (product) => cleanLabel(product.brand || "AnimKart Verified"));
+
+const catalogValue = validProducts.reduce((sum, product) => sum + product.price, 0);
+const activeCatalogValue = activeProducts.reduce((sum, product) => sum + product.price, 0);
+const averagePrice = validProducts.length ? Math.round(catalogValue / validProducts.length) : 0;
+const inventoryScore = validProducts.length ? Math.round((activeProducts.length / validProducts.length) * 100) : 0;
+const imageCoverage = validProducts.length ? Math.round((imageBackedProducts.length / validProducts.length) * 100) : 0;
+const discountCoverage = validProducts.length ? Math.round((discountProducts.length / validProducts.length) * 100) : 0;
+
 export const analyticsKpis: AnalyticsKpi[] = [
-  { id: "revenue", label: "Total Revenue", value: "Rs 8.42 Cr", change: "+18.4%", trend: "up", helper: "Net captured revenue" },
-  { id: "gmv", label: "GMV", value: "Rs 14.8 Cr", change: "+22.1%", trend: "up", helper: "Marketplace order value" },
-  { id: "orders", label: "Total Orders", value: "48,920", change: "+12.7%", trend: "up", helper: "Across B2C and B2B" },
-  { id: "buyers", label: "Active Buyers", value: "31,408", change: "+9.8%", trend: "up", helper: "30 day active buyers" },
-  { id: "suppliers", label: "Active Suppliers", value: "2,184", change: "+6.2%", trend: "up", helper: "Verified sellers" },
-  { id: "vet", label: "Vet Consultations", value: "6,742", change: "+31.5%", trend: "up", helper: "Booked and completed" },
-  { id: "conversion", label: "Conversion Rate", value: "5.84%", change: "-0.3%", trend: "down", helper: "Session to order" },
-  { id: "commission", label: "Platform Commission", value: "Rs 1.26 Cr", change: "+16.2%", trend: "up", helper: "Marketplace take rate" }
+  {
+    id: "catalog-value",
+    label: "Catalog Value",
+    value: formatCompactINR(catalogValue),
+    change: "real",
+    trend: "up",
+    helper: "Sum of imported WooCommerce product prices"
+  },
+  {
+    id: "active-value",
+    label: "Active GMV Base",
+    value: formatCompactINR(activeCatalogValue),
+    change: `${inventoryScore}%`,
+    trend: "up",
+    helper: "In-stock catalog value available to sell"
+  },
+  {
+    id: "products",
+    label: "Total Products",
+    value: validProducts.length.toLocaleString("en-IN"),
+    change: "live",
+    trend: "up",
+    helper: "Real imported AnimKart SKUs"
+  },
+  {
+    id: "active-products",
+    label: "Active Inventory",
+    value: activeProducts.length.toLocaleString("en-IN"),
+    change: `${inventoryScore}%`,
+    trend: "up",
+    helper: "Products currently marked in stock"
+  },
+  {
+    id: "suppliers",
+    label: "Catalog Suppliers",
+    value: brandMap.size.toLocaleString("en-IN"),
+    change: "brands",
+    trend: "up",
+    helper: "Supplier/brand names found in product export"
+  },
+  {
+    id: "categories",
+    label: "Categories",
+    value: categoryMap.size.toLocaleString("en-IN"),
+    change: "mapped",
+    trend: "up",
+    helper: "Product categories in current catalog"
+  },
+  {
+    id: "image-coverage",
+    label: "Image Coverage",
+    value: `${imageCoverage}%`,
+    change: imageCoverage >= 80 ? "healthy" : "fix",
+    trend: imageCoverage >= 80 ? "up" : "down",
+    helper: "Products with usable product image URL"
+  },
+  {
+    id: "avg-price",
+    label: "Average Price",
+    value: formatINR(averagePrice),
+    change: `${discountCoverage}% deals`,
+    trend: "up",
+    helper: "Average selling price from catalog"
+  }
 ];
 
-export const revenueTrendData: ChartPoint[] = [
-  { period: "Jan", revenue: 96, gmv: 148 },
-  { period: "Feb", revenue: 118, gmv: 176 },
-  { period: "Mar", revenue: 132, gmv: 211 },
-  { period: "Apr", revenue: 126, gmv: 206 },
-  { period: "May", revenue: 164, gmv: 258 },
-  { period: "Jun", revenue: 188, gmv: 294 },
-  { period: "Jul", revenue: 214, gmv: 338 }
-];
+export const revenueTrendData: ChartPoint[] = topCategoryEntries(7).map(([category, categoryProducts]) => ({
+  period: shortLabel(category),
+  revenue: toLakhs(sumPrice(categoryProducts)),
+  gmv: toLakhs(sumPrice(categoryProducts.filter((product) => product.inStock)))
+}));
 
-export const ordersTrendData: ChartPoint[] = [
-  { period: "Mon", orders: 612 },
-  { period: "Tue", orders: 684 },
-  { period: "Wed", orders: 741 },
-  { period: "Thu", orders: 818 },
-  { period: "Fri", orders: 902 },
-  { period: "Sat", orders: 974 },
-  { period: "Sun", orders: 853 }
-];
+export const ordersTrendData: ChartPoint[] = priceBands().map((band) => ({
+  period: band.label,
+  orders: band.count
+}));
 
 export const trafficSourceData: TrafficSource[] = [
-  { source: "Organic", visitors: 42, fill: "#0B8F47" },
-  { source: "WhatsApp", visitors: 24, fill: "#31C48D" },
-  { source: "Paid Search", visitors: 18, fill: "#0F766E" },
-  { source: "Direct", visitors: 11, fill: "#84CC16" },
-  { source: "Referral", visitors: 5, fill: "#F59E0B" }
+  { source: "Products with images", visitors: imageBackedProducts.length, fill: "#0B8F47" },
+  { source: "In stock", visitors: activeProducts.length, fill: "#31C48D" },
+  { source: "Discounted", visitors: discountProducts.length, fill: "#0F766E" },
+  {
+    source: "Needs image",
+    visitors: Math.max(validProducts.length - imageBackedProducts.length, 0),
+    fill: "#F59E0B"
+  }
 ];
 
-export const supplierGrowthData: ChartPoint[] = [
-  { period: "Jan", suppliers: 1280 },
-  { period: "Feb", suppliers: 1398 },
-  { period: "Mar", suppliers: 1510 },
-  { period: "Apr", suppliers: 1664 },
-  { period: "May", suppliers: 1812 },
-  { period: "Jun", suppliers: 2028 },
-  { period: "Jul", suppliers: 2184 }
-];
+export const supplierGrowthData: ChartPoint[] = topBrandEntries(7)
+  .reverse()
+  .map(([brand, brandProducts]) => ({
+    period: shortLabel(brand),
+    suppliers: brandProducts.length
+  }));
 
-export const categoryPerformanceData: CategoryPerformance[] = [
-  { category: "Animal Health", revenue: 186, orders: 9210 },
-  { category: "Feed", revenue: 164, orders: 8112 },
-  { category: "Poultry", revenue: 132, orders: 6640 },
-  { category: "Pet Care", revenue: 118, orders: 5924 },
-  { category: "Dairy", revenue: 104, orders: 4818 },
-  { category: "Equipment", revenue: 72, orders: 2150 }
-];
+export const categoryPerformanceData: CategoryPerformance[] = topCategoryEntries(8).map(([category, categoryProducts]) => ({
+  category: shortLabel(category, 18),
+  revenue: toLakhs(sumPrice(categoryProducts)),
+  orders: categoryProducts.length
+}));
 
-export const shippingFailureData: ChartPoint[] = [
-  { period: "W1", failures: 42 },
-  { period: "W2", failures: 38 },
-  { period: "W3", failures: 51 },
-  { period: "W4", failures: 34 },
-  { period: "W5", failures: 29 },
-  { period: "W6", failures: 24 }
-];
+export const shippingFailureData: ChartPoint[] = topBrandEntries(6).map(([brand, brandProducts]) => ({
+  period: shortLabel(brand),
+  failures: brandProducts.filter((product) => !product.inStock || !product.image).length
+}));
 
-export const topProductsTable: AnalyticsRow[] = [
-  { product: "Bravecto Chewable", category: "Pet Care", supplier: "AnimKart Verified", views: "54,210", orders: 1420, revenue: "Rs 27.6 L", conversion: "7.8%" },
-  { product: "High Protein Dairy Feed", category: "Feed", supplier: "Godrej Agrovet", views: "41,908", orders: 1184, revenue: "Rs 19.4 L", conversion: "6.9%" },
-  { product: "Calcium Feed Supplement", category: "Dairy", supplier: "Intas", views: "38,440", orders: 1038, revenue: "Rs 13.8 L", conversion: "6.1%" },
-  { product: "Poultry Immunity Booster", category: "Poultry", supplier: "Virbac", views: "30,124", orders: 894, revenue: "Rs 11.7 L", conversion: "5.8%" }
-];
+export const topProductsTable: AnalyticsRow[] = [...validProducts]
+  .sort((a, b) => b.price - a.price)
+  .slice(0, 8)
+  .map((product) => ({
+    product: product.name,
+    category: cleanLabel(product.category),
+    supplier: cleanLabel(product.brand || "AnimKart Verified"),
+    views: "Event data pending",
+    orders: 0,
+    revenue: formatINR(product.price),
+    conversion: "0%"
+  }));
 
-export const topSuppliersTable: AnalyticsRow[] = [
-  { supplier: "AnimKart Verified", location: "Bengaluru", products: 842, orders: 12840, revenue: "Rs 2.8 Cr", rating: "4.9", inventory: "96%" },
-  { supplier: "Godrej Agrovet", location: "Mumbai", products: 216, orders: 6412, revenue: "Rs 1.7 Cr", rating: "4.8", inventory: "91%" },
-  { supplier: "Virbac India", location: "Pune", products: 184, orders: 4890, revenue: "Rs 1.2 Cr", rating: "4.9", inventory: "94%" },
-  { supplier: "Intas Animal Health", location: "Ahmedabad", products: 156, orders: 4218, revenue: "Rs 98 L", rating: "4.7", inventory: "88%" }
-];
+export const topSuppliersTable: AnalyticsRow[] = topBrandEntries(8).map(([brand, brandProducts]) => {
+  const inStock = brandProducts.filter((product) => product.inStock).length;
+  const inventory = brandProducts.length ? Math.round((inStock / brandProducts.length) * 100) : 0;
 
-export const shippingIssuesTable: AnalyticsRow[] = [
-  { supplier: "Godrej Agrovet", orderId: "AK-78241", issueType: "Delayed pickup", location: "Hassan", status: "Escalated", action: "Assign ops" },
-  { supplier: "AnimKart Verified", orderId: "AK-78218", issueType: "Address mismatch", location: "Patna", status: "Open", action: "Call buyer" },
-  { supplier: "Virbac India", orderId: "AK-78196", issueType: "Cold chain hold", location: "Nagpur", status: "Monitoring", action: "Track SLA" },
-  { supplier: "Intas Animal Health", orderId: "AK-78177", issueType: "RTO risk", location: "Jaipur", status: "Open", action: "Verify PIN" }
-];
+  return {
+    supplier: brand,
+    location: "Catalog import",
+    products: brandProducts.length,
+    orders: 0,
+    revenue: formatCompactINR(sumPrice(brandProducts)),
+    rating: "Pending",
+    inventory: `${inventory}%`
+  };
+});
 
-export const inventoryAlertsTable: AnalyticsRow[] = [
-  { product: "Poultry Immunity Booster", supplier: "Virbac India", stockStatus: "Low stock", lastUpdated: "8 min ago", action: "Reorder" },
-  { product: "Dairy Gold Feed 50kg", supplier: "Godrej Agrovet", stockStatus: "Fast moving", lastUpdated: "14 min ago", action: "Increase buffer" },
-  { product: "Calcium Supplement", supplier: "Intas Animal Health", stockStatus: "Out of stock", lastUpdated: "31 min ago", action: "Hide listing" },
-  { product: "Pet Deworming Tablet", supplier: "AnimKart Verified", stockStatus: "Low stock", lastUpdated: "42 min ago", action: "Notify supplier" }
-];
+export const shippingIssuesTable: AnalyticsRow[] = validProducts
+  .filter((product) => !product.inStock || !product.image)
+  .slice(0, 8)
+  .map((product, index) => ({
+    supplier: cleanLabel(product.brand || "AnimKart Verified"),
+    orderId: `CAT-${String(index + 1).padStart(4, "0")}`,
+    issueType: !product.inStock ? "Out of stock" : "Image missing",
+    location: "Catalog operations",
+    status: "Needs review",
+    action: !product.inStock ? "Check stock" : "Fix image"
+  }));
+
+export const inventoryAlertsTable: AnalyticsRow[] = validProducts
+  .filter((product) => !product.inStock || product.stock.toLowerCase().includes("out"))
+  .slice(0, 8)
+  .map((product) => ({
+    product: product.name,
+    supplier: cleanLabel(product.brand || "AnimKart Verified"),
+    stockStatus: product.inStock ? "Review stock" : "Out of stock",
+    lastUpdated: "From CSV import",
+    action: "Verify supplier"
+  }));
 
 export const liveActivities: LiveActivity[] = [
-  { id: "act-1", event: "New supplier registered", actor: "Kisan Vet Pharma", timestamp: "Now", severity: "success" },
-  { id: "act-2", event: "Product submitted for approval", actor: "Dairy Boost 5kg", timestamp: "2 min ago", severity: "info" },
-  { id: "act-3", event: "Order placed", actor: "AK-78249 - Rs 18,420", timestamp: "4 min ago", severity: "success" },
-  { id: "act-4", event: "Vet consultation booked", actor: "Poultry flock advisory", timestamp: "7 min ago", severity: "info" },
-  { id: "act-5", event: "Inventory alert triggered", actor: "Calcium Supplement", timestamp: "12 min ago", severity: "warning" },
-  { id: "act-6", event: "Shipping issue reported", actor: "AK-78241 - Hassan", timestamp: "18 min ago", severity: "critical" }
+  {
+    id: "act-1",
+    event: "Product catalog imported",
+    actor: `${validProducts.length.toLocaleString("en-IN")} real WooCommerce products loaded`,
+    timestamp: "Latest import",
+    severity: "success"
+  },
+  {
+    id: "act-2",
+    event: "Catalog value calculated",
+    actor: formatCompactINR(catalogValue),
+    timestamp: "Live",
+    severity: "success"
+  },
+  {
+    id: "act-3",
+    event: "Supplier brands mapped",
+    actor: `${brandMap.size.toLocaleString("en-IN")} brand/supplier records`,
+    timestamp: "Live",
+    severity: "info"
+  },
+  {
+    id: "act-4",
+    event: "Inventory alert triggered",
+    actor: `${Math.max(validProducts.length - activeProducts.length, 0)} products need stock review`,
+    timestamp: "Live",
+    severity: "warning"
+  },
+  {
+    id: "act-5",
+    event: "Image quality check",
+    actor: `${imageCoverage}% catalog image coverage`,
+    timestamp: "Live",
+    severity: imageCoverage >= 80 ? "success" : "warning"
+  },
+  {
+    id: "act-6",
+    event: "Order/vet/shipping events",
+    actor: "Waiting for Supabase event tables",
+    timestamp: "Pending",
+    severity: "info"
+  }
 ];
+
+export const operationalInsights = [
+  ["Buyer Analytics", "0 live buyers", "Connect Supabase auth profiles and buyer events to populate this panel."],
+  ["Supplier Analytics", `${brandMap.size} catalog suppliers`, "Derived from real supplier/brand values in the imported product catalog."],
+  ["Order Analytics", "0 live orders", "No real orders table is connected yet; dashboard is not showing fake orders."],
+  ["Shipping Analytics", `${shippingIssuesTable.length} catalog issues`, "Using stock and image exceptions until shipment records are connected."],
+  ["Inventory Analytics", `${inventoryAlertsTable.length} alerts`, "Real catalog stock status review queue from imported products."],
+  ["Vet Consultation Analytics", "0 live bookings", "Ready for Supabase vet consultation table once backend events start."],
+  ["B2B Lead Analytics", "0 live leads", "Ready for Supabase B2B inquiry table; no dummy lead count shown."],
+  ["Marketplace Health", `${inventoryScore}% inventory score`, "Calculated from in-stock product coverage in the real catalog."]
+];
+
+function groupBy<T>(items: T[], getKey: (item: T) => string) {
+  const groups = new Map<string, T[]>();
+
+  for (const item of items) {
+    const key = getKey(item);
+    groups.set(key, [...(groups.get(key) ?? []), item]);
+  }
+
+  return groups;
+}
+
+function topCategoryEntries(limit: number) {
+  return [...categoryMap.entries()]
+    .sort((a, b) => sumPrice(b[1]) - sumPrice(a[1]))
+    .slice(0, limit);
+}
+
+function topBrandEntries(limit: number) {
+  return [...brandMap.entries()]
+    .sort((a, b) => b[1].length - a[1].length)
+    .slice(0, limit);
+}
+
+function priceBands() {
+  const bands = [
+    { label: "< Rs500", min: 0, max: 500 },
+    { label: "Rs500-1k", min: 500, max: 1000 },
+    { label: "Rs1k-2k", min: 1000, max: 2000 },
+    { label: "Rs2k-5k", min: 2000, max: 5000 },
+    { label: "Rs5k+", min: 5000, max: Number.POSITIVE_INFINITY }
+  ];
+
+  return bands.map((band) => ({
+    label: band.label,
+    count: validProducts.filter((product) => product.price >= band.min && product.price < band.max).length
+  }));
+}
+
+function sumPrice(items: ProductLike[]) {
+  return items.reduce((sum, product) => sum + product.price, 0);
+}
+
+function toLakhs(value: number) {
+  return Math.round(value / 100000);
+}
+
+function formatCompactINR(value: number) {
+  if (value >= 10000000) {
+    return `Rs ${(value / 10000000).toFixed(2)} Cr`;
+  }
+
+  if (value >= 100000) {
+    return `Rs ${(value / 100000).toFixed(1)} L`;
+  }
+
+  return formatINR(value);
+}
+
+function cleanLabel(value: string) {
+  return value?.trim() || "AnimKart Verified";
+}
+
+function shortLabel(value: string, maxLength = 13) {
+  const label = cleanLabel(value);
+  return label.length > maxLength ? `${label.slice(0, maxLength - 1)}.` : label;
+}

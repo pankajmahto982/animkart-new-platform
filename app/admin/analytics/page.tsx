@@ -39,6 +39,7 @@ import {
   inventoryAlertsTable,
   liveActivities,
   ordersTrendData,
+  operationalInsights,
   revenueTrendData,
   shippingFailureData,
   shippingIssuesTable,
@@ -49,20 +50,20 @@ import {
 } from "@/lib/analytics-data";
 
 const sidebarItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { label: "Suppliers", href: "/supplier", icon: Building2 },
-  { label: "Buyers", href: "/account", icon: Users },
-  { label: "Products", href: "/products", icon: Package },
-  { label: "Inventory", href: "/admin/analytics#inventory", icon: ClipboardList },
-  { label: "Orders", href: "/orders", icon: ShoppingCart },
-  { label: "Shipping", href: "/admin/analytics#shipping", icon: Truck },
-  { label: "Vet Consultations", href: "/vet", icon: Stethoscope },
-  { label: "B2B Leads", href: "/bulk-inquiry", icon: ShieldCheck },
-  { label: "Payments", href: "/admin/analytics#payments", icon: CreditCard },
-  { label: "Settlements", href: "/admin/analytics#settlements", icon: Wallet },
-  { label: "Reports", href: "/admin/analytics#reports", icon: FileText },
-  { label: "Settings", href: "/admin/analytics#settings", icon: Settings }
+  { label: "Dashboard", href: "#dashboard", icon: LayoutDashboard },
+  { label: "Analytics", href: "#analytics", icon: BarChart3 },
+  { label: "Suppliers", href: "#suppliers", icon: Building2 },
+  { label: "Buyers", href: "#buyers", icon: Users },
+  { label: "Products", href: "#products", icon: Package },
+  { label: "Inventory", href: "#inventory", icon: ClipboardList },
+  { label: "Orders", href: "#orders", icon: ShoppingCart },
+  { label: "Shipping", href: "#shipping", icon: Truck },
+  { label: "Vet Consultations", href: "#vet", icon: Stethoscope },
+  { label: "B2B Leads", href: "#b2b", icon: ShieldCheck },
+  { label: "Payments", href: "#payments", icon: CreditCard },
+  { label: "Settlements", href: "#settlements", icon: Wallet },
+  { label: "Reports", href: "#reports", icon: FileText },
+  { label: "Settings", href: "#settings", icon: Settings }
 ];
 
 const topProductColumns = [
@@ -102,17 +103,6 @@ const inventoryColumns = [
   { key: "action", label: "Action" }
 ];
 
-const operationalSections = [
-  ["Buyer Analytics", "31,408 active buyers", "Repeat purchase up 11.2% across feed and pet care."],
-  ["Supplier Analytics", "2,184 live suppliers", "Approval queue stable with strong inventory response."],
-  ["Order Analytics", "48,920 orders", "AOV improved after bulk quote and GST billing prompts."],
-  ["Shipping Analytics", "24 current failures", "Hassan and Patna need ops follow-up today."],
-  ["Inventory Analytics", "4 critical alerts", "Fast-moving dairy and poultry SKUs need buffer stock."],
-  ["Vet Consultation Analytics", "6,742 bookings", "Poultry and dairy advisory are the strongest cohorts."],
-  ["B2B Lead Analytics", "312 open leads", "High-value leads are concentrated in feed and equipment."],
-  ["Marketplace Health", "96% trust score", "Core marketplace metrics are tracking above target."]
-];
-
 export const metadata = {
   title: "Analytics Command Center | AnimKart OS",
   description: "Premium AnimKart marketplace analytics command center for founders and admins."
@@ -135,7 +125,7 @@ export default function AnalyticsCommandCenterPage() {
             </div>
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
               {sidebarItems.map((item) => (
-                <Link
+                <a
                   className={
                     item.label === "Analytics"
                       ? "flex items-center gap-3 rounded-lg bg-[#0B8F47] px-3 py-2.5 text-sm font-semibold text-white"
@@ -146,7 +136,7 @@ export default function AnalyticsCommandCenterPage() {
                 >
                   <item.icon size={18} />
                   {item.label}
-                </Link>
+                </a>
               ))}
             </nav>
             <div className="m-4 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
@@ -159,17 +149,17 @@ export default function AnalyticsCommandCenterPage() {
         </aside>
 
         <section className="min-w-0 flex-1">
-          <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-            <div className="flex flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+          <header className="border-b border-slate-200 bg-white">
+            <div className="grid gap-4 px-4 py-4 sm:px-6 2xl:grid-cols-[1fr_auto] 2xl:items-center">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge className="bg-emerald-50 text-[#0B8F47]">Founder View</Badge>
-                  <Badge className="bg-slate-100 text-slate-700">Live Marketplace</Badge>
-                  <Badge className="bg-amber-50 text-amber-700">Realtime-ready</Badge>
+                  <Badge className="bg-slate-100 text-slate-700">Real Product Catalog</Badge>
+                  <Badge className="bg-amber-50 text-amber-700">Orders/Vet events pending</Badge>
                 </div>
-                <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Analytics Command Center</h1>
+                <h1 className="mt-2 text-2xl font-bold tracking-tight">Analytics Command Center</h1>
               </div>
-              <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+              <div className="flex flex-wrap gap-3 2xl:justify-end">
                 <div className="relative min-w-0 xl:w-80">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                   <Input className="pl-10" placeholder="Search suppliers, orders, SKUs..." />
@@ -185,24 +175,24 @@ export default function AnalyticsCommandCenterPage() {
           </header>
 
           <div className="px-4 py-6 sm:px-6">
-            <section className="rounded-2xl bg-slate-950 p-6 text-white shadow-2xl shadow-slate-300/50">
-              <div className="grid gap-6 lg:grid-cols-[1fr_380px] lg:items-end">
+            <section className="rounded-2xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-300/40" id="dashboard">
+              <div className="grid gap-6 lg:grid-cols-[1fr_420px] lg:items-center">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Executive Overview</p>
-                  <h2 className="mt-4 max-w-4xl text-4xl font-bold leading-tight">
-                    One operating layer for revenue, demand, supply, logistics, inventory and veterinary trust.
+                  <h2 className="mt-3 max-w-4xl text-2xl font-bold leading-tight sm:text-3xl">
+                    Real catalog command center for product value, supplier depth, inventory risk and marketplace readiness.
                   </h2>
-                  <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300">
-                    Built as AnimKart&apos;s mission control center for founders and admins to monitor marketplace momentum,
-                    exceptions and growth loops in real time.
+                  <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                    This view uses the imported AnimKart WooCommerce product catalog. Buyer, order, vet,
+                    payment and shipping event counts stay at zero until Supabase event tables are connected.
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    ["North Star", "GMV velocity"],
-                    ["Risk", "Shipping SLA"],
-                    ["Growth Loop", "Vet to cart"],
-                    ["Ops Mode", "Live command"]
+                    ["North Star", "Catalog value"],
+                    ["Risk", "Stock gaps"],
+                    ["Growth Loop", "Supplier depth"],
+                    ["Ops Mode", "Data clean-up"]
                   ].map(([label, value]) => (
                     <div className="rounded-xl border border-white/10 bg-white/8 p-4" key={label}>
                       <p className="text-xs uppercase tracking-wide text-slate-400">{label}</p>
@@ -219,14 +209,14 @@ export default function AnalyticsCommandCenterPage() {
               ))}
             </section>
 
-            <section className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_0.85fr]">
+            <section className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_0.85fr]" id="analytics">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <LineChart className="text-[#0B8F47]" size={20} />
                     Revenue Trend Line Chart
                   </CardTitle>
-                  <CardDescription>Revenue and GMV in lakhs across the current operating window.</CardDescription>
+                  <CardDescription>Real catalog value and in-stock catalog value by top categories.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <RevenueTrendChart data={revenueTrendData} />
@@ -235,7 +225,7 @@ export default function AnalyticsCommandCenterPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Traffic Source Pie Chart</CardTitle>
-                  <CardDescription>Demand engine split across organic, paid, WhatsApp and referral traffic.</CardDescription>
+                  <CardDescription>Real catalog readiness split by images, stock and discount coverage.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <TrafficSourceChart data={trafficSourceData} />
@@ -247,7 +237,7 @@ export default function AnalyticsCommandCenterPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Orders Trend Bar Chart</CardTitle>
-                  <CardDescription>Daily order load for marketplace operations.</CardDescription>
+                  <CardDescription>Real product count by price band until order events are connected.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <OrdersTrendChart data={ordersTrendData} />
@@ -256,7 +246,7 @@ export default function AnalyticsCommandCenterPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Supplier Growth Area Chart</CardTitle>
-                  <CardDescription>Verified supplier network expansion.</CardDescription>
+                  <CardDescription>Real supplier/brand SKU depth from the product catalog.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <SupplierGrowthChart data={supplierGrowthData} />
@@ -265,7 +255,7 @@ export default function AnalyticsCommandCenterPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Shipping Failure Trend Chart</CardTitle>
-                  <CardDescription>Failed or delayed shipment incidents by week.</CardDescription>
+                  <CardDescription>Catalog operations issues by supplier: stock and image gaps.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ShippingFailureChart data={shippingFailureData} />
@@ -295,8 +285,8 @@ export default function AnalyticsCommandCenterPage() {
             </section>
 
             <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {operationalSections.map(([title, metric, detail]) => (
-                <Card id={title.toLowerCase().split(" ")[0]} key={title}>
+              {operationalInsights.map(([title, metric, detail]) => (
+                <Card id={sectionId(title)} key={title}>
                   <CardContent className="p-5">
                     <p className="text-xs font-bold uppercase tracking-wide text-[#0B8F47]">{title}</p>
                     <p className="mt-3 text-xl font-bold text-slate-950">{metric}</p>
@@ -309,8 +299,8 @@ export default function AnalyticsCommandCenterPage() {
             <section className="mt-6 grid gap-6" id="reports">
               <Card>
                 <CardHeader>
-                  <CardTitle>Top Products Table</CardTitle>
-                  <CardDescription>Product, Category, Supplier, Views, Orders, Revenue and Conversion Rate.</CardDescription>
+                  <CardTitle id="products">Top Products Table</CardTitle>
+                  <CardDescription>Real products sorted by catalog price. Views/orders wait for Supabase events.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <AnalyticsTable columns={topProductColumns} rows={topProductsTable} />
@@ -319,8 +309,8 @@ export default function AnalyticsCommandCenterPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Top Suppliers Table</CardTitle>
-                  <CardDescription>Supplier performance, inventory quality and revenue concentration.</CardDescription>
+                  <CardTitle id="suppliers">Top Suppliers Table</CardTitle>
+                  <CardDescription>Real supplier/brand grouping from imported products.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <AnalyticsTable columns={topSupplierColumns} rows={topSuppliersTable} />
@@ -348,9 +338,43 @@ export default function AnalyticsCommandCenterPage() {
                 </Card>
               </div>
             </section>
+
+            <section className="mt-6 grid gap-4 md:grid-cols-3" id="payments">
+              {[
+                ["Payments", "0 captured payments", "Payment records will populate from Supabase/Razorpay webhooks."],
+                ["Settlements", "0 settlements due", "Supplier payout data is ready for settlement table mapping."],
+                ["Settings", "Data mode: real catalog", "Current dashboard avoids fake activity metrics until event tables exist."]
+              ].map(([title, metric, detail]) => (
+                <Card id={sectionId(title)} key={title}>
+                  <CardContent className="p-5">
+                    <p className="text-xs font-bold uppercase tracking-wide text-[#0B8F47]">{title}</p>
+                    <p className="mt-3 text-xl font-bold text-slate-950">{metric}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">{detail}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </section>
           </div>
         </section>
       </div>
     </main>
   );
+}
+
+function sectionId(title: string) {
+  const map: Record<string, string> = {
+    "Buyer Analytics": "buyers",
+    "Supplier Analytics": "suppliers",
+    "Order Analytics": "orders",
+    "Shipping Analytics": "shipping-overview",
+    "Inventory Analytics": "inventory-overview",
+    "Vet Consultation Analytics": "vet",
+    "B2B Lead Analytics": "b2b",
+    "Marketplace Health": "marketplace-health",
+    Payments: "payments",
+    Settlements: "settlements",
+    Settings: "settings"
+  };
+
+  return map[title] ?? title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }

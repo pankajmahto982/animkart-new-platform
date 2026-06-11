@@ -20,7 +20,7 @@ export function OrdersTrendChart({ data }: { data: ChartPoint[] }) {
           <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
           <XAxis dataKey="period" tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
           <YAxis tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
-          <Tooltip />
+          <Tooltip formatter={(value) => [Number(value).toLocaleString("en-IN"), "Products"]} />
           <Bar dataKey="orders" fill="#0B8F47" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>

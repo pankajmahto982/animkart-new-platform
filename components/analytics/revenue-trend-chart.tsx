@@ -26,7 +26,7 @@ export function RevenueTrendChart({ data }: { data: ChartPoint[] }) {
           <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
           <XAxis dataKey="period" tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
           <YAxis tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
-          <Tooltip formatter={(value) => [`Rs ${value} L`, ""]} />
+          <Tooltip formatter={(value) => [`Rs ${value} L`, "Catalog value"]} />
           <Area type="monotone" dataKey="revenue" stroke="none" fill="url(#revenueFill)" />
           <Line type="monotone" dataKey="revenue" stroke="#0B8F47" strokeWidth={3} dot={{ r: 4 }} />
           <Line type="monotone" dataKey="gmv" stroke="#0F766E" strokeWidth={2} strokeDasharray="6 5" dot={false} />

@@ -23,7 +23,7 @@ export function TrafficSourceChart({ data }: { data: TrafficSource[] }) {
                 <Cell fill={entry.fill} key={entry.source} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => [`${value}%`, "Traffic"]} />
+            <Tooltip formatter={(value) => [Number(value).toLocaleString("en-IN"), "Products"]} />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -34,7 +34,7 @@ export function TrafficSourceChart({ data }: { data: TrafficSource[] }) {
               <span className="size-2.5 rounded-full" style={{ backgroundColor: entry.fill }} />
               {entry.source}
             </span>
-            <span className="font-semibold text-slate-950">{entry.visitors}%</span>
+            <span className="font-semibold text-slate-950">{entry.visitors.toLocaleString("en-IN")}</span>
           </div>
         ))}
       </div>

@@ -20,7 +20,7 @@ export function ShippingFailureChart({ data }: { data: ChartPoint[] }) {
           <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" vertical={false} />
           <XAxis dataKey="period" tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
           <YAxis tickLine={false} axisLine={false} tick={{ fill: "#64748B", fontSize: 12 }} />
-          <Tooltip />
+          <Tooltip formatter={(value) => [Number(value).toLocaleString("en-IN"), "Catalog issues"]} />
           <Line type="monotone" dataKey="failures" stroke="#DC2626" strokeWidth={3} dot={{ r: 4 }} />
         </LineChart>
       </ResponsiveContainer>
