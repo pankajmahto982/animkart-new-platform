@@ -17,6 +17,7 @@ import { DashboardSidebar } from "@/components/role-dashboard/dashboard-sidebar"
 import { RoleActivityFeed } from "@/components/role-dashboard/role-panels";
 import { RoleKpiCard } from "@/components/role-dashboard/role-kpi-card";
 import {
+  AmazonStyleAddProduct,
   InventoryAlertsPanel,
   ProductManagementTable,
   ProductPerformanceTable,
@@ -25,6 +26,7 @@ import {
   ShippingSetupPanel,
   StoreHealthScore,
   SupplierDashboard,
+  SupplierStorefrontPreview,
   SupplierSalesChart
 } from "@/components/dashboard/supplier";
 import { Badge } from "@/components/ui/badge";
@@ -39,10 +41,10 @@ import {
 } from "@/lib/role-dashboard-data";
 
 const sidebarItems = [
-  { label: "Dashboard", href: "/supplier/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: "#dashboard", icon: LayoutDashboard },
   { label: "My Store", href: "#store", icon: Store },
   { label: "Products", href: "#products", icon: Package },
-  { label: "Add Product", href: "#product-management", icon: Package },
+  { label: "Add Product", href: "#add-product", icon: Package },
   { label: "Bulk Upload", href: "#bulk-upload", icon: FileText },
   { label: "Inventory", href: "#inventory", icon: FileText },
   { label: "Orders", href: "#orders", icon: ShoppingCart },
@@ -62,7 +64,7 @@ export const metadata = {
 export default function SupplierDashboardPage() {
   return (
     <SupplierDashboard>
-    <main className="min-h-screen bg-slate-100 text-slate-950">
+    <main className="min-h-screen overflow-x-hidden bg-slate-100 text-slate-950">
       <div className="flex min-h-screen">
         <DashboardSidebar active="Dashboard" eyebrow="Supplier OS" items={sidebarItems} />
         <section className="min-w-0 flex-1">
@@ -76,13 +78,13 @@ export default function SupplierDashboardPage() {
                 </div>
                 <h1 className="mt-2 text-2xl font-bold tracking-tight">Supplier Dashboard</h1>
               </div>
-              <div className="flex flex-wrap items-center gap-3 2xl:justify-end">
-                <div className="relative min-w-0 xl:w-80">
+              <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center 2xl:justify-end">
+                <div className="relative min-w-0 sm:w-80">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                   <Input className="pl-10" placeholder="Search products, orders, settlements..." />
                 </div>
-                <Button variant="outline">Today</Button>
-                <Button aria-label="Notifications" className="relative px-3" variant="outline">
+                <Button className="w-full sm:w-auto" variant="outline">Today</Button>
+                <Button aria-label="Notifications" className="relative w-full px-3 sm:w-auto" variant="outline">
                   <Bell size={18} />
                 </Button>
               </div>
@@ -90,25 +92,33 @@ export default function SupplierDashboardPage() {
           </header>
 
           <div className="px-4 py-6 sm:px-6">
-            <section className="rounded-2xl bg-slate-950 p-5 text-white" id="store">
-              <div className="grid gap-5 2xl:grid-cols-[1fr_auto] 2xl:items-center">
+            <section className="rounded-2xl bg-slate-950 p-4 text-white sm:p-5" id="dashboard">
+              <div className="grid gap-5 xl:grid-cols-[1fr_380px] xl:items-center">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Supplier Operating System</p>
-                  <h2 className="mt-3 max-w-5xl text-2xl font-bold sm:text-3xl">
-                    Manage catalog health, inventory updates, shipping setup, orders and settlements from one supplier console.
+                  <h2 className="mt-3 max-w-5xl text-xl font-bold leading-tight sm:text-3xl">
+                    Manage products, shipping, inventory and store trust from one seller console.
                   </h2>
                   <p className="mt-3 max-w-4xl text-sm leading-6 text-slate-300">
-                    Product and inventory metrics are derived from the imported AnimKart catalog. Orders and settlements are Supabase-ready.
+                    Real catalog data powers product health now. Orders, payments and settlement queues are ready for Supabase tables.
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-2">
                   {supplierQuickActions.map((action) => (
-                    <Button className="h-9 border-white/15 bg-white/10 px-3 text-xs text-white hover:bg-white/15" key={action.label} variant="outline">
+                    <a
+                      className="inline-flex min-h-10 items-center justify-center rounded-lg border border-white/15 bg-white/10 px-3 text-center text-xs font-semibold text-white hover:bg-white/15"
+                      href={action.href}
+                      key={action.label}
+                    >
                       {action.label}
-                    </Button>
+                    </a>
                   ))}
                 </div>
               </div>
+            </section>
+
+            <section className="mt-6">
+              <SupplierStorefrontPreview />
             </section>
 
             <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -171,6 +181,7 @@ export default function SupplierDashboardPage() {
             </section>
 
             <section className="mt-6 grid gap-6" id="products">
+              <AmazonStyleAddProduct />
               <Card>
                 <CardHeader>
                   <CardTitle>Product Performance</CardTitle>

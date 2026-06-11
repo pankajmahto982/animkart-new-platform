@@ -46,6 +46,33 @@ export type ShippingRule = {
   status: "Configured" | "Pending";
 };
 
+export type SupplierStoreProduct = {
+  name: string;
+  category: string;
+  price: string;
+  image: string;
+  stock: string;
+};
+
+export type SupplierStorefront = {
+  name: string;
+  tagline: string;
+  products: string;
+  liveProducts: string;
+  catalogValue: string;
+  rating: string;
+  fulfillment: string;
+  categories: string[];
+  featured: SupplierStoreProduct[];
+};
+
+export type AddProductStep = {
+  step: string;
+  title: string;
+  detail: string;
+  status: "Ready" | "Required";
+};
+
 const validProducts = products.filter((product) => product.price > 0);
 const inStockProducts = validProducts.filter((product) => product.inStock);
 const outOfStockProducts = validProducts.filter((product) => !product.inStock);
@@ -75,7 +102,7 @@ export const adminQuickActions: QuickAction[] = [
 ];
 
 export const supplierQuickActions: QuickAction[] = [
-  { label: "Add Product", href: "#products" },
+  { label: "Add Product", href: "#add-product" },
   { label: "Bulk Upload", href: "#bulk-upload" },
   { label: "Update Inventory", href: "#inventory" },
   { label: "Configure Shipping", href: "#shipping" },
@@ -220,6 +247,57 @@ export const supplierShippingRules: ShippingRule[] = [
   { type: "Freight on Actual", example: "Shipping confirmed after order for heavy/bulk orders", priority: 7, status: "Pending" },
   { type: "Buyer Pickup", example: "Allow pickup from supplier warehouse", priority: 8, status: "Pending" },
   { type: "Blocked locations", example: "Block states, cities or pincodes", priority: 9, status: "Pending" }
+];
+
+export const supplierStorefront: SupplierStorefront = {
+  name: primarySupplierName,
+  tagline: "Verified animal health supplier on AnimKart",
+  products: primarySupplierProducts.length.toLocaleString("en-IN"),
+  liveProducts: primarySupplierProducts.filter((product) => product.inStock).length.toLocaleString("en-IN"),
+  catalogValue: formatCompactINR(supplierCatalogValue),
+  rating: "New store",
+  fulfillment: "Shipping setup pending",
+  categories: [...new Set(primarySupplierProducts.map((product) => product.category).filter(Boolean))].slice(0, 6),
+  featured: primarySupplierProducts.slice(0, 4).map((product) => ({
+    name: product.name,
+    category: product.category,
+    price: formatINR(product.price),
+    image: product.image,
+    stock: product.inStock ? "In stock" : "Update stock"
+  }))
+};
+
+export const addProductSteps: AddProductStep[] = [
+  {
+    step: "01",
+    title: "Product identity",
+    detail: "Title, SKU, brand, category and animal type",
+    status: "Required"
+  },
+  {
+    step: "02",
+    title: "Offer details",
+    detail: "MRP, selling price, GST, MOQ and bulk pricing",
+    status: "Required"
+  },
+  {
+    step: "03",
+    title: "Inventory",
+    detail: "Stock, expiry, batch number and availability confirmation",
+    status: "Required"
+  },
+  {
+    step: "04",
+    title: "Shipping",
+    detail: "Pincode, city, state, weight slab, pickup or freight on actual",
+    status: "Required"
+  },
+  {
+    step: "05",
+    title: "Media and compliance",
+    detail: "Images, label, prescription rules and approval documents",
+    status: "Ready"
+  }
 ];
 
 export const buyerProductRows: TableRow[] = buyerProducts.map((product) => ({
