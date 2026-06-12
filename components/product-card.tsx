@@ -13,7 +13,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
   return (
     <article className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-[#D1D1D1] transition hover:-translate-y-1 hover:ring-[#1B6B3A]">
-      <Link className="block" href={`/products/${product.slug}`}>
+      <Link className="block" href={`/product/${product.slug}`}>
         <div className="relative aspect-[4/3] bg-white">
           <ProductImage alt={product.name} category={product.category} src={product.image} />
           {discount ? (
@@ -30,7 +30,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             {product.inStock ? "In stock" : "Check stock"}
           </span>
         </div>
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/product/${product.slug}`}>
           <h3 className="mt-2 line-clamp-2 min-h-10 text-sm font-semibold text-[#1A1A1A]">{product.name}</h3>
         </Link>
         <p className="mt-1 text-xs text-[#6B6B6B]">Vendor: AnimKart verified supplier</p>
