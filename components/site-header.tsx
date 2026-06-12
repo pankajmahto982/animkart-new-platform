@@ -17,7 +17,7 @@ const navItems = [
   { label: "Categories", href: "/categories" },
   { label: "Products", href: "/products" },
   { label: "Stores", href: "/stores" },
-  { label: "Vet Consult", href: "/vet" },
+  { label: "Vet Consult", href: "/vet-consultation" },
   { label: "Bulk Inquiry", href: "/bulk-inquiry" },
   { label: "Supplier", href: "/supplier" },
   { label: "Admin", href: "/admin" }
@@ -43,7 +43,7 @@ export function SiteHeader() {
             </Link>
           </div>
           <div className="flex items-center gap-6">
-            <Link className="flex items-center gap-1 text-white/85 hover:text-white" href="/vet">
+            <Link className="flex items-center gap-1 text-white/85 hover:text-white" href="/vet-consultation">
               <HeartPulse size={15} />
               Vet Consultation
             </Link>
