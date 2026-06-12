@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useMemo, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { Camera, CheckCircle2, ImagePlus, PackagePlus, ShieldCheck, Store, Truck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -148,6 +150,33 @@ export function SupplierStorefrontPreview() {
 }
 
 export function AmazonStyleAddProduct() {
+  const [shippingRule, setShippingRule] = useState("product-wise");
+  const [freightOnActual, setFreightOnActual] = useState(false);
+  const [buyerPickup, setBuyerPickup] = useState(false);
+  const shippingReady = Boolean(shippingRule) || freightOnActual || buyerPickup;
+  const validationMessage = useMemo(() => {
+    if (freightOnActual) {
+      return "Ready: buyer will see that freight will be confirmed after order placement.";
+    }
+
+    if (buyerPickup) {
+      return "Ready: buyer pickup is enabled from supplier warehouse.";
+    }
+
+    if (shippingRule) {
+      return "Ready: shipping charge is configured for this product.";
+    }
+
+    return "Blocked: configure shipping, enable Freight On Actual, or allow Buyer Pickup before submit.";
+  }, [buyerPickup, freightOnActual, shippingRule]);
+
+  const shippingRuleOptions = [
+    { id: "product-wise", title: "Product-wise rule", detail: "Best for medicines, feed, equipment and cold chain products." },
+    { id: "pincode", title: "Pincode rule", detail: "Use exact serviceability and delivery charge for buyer location." },
+    { id: "city-state", title: "City / State rule", detail: "Use for standard regional delivery charges." },
+    { id: "weight", title: "Weight slab rule", detail: "Use when charge depends on 0-1kg, 1-5kg, 5-10kg or bulk." }
+  ];
+
   return (
     <Card id="add-product">
       <CardHeader className="gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -232,6 +261,113 @@ export function AmazonStyleAddProduct() {
                 />
               </label>
             </div>
+
+            <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#0B8F47]">Step 3: Shipping Configuration</p>
+                  <h3 className="mt-1 text-xl font-bold text-slate-950">Set shipping before product goes live</h3>
+                  <p className="mt-1 text-sm text-slate-600">
+                    AnimKart will block product approval unless shipping is configured, Freight On Actual is enabled, or buyer pickup is allowed.
+                  </p>
+                </div>
+                <Badge className={shippingReady ? "bg-emerald-100 text-[#0B8F47]" : "bg-rose-50 text-rose-700"}>
+                  {shippingReady ? "Shipping ready" : "Shipping required"}
+                </Badge>
+              </div>
+
+              <div className="mt-4 grid gap-3 lg:grid-cols-4">
+                {shippingRuleOptions.map((rule) => {
+                  const active = shippingRule === rule.id;
+                  return (
+                    <button
+                      className={`rounded-xl border p-3 text-left transition ${
+                        active
+                          ? "border-[#0B8F47] bg-white shadow-sm"
+                          : "border-slate-200 bg-white/70 hover:border-[#0B8F47]"
+                      }`}
+                      key={rule.id}
+                      onClick={() => setShippingRule(active ? "" : rule.id)}
+                      type="button"
+                    >
+                      <span className="flex items-center justify-between gap-3">
+                        <span className="text-sm font-bold text-slate-950">{rule.title}</span>
+                        {active ? <CheckCircle2 className="text-[#0B8F47]" size={18} /> : null}
+                      </span>
+                      <span className="mt-2 block text-xs leading-5 text-slate-500">{rule.detail}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-[1.1fr_1fr]">
+                <div className="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2">
+                  <label className="grid gap-2">
+                    <span className="text-sm font-semibold text-slate-700">Product weight</span>
+                    <Input placeholder="Example: 5 kg" />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-semibold text-slate-700">Delivery charge</span>
+                    <Input placeholder="Example: Rs 120" />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-semibold text-slate-700">Free shipping above</span>
+                    <Input placeholder="Example: Rs 5,000" />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-semibold text-slate-700">Serviceable locations</span>
+                    <Input placeholder="Delhi, Haryana, Rajasthan..." />
+                  </label>
+                  <label className="grid gap-2 sm:col-span-2">
+                    <span className="text-sm font-semibold text-slate-700">Blocked locations</span>
+                    <Input placeholder="States, cities or pincodes where delivery is not available" />
+                  </label>
+                </div>
+
+                <div className="grid gap-3">
+                  {[
+                    {
+                      title: "Freight On Actual",
+                      detail: "For feed, equipment and bulk orders where final freight is confirmed after order placement.",
+                      active: freightOnActual,
+                      toggle: () => setFreightOnActual((value) => !value)
+                    },
+                    {
+                      title: "Buyer Pickup",
+                      detail: "Buyer can pickup from warehouse when delivery is expensive or not serviceable.",
+                      active: buyerPickup,
+                      toggle: () => setBuyerPickup((value) => !value)
+                    }
+                  ].map((option) => (
+                    <button
+                      className={`rounded-xl border p-4 text-left transition ${
+                        option.active ? "border-[#0B8F47] bg-white shadow-sm" : "border-slate-200 bg-white/70 hover:border-[#0B8F47]"
+                      }`}
+                      key={option.title}
+                      onClick={option.toggle}
+                      type="button"
+                    >
+                      <span className="flex items-center justify-between gap-3">
+                        <span className="font-bold text-slate-950">{option.title}</span>
+                        <span
+                          className={`grid h-6 w-11 place-items-center rounded-full text-[10px] font-bold ${
+                            option.active ? "bg-[#0B8F47] text-white" : "bg-slate-200 text-slate-500"
+                          }`}
+                        >
+                          {option.active ? "ON" : "OFF"}
+                        </span>
+                      </span>
+                      <span className="mt-2 block text-sm leading-6 text-slate-500">{option.detail}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className={`mt-4 rounded-xl border p-3 text-sm font-semibold ${shippingReady ? "border-emerald-200 bg-white text-[#0B8F47]" : "border-rose-200 bg-rose-50 text-rose-700"}`}>
+                {validationMessage}
+              </div>
+            </div>
+
             <div className="mt-4 grid gap-3 md:grid-cols-3">
               {[
                 { Icon: Camera, title: "Upload product images", detail: "Front, back, label and pack shots" },
@@ -249,7 +385,10 @@ export function AmazonStyleAddProduct() {
               <Button className="w-full sm:w-auto" variant="outline">
                 Save draft
               </Button>
-              <Button className="w-full sm:w-auto">
+              <Button
+                className={`w-full sm:w-auto ${shippingReady ? "" : "cursor-not-allowed opacity-60"}`}
+                disabled={!shippingReady}
+              >
                 <CheckCircle2 size={16} />
                 Submit for approval
               </Button>
