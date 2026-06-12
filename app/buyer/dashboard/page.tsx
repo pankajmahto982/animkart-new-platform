@@ -246,7 +246,7 @@ export default function BuyerDashboardPage() {
                             <Button className="px-3" variant="outline"><Phone size={15} /></Button>
                             <Link
                               className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-900 transition hover:border-[#0B8F47] hover:text-[#0B8F47]"
-                              href={`/stores/${supplier.slug}`}
+                              href={`/store/${supplier.slug}`}
                             >
                               Visit Store
                             </Link>

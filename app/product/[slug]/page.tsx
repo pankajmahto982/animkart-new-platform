@@ -264,7 +264,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   ))}
                 </div>
                 <div className="mt-4 grid gap-2">
-                  <Link className="inline-flex h-11 items-center justify-center rounded-lg bg-[#0B8F47] font-bold text-white" href={`/stores/${supplierSlug}`}>Visit Store</Link>
+                  <Link className="inline-flex h-11 items-center justify-center rounded-lg bg-[#0B8F47] font-bold text-white" href={`/store/${supplierSlug}`}>Visit Store</Link>
                   <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white font-bold text-slate-800" type="button"><MessageCircle size={17} />Contact Supplier</button>
                   <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 font-bold text-[#0B8F47]" type="button">WhatsApp Supplier</button>
                 </div>

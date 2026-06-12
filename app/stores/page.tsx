@@ -55,7 +55,7 @@ export default function StoresPage() {
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {stores.map((store) => (
-            <Link className="overflow-hidden rounded-xl border border-[#D1D1D1] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" href={`/stores/${store.slug}`} key={store.slug}>
+            <Link className="overflow-hidden rounded-xl border border-[#D1D1D1] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" href={`/store/${store.slug}`} key={store.slug}>
               <div className="relative h-44 bg-[#0B8F47]">
                 {store.heroImage ? (
                   <Image alt={store.name} className="h-full w-full object-contain bg-[#EDF7F1] p-5" height={260} src={store.heroImage} width={420} />
