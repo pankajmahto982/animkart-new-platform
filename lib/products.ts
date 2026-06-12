@@ -102,3 +102,47 @@ export function getRelatedProducts(product: StoreProduct, limit = 4) {
 export function getProductsByCategory(category: string, limit = 12) {
   return products.filter((product) => product.category === category).slice(0, limit);
 }
+
+export function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getSupplierStores(limit = 24) {
+  const stores = new Map<string, typeof products>();
+
+  for (const product of products.filter((item) => item.price > 0)) {
+    const supplier = product.brand?.trim() || "AnimKart Verified";
+    stores.set(supplier, [...(stores.get(supplier) ?? []), product]);
+  }
+
+  return [...stores.entries()]
+    .map(([name, items]) => {
+      const liveProducts = items.filter((item) => item.inStock);
+      const categories = [...new Set(items.map((item) => item.category).filter(Boolean))];
+      const catalogValue = items.reduce((sum, item) => sum + item.price, 0);
+      const heroProduct = items.find((item) => item.image) ?? items[0];
+
+      return {
+        name,
+        slug: slugify(name),
+        tagline: "Verified animal health supplier on AnimKart",
+        productCount: items.length,
+        liveProductCount: liveProducts.length,
+        categories,
+        catalogValue,
+        heroImage: heroProduct?.image ?? "",
+        products: items
+      };
+    })
+    .sort((a, b) => b.productCount - a.productCount)
+    .slice(0, limit);
+}
+
+export function getSupplierStoreBySlug(slug: string) {
+  return getSupplierStores(200).find((store) => store.slug === slug);
+}

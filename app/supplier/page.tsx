@@ -22,7 +22,7 @@ export default function SupplierPage() {
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link className="rounded-lg bg-[#1B6B3A] px-6 py-3 text-center font-semibold text-white" href="/supplier/register">Register supplier</Link>
-              <Link className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center font-semibold text-[#1B6B3A]" href="/admin">View admin OS</Link>
+              <Link className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center font-semibold text-[#1B6B3A]" href="/stores">View public stores</Link>
             </div>
           </div>
           <div className="rounded-xl bg-[#1B6B3A] p-6 text-white">

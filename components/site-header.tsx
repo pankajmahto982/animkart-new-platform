@@ -16,6 +16,7 @@ import {
 const navItems = [
   { label: "Categories", href: "/categories" },
   { label: "Products", href: "/products" },
+  { label: "Stores", href: "/stores" },
   { label: "Vet Consult", href: "/vet" },
   { label: "Bulk Inquiry", href: "/bulk-inquiry" },
   { label: "Supplier", href: "/supplier" },
