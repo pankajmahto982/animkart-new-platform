@@ -45,7 +45,7 @@ const sidebarItems = [
   { label: "Bulk Upload", href: "/supplier/dashboard#bulk-upload", icon: FileText },
   { label: "Inventory", href: "/supplier/inventory", icon: FileText },
   { label: "Orders", href: "/supplier/orders", icon: ShoppingCart },
-  { label: "Shipping", href: "/supplier/dashboard#shipping", icon: Truck },
+  { label: "Shipping", href: "/supplier/shipping", icon: Truck },
   { label: "Payments", href: "/supplier/dashboard#payments", icon: CreditCard },
   { label: "Support", href: "/supplier/dashboard#support", icon: Headphones },
   { label: "Settings", href: "/supplier/dashboard#settings", icon: Settings }

@@ -71,7 +71,7 @@ const supplierTabs = [
   { id: "bulk-upload", label: "Bulk Upload", icon: FileText },
   { id: "inventory", label: "Inventory", icon: FileText, href: "/supplier/inventory" },
   { id: "orders", label: "Orders", icon: ShoppingCart },
-  { id: "shipping", label: "Shipping", icon: Truck },
+  { id: "shipping", label: "Shipping", icon: Truck, href: "/supplier/shipping" },
   { id: "payments", label: "Payments", icon: CreditCard },
   { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "reviews", label: "Reviews", icon: Store },
