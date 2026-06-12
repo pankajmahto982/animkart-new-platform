@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -6,17 +7,16 @@ import {
   CreditCard,
   Download,
   FileDown,
+  FileSpreadsheet,
   FileText,
   Headphones,
   LayoutDashboard,
-  MessageCircle,
   Package,
-  Phone,
-  Printer,
+  PackagePlus,
   Radio,
+  RefreshCw,
   Search,
   Settings,
-  Share2,
   ShoppingCart,
   Store,
   Truck,
@@ -27,23 +27,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  orderAlerts,
-  orderKpis,
-  orderStatusTabs,
-  paymentBreakdown,
-  performanceWidgets,
-  selectedOrder,
-  supplierOrders
-} from "@/lib/order-management-data";
-import { formatINR } from "@/lib/products";
+  expiryRows,
+  inventoryAlerts,
+  inventoryAnalytics,
+  inventoryHealthScore,
+  inventoryItems,
+  inventoryKpis,
+  inventoryStatusTabs,
+  notificationChannels,
+  reminderRules,
+  selectedInventoryItem
+} from "@/lib/inventory-management-data";
 
 const sidebarItems = [
   { label: "Dashboard", href: "/supplier/dashboard", icon: LayoutDashboard },
   { label: "My Store", href: "/stores", icon: Store },
   { label: "Products", href: "/supplier/dashboard#products", icon: Package },
-  { label: "Add Product", href: "/supplier/dashboard#add-product", icon: Package },
+  { label: "Add Product", href: "/supplier/dashboard#add-product", icon: PackagePlus },
   { label: "Bulk Upload", href: "/supplier/dashboard#bulk-upload", icon: FileText },
-  { label: "Inventory", href: "/supplier/inventory", icon: FileText },
+  { label: "Inventory", href: "/supplier/inventory", icon: FileSpreadsheet },
   { label: "Orders", href: "/supplier/orders", icon: ShoppingCart },
   { label: "Shipping", href: "/supplier/dashboard#shipping", icon: Truck },
   { label: "Payments", href: "/supplier/dashboard#payments", icon: CreditCard },
@@ -58,23 +60,21 @@ const toneClass = {
 };
 
 const statusClass: Record<string, string> = {
-  New: "bg-sky-50 text-sky-700",
-  "Pending Confirmation": "bg-amber-50 text-amber-700",
-  Accepted: "bg-emerald-50 text-[#0B8F47]",
-  Rejected: "bg-rose-50 text-rose-700",
-  Packed: "bg-indigo-50 text-indigo-700",
-  Shipped: "bg-blue-50 text-blue-700",
-  Delivered: "bg-emerald-50 text-[#0B8F47]",
-  Cancelled: "bg-rose-50 text-rose-700",
-  Returned: "bg-orange-50 text-orange-700"
+  "In Stock": "bg-emerald-50 text-[#0B8F47]",
+  "Low Stock": "bg-amber-50 text-amber-700",
+  "Out Of Stock": "bg-rose-50 text-rose-700",
+  "Confirm Availability": "bg-sky-50 text-sky-700",
+  "Seasonal Product": "bg-purple-50 text-purple-700",
+  "Bulk Order Only": "bg-indigo-50 text-indigo-700",
+  "Made To Order": "bg-blue-50 text-blue-700"
 };
 
 export const metadata = {
-  title: "Order Management Center | AnimKart Supplier OS",
-  description: "Premium supplier order management center for AnimKart marketplace sellers."
+  title: "Inventory Management Center | AnimKart Supplier OS",
+  description: "Premium supplier inventory management center for AnimKart marketplace sellers."
 };
 
-export default function SupplierOrdersPage() {
+export default function SupplierInventoryPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-slate-100 text-slate-950">
       <div className="flex min-h-screen">
@@ -85,13 +85,13 @@ export default function SupplierOrdersPage() {
                 <span className="grid size-11 place-items-center rounded-xl bg-[#0B8F47] text-xl font-black">A</span>
                 <span>
                   <span className="block text-lg font-bold">AnimKart OS</span>
-                  <span className="text-xs font-semibold uppercase tracking-wide text-emerald-300">Supplier Orders</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-emerald-300">Supplier Inventory</span>
                 </span>
               </Link>
             </div>
             <nav className="flex-1 space-y-1 overflow-y-auto p-4">
               {sidebarItems.map((item) => {
-                const active = item.href === "/supplier/orders";
+                const active = item.href === "/supplier/inventory";
                 return (
                   <Link
                     className={
@@ -109,9 +109,9 @@ export default function SupplierOrdersPage() {
               })}
             </nav>
             <div className="m-4 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
-              <p className="text-xs font-bold uppercase tracking-wide text-emerald-300">Order SLA</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-300">Inventory SLA</p>
               <p className="mt-2 text-sm leading-6 text-slate-300">
-                Accept, pack, ship and update buyers quickly to reduce cancellations and shipping issues.
+                Keep stock fresh to avoid cancelled orders, buyer frustration and product visibility loss.
               </p>
             </div>
           </div>
@@ -123,17 +123,17 @@ export default function SupplierOrdersPage() {
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge>Supplier OS</Badge>
-                  <Badge className="bg-slate-100 text-slate-700">Order Management Center</Badge>
-                  <Badge className="bg-amber-50 text-amber-700">Amazon-style workflow</Badge>
+                  <Badge className="bg-slate-100 text-slate-700">Inventory Management Center</Badge>
+                  <Badge className="bg-amber-50 text-amber-700">Stock accuracy required</Badge>
                 </div>
-                <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Order Management Center</h1>
+                <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Inventory Management Center</h1>
               </div>
               <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center 2xl:justify-end">
                 <div className="relative min-w-0 sm:w-96">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <Input className="pl-10" placeholder="Search order ID, buyer, product, tracking..." />
+                  <Input className="pl-10" placeholder="Search product, SKU, batch, category..." />
                 </div>
-                <Button className="w-full sm:w-auto" variant="outline">Today</Button>
+                <Button className="w-full sm:w-auto" variant="outline">Last 30 days</Button>
                 <Button aria-label="Notifications" className="relative w-full px-3 sm:w-auto" variant="outline">
                   <Bell size={18} />
                   <span className="absolute right-2 top-2 size-2 rounded-full bg-rose-500" />
@@ -142,10 +142,10 @@ export default function SupplierOrdersPage() {
             </div>
             <div className="border-t border-slate-100 px-4 py-3 sm:px-6">
               <div className="flex gap-2 overflow-x-auto">
-                {orderStatusTabs.map((tab) => (
+                {inventoryStatusTabs.map((tab) => (
                   <button
                     className={
-                      tab === "All Orders"
+                      tab === "All Products"
                         ? "inline-flex h-10 shrink-0 items-center rounded-full bg-[#0B8F47] px-4 text-sm font-semibold text-white"
                         : "inline-flex h-10 shrink-0 items-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-[#0B8F47] hover:text-[#0B8F47]"
                     }
@@ -164,25 +164,26 @@ export default function SupplierOrdersPage() {
               <section className="rounded-2xl bg-slate-950 p-5 text-white sm:p-6">
                 <div className="grid gap-6 xl:grid-cols-[1fr_440px] xl:items-center">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-300">Order command workspace</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-300">Inventory control workspace</p>
                     <h2 className="mt-4 max-w-5xl text-3xl font-bold leading-tight sm:text-5xl">
-                      Accept, pack, ship, invoice and communicate with buyers from one high-speed order console.
+                      Manage stock accuracy, batch expiry, SKU visibility and bulk updates from one control center.
                     </h2>
                     <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">
-                      Designed for suppliers managing hundreds of veterinary, feed, supplement and equipment orders with strict dispatch SLAs.
+                      Built for suppliers managing thousands of veterinary medicines, feed, supplements, equipment and animal care SKUs.
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      ["View Orders", ShoppingCart],
-                      ["Download Orders", Download],
-                      ["Export CSV", FileDown],
-                      ["Print Invoice", Printer],
-                      ["Bulk Update Status", Upload]
-                    ].map(([label, Icon]) => (
-                      <button className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 text-sm font-semibold text-white hover:bg-white/15" key={label as string} type="button">
+                      { label: "Add Inventory", Icon: PackagePlus },
+                      { label: "Bulk Update Inventory", Icon: RefreshCw },
+                      { label: "Import CSV", Icon: Upload },
+                      { label: "Export Inventory", Icon: FileDown },
+                      { label: "Download Template", Icon: Download },
+                      { label: "Sync Products", Icon: RefreshCw }
+                    ].map(({ label, Icon }) => (
+                      <button className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/15 bg-white/10 px-3 text-sm font-semibold text-white hover:bg-white/15" key={label} type="button">
                         <Icon size={16} />
-                        {label as string}
+                        {label}
                       </button>
                     ))}
                   </div>
@@ -190,7 +191,7 @@ export default function SupplierOrdersPage() {
               </section>
 
               <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {orderKpis.map((kpi) => {
+                {inventoryKpis.map((kpi) => {
                   const Icon = kpi.tone === "healthy" ? CheckCircle2 : kpi.tone === "critical" ? AlertTriangle : Radio;
                   return (
                     <Card key={kpi.label}>
@@ -212,7 +213,7 @@ export default function SupplierOrdersPage() {
               </section>
 
               <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {orderAlerts.map((alert) => (
+                {inventoryAlerts.map((alert) => (
                   <Card key={alert.title}>
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-3">
@@ -233,32 +234,31 @@ export default function SupplierOrdersPage() {
                 <Card>
                   <CardHeader className="gap-3 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                      <CardTitle>Main Order Table</CardTitle>
-                      <CardDescription>High-volume order queue with payment, delivery and supplier action state.</CardDescription>
+                      <CardTitle>Main Inventory Table</CardTitle>
+                      <CardDescription>SKU-level inventory control with reserved stock, MOQ, freshness and action state.</CardDescription>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {["Accept Order", "Reject Order", "Generate Invoice", "Print Shipping Label", "Mark Packed", "Mark Shipped", "Mark Delivered"].map((action) => (
+                      {["Update Stock", "Mark Out Of Stock", "Hide Product", "Update Price", "Update MOQ", "Generate Inventory Report"].map((action) => (
                         <Button className="h-9" key={action} variant="outline">{action}</Button>
                       ))}
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="overflow-x-auto">
-                      <table className="w-full min-w-[1320px] text-left text-sm">
+                      <table className="w-full min-w-[1240px] text-left text-sm">
                         <thead>
                           <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
                             {[
-                              "Order ID",
-                              "Date",
-                              "Buyer Name",
-                              "Product",
-                              "Supplier",
-                              "Quantity",
-                              "Order Value",
-                              "Shipping Charge",
-                              "Payment Status",
-                              "Order Status",
-                              "Delivery Status",
+                              "Product Image",
+                              "Product Name",
+                              "SKU",
+                              "Category",
+                              "Current Stock",
+                              "Reserved Stock",
+                              "Available Stock",
+                              "MOQ",
+                              "Last Updated",
+                              "Inventory Status",
                               "Actions"
                             ].map((column) => (
                               <th className="px-4 py-3 font-semibold" key={column}>{column}</th>
@@ -266,29 +266,32 @@ export default function SupplierOrdersPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {supplierOrders.map((order) => (
-                            <tr className="border-b border-slate-100 last:border-0" key={order.orderId}>
-                              <td className="px-4 py-4 font-bold text-slate-950">{order.orderId}</td>
-                              <td className="px-4 py-4 text-slate-600">{order.date}</td>
-                              <td className="px-4 py-4 font-semibold text-slate-800">{order.buyerName}</td>
-                              <td className="max-w-[260px] px-4 py-4 text-slate-600">
-                                <span className="line-clamp-2">{order.product}</span>
-                              </td>
-                              <td className="px-4 py-4 text-slate-600">{order.supplier}</td>
-                              <td className="px-4 py-4 text-slate-600">{order.quantity}</td>
-                              <td className="px-4 py-4 font-bold text-slate-950">{formatINR(order.orderValue)}</td>
-                              <td className="px-4 py-4 text-slate-600">{formatINR(order.shippingCharge)}</td>
+                          {inventoryItems.map((item) => (
+                            <tr className="border-b border-slate-100 last:border-0" key={item.sku}>
                               <td className="px-4 py-4">
-                                <Badge className={order.paymentStatus === "Paid" ? "bg-emerald-50 text-[#0B8F47]" : "bg-amber-50 text-amber-700"}>
-                                  {order.paymentStatus}
-                                </Badge>
+                                <div className="grid size-14 place-items-center rounded-lg bg-slate-50">
+                                  {item.productImage ? (
+                                    <Image alt={item.productName} className="h-12 w-12 object-contain" height={48} src={item.productImage} width={48} />
+                                  ) : (
+                                    <Package className="text-slate-300" size={22} />
+                                  )}
+                                </div>
+                              </td>
+                              <td className="max-w-[280px] px-4 py-4 font-semibold text-slate-950">
+                                <span className="line-clamp-2">{item.productName}</span>
+                              </td>
+                              <td className="px-4 py-4 text-slate-600">{item.sku}</td>
+                              <td className="px-4 py-4 text-slate-600">{item.category}</td>
+                              <td className="px-4 py-4 font-bold text-slate-950">{item.currentStock}</td>
+                              <td className="px-4 py-4 text-slate-600">{item.reservedStock}</td>
+                              <td className="px-4 py-4 font-bold text-[#0B8F47]">{item.availableStock}</td>
+                              <td className="px-4 py-4 text-slate-600">{item.moq}</td>
+                              <td className="px-4 py-4 text-slate-600">{item.lastUpdated}</td>
+                              <td className="px-4 py-4">
+                                <Badge className={statusClass[item.inventoryStatus]}>{item.inventoryStatus}</Badge>
                               </td>
                               <td className="px-4 py-4">
-                                <Badge className={statusClass[order.orderStatus]}>{order.orderStatus}</Badge>
-                              </td>
-                              <td className="px-4 py-4 text-slate-600">{order.deliveryStatus}</td>
-                              <td className="px-4 py-4">
-                                <Button className="h-9" variant="outline">Open</Button>
+                                <Button className="h-9" variant="outline">Update</Button>
                               </td>
                             </tr>
                           ))}
@@ -302,20 +305,20 @@ export default function SupplierOrdersPage() {
               <section className="mt-6 grid gap-6 xl:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Order Status Flow</CardTitle>
-                    <CardDescription>Standard seller order lifecycle with exception exits.</CardDescription>
+                    <CardTitle>Bulk Inventory Update</CardTitle>
+                    <CardDescription>CSV/Excel upload, preview, validate and submit changes.</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid gap-3">
-                      {["New Order", "Supplier Confirmation Pending", "Accepted", "Packed", "Shipped", "Delivered"].map((step, index) => (
-                        <div className="flex items-center gap-3" key={step}>
-                          <span className="grid size-9 place-items-center rounded-full bg-emerald-50 text-sm font-bold text-[#0B8F47]">{index + 1}</span>
-                          <div className="flex-1 rounded-lg border border-slate-200 bg-slate-50 p-3 font-semibold text-slate-950">{step}</div>
-                        </div>
-                      ))}
-                      <div className="mt-2 grid gap-2 sm:grid-cols-3">
-                        {["Rejected", "Cancelled", "Returned"].map((step) => (
-                          <div className="rounded-lg bg-rose-50 p-3 text-center text-sm font-bold text-rose-700" key={step}>{step}</div>
+                    <div className="grid gap-4">
+                      <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+                        <FileSpreadsheet className="mx-auto text-[#0B8F47]" size={34} />
+                        <p className="mt-3 text-lg font-bold text-slate-950">Upload CSV or Excel inventory file</p>
+                        <p className="mt-1 text-sm text-slate-500">Preview changes, validate stock, then submit updates.</p>
+                        <Button className="mt-5">Choose file</Button>
+                      </div>
+                      <div className="grid gap-2 sm:grid-cols-4">
+                        {["CSV Upload", "Excel Upload", "Preview Changes", "Validate Data", "Submit Changes"].map((step) => (
+                          <div className="rounded-lg bg-emerald-50 p-3 text-center text-sm font-bold text-[#0B8F47]" key={step}>{step}</div>
                         ))}
                       </div>
                     </div>
@@ -324,12 +327,12 @@ export default function SupplierOrdersPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Performance Widgets</CardTitle>
-                    <CardDescription>Operating metrics to reduce cancellations and shipping issues.</CardDescription>
+                    <CardTitle>Analytics Widgets</CardTitle>
+                    <CardDescription>Movement and demand signals for inventory decisions.</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-3 sm:grid-cols-2">
-                      {performanceWidgets.map((item) => (
+                      {inventoryAnalytics.map((item) => (
                         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4" key={item.label}>
                           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">{item.label}</p>
                           <p className="mt-2 text-2xl font-black text-slate-950">{item.value}</p>
@@ -345,23 +348,39 @@ export default function SupplierOrdersPage() {
             <aside className="space-y-4 2xl:sticky 2xl:top-6 2xl:self-start">
               <Card>
                 <CardHeader>
-                  <CardTitle>Order Detail Drawer</CardTitle>
-                  <CardDescription>{selectedOrder.orderId}</CardDescription>
+                  <CardTitle>Inventory Health Score</CardTitle>
+                  <CardDescription>95+ Excellent, 80+ Good, 60+ Warning, below 60 Critical.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid place-items-center rounded-2xl bg-slate-950 p-6 text-white">
+                    <div className="grid size-32 place-items-center rounded-full border-[10px] border-[#0B8F47] bg-white text-4xl font-black text-slate-950">
+                      {inventoryHealthScore}
+                    </div>
+                    <p className="mt-4 text-center text-sm text-slate-300">
+                      Based on update frequency, stock accuracy, order fulfillment and cancellation due to stock.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Expiry Management</CardTitle>
+                  <CardDescription>Batch, manufacturing date, expiry and alert state.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-3">
-                    {[
-                      ["Buyer Information", selectedOrder.buyerName],
-                      ["Shipping Address", selectedOrder.shippingAddress],
-                      ["GST Details", selectedOrder.gstDetails],
-                      ["Products Ordered", selectedOrder.product],
-                      ["Shipping Charges", formatINR(selectedOrder.shippingCharge)],
-                      ["Payment Details", selectedOrder.paymentStatus],
-                      ["Invoice Download", "Ready after invoice generation"]
-                    ].map(([label, value]) => (
-                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3" key={label}>
-                        <p className="text-xs font-bold uppercase tracking-wide text-slate-500">{label}</p>
-                        <p className="mt-1 text-sm font-semibold text-slate-950">{value}</p>
+                    {expiryRows.map((row) => (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3" key={`${row.product}-${row.batchNumber}`}>
+                        <p className="line-clamp-1 text-sm font-bold text-slate-950">{row.product}</p>
+                        <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-500">
+                          <span>Batch: {row.batchNumber}</span>
+                          <span>MFG: {row.manufacturingDate}</span>
+                          <span>EXP: {row.expiryDate}</span>
+                          <Badge className={row.alert === "Expired" ? "bg-rose-50 text-rose-700" : row.alert === "Near Expiry" ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-[#0B8F47]"}>
+                            {row.alert}
+                          </Badge>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -370,22 +389,20 @@ export default function SupplierOrdersPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Shipping Section</CardTitle>
-                  <CardDescription>Delivery partner, tracking and freight details.</CardDescription>
+                  <CardTitle>Auto Reminder System</CardTitle>
+                  <CardDescription>Visibility rules when inventory is stale.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-3">
-                    {[
-                      ["Delivery Partner", selectedOrder.deliveryPartner],
-                      ["Tracking Number", selectedOrder.trackingNumber],
-                      ["Expected Delivery", selectedOrder.expectedDelivery],
-                      ["Actual Delivery", selectedOrder.actualDelivery],
-                      ["Freight Charges", selectedOrder.freightCharges],
-                      ["Shipping Notes", selectedOrder.shippingNotes]
-                    ].map(([label, value]) => (
-                      <div className="flex items-start justify-between gap-3 rounded-lg bg-slate-50 p-3" key={label}>
-                        <p className="text-sm font-semibold text-slate-600">{label}</p>
-                        <p className="text-right text-sm font-bold text-slate-950">{value}</p>
+                    {reminderRules.map((rule) => (
+                      <div className="rounded-xl border border-slate-200 bg-white p-3" key={rule.day}>
+                        <div className="flex items-center gap-3">
+                          <span className="grid size-10 place-items-center rounded-full bg-emerald-50 text-xs font-black text-[#0B8F47]">{rule.day}</span>
+                          <div>
+                            <p className="text-sm font-bold text-slate-950">{rule.action}</p>
+                            <p className="mt-1 text-xs text-slate-500">{rule.detail}</p>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -394,21 +411,19 @@ export default function SupplierOrdersPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Buyer Communication</CardTitle>
-                  <CardDescription>Contact buyer and share tracking updates.</CardDescription>
+                  <CardTitle>Notifications</CardTitle>
+                  <CardDescription>Dashboard, Email, WhatsApp and SMS channels.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      ["Call Buyer", Phone],
-                      ["WhatsApp Buyer", MessageCircle],
-                      ["Send Message", FileText],
-                      ["Share Tracking Link", Share2]
-                    ].map(([label, Icon]) => (
-                      <button className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-900 hover:border-[#0B8F47] hover:text-[#0B8F47]" key={label as string} type="button">
-                        <Icon size={16} />
-                        {label as string}
-                      </button>
+                  <div className="grid gap-3">
+                    {notificationChannels.map((item) => (
+                      <div className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 p-3" key={item.channel}>
+                        <div>
+                          <p className="text-sm font-bold text-slate-950">{item.channel}</p>
+                          <p className="mt-1 text-xs text-slate-500">{item.detail}</p>
+                        </div>
+                        <Badge>{item.status}</Badge>
+                      </div>
                     ))}
                   </div>
                 </CardContent>
@@ -416,16 +431,22 @@ export default function SupplierOrdersPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Section</CardTitle>
-                  <CardDescription>COD, paid, pending and refund status.</CardDescription>
+                  <CardTitle>Selected SKU</CardTitle>
+                  <CardDescription>{selectedInventoryItem.sku}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-3">
-                    {paymentBreakdown.map((item) => (
-                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4" key={item.label}>
-                        <p className="text-xs font-bold uppercase tracking-wide text-slate-500">{item.label}</p>
-                        <p className="mt-2 text-2xl font-black text-slate-950">{item.value}</p>
-                        <p className="mt-1 text-xs text-slate-500">{item.helper}</p>
+                    {[
+                      ["Current Stock", selectedInventoryItem.currentStock],
+                      ["Reserved Stock", selectedInventoryItem.reservedStock],
+                      ["Available Stock", selectedInventoryItem.availableStock],
+                      ["MOQ", selectedInventoryItem.moq],
+                      ["Last Updated", selectedInventoryItem.lastUpdated],
+                      ["Status", selectedInventoryItem.inventoryStatus]
+                    ].map(([label, value]) => (
+                      <div className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 p-3" key={label as string}>
+                        <p className="text-sm font-semibold text-slate-600">{label as string}</p>
+                        <p className="text-right text-sm font-bold text-slate-950">{value as string | number}</p>
                       </div>
                     ))}
                   </div>

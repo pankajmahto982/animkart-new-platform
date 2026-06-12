@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   AlertTriangle,
   BarChart3,
@@ -68,7 +69,7 @@ const supplierTabs = [
   { id: "products", label: "Products", icon: Package },
   { id: "add-product", label: "Add Product", icon: Package },
   { id: "bulk-upload", label: "Bulk Upload", icon: FileText },
-  { id: "inventory", label: "Inventory", icon: FileText },
+  { id: "inventory", label: "Inventory", icon: FileText, href: "/supplier/inventory" },
   { id: "orders", label: "Orders", icon: ShoppingCart },
   { id: "shipping", label: "Shipping", icon: Truck },
   { id: "payments", label: "Payments", icon: CreditCard },
@@ -76,7 +77,7 @@ const supplierTabs = [
   { id: "reviews", label: "Reviews", icon: Store },
   { id: "support", label: "Support", icon: Headphones },
   { id: "settings", label: "Settings", icon: Settings }
-] satisfies Array<{ id: SupplierTabId; label: string; icon: typeof LayoutDashboard }>;
+] satisfies Array<{ id: SupplierTabId; label: string; icon: typeof LayoutDashboard; href?: string }>;
 
 const statusClass = {
   healthy: "bg-emerald-50 text-[#0B8F47]",
@@ -140,21 +141,24 @@ export function SupplierDashboardExperience() {
               </div>
               <div className="border-t border-slate-100 px-4 py-3 sm:px-6">
                 <div className="flex gap-2 overflow-x-auto">
-                  {supplierTabs.map((tab) => (
-                    <button
-                      className={
-                        activeTab === tab.id
-                          ? "inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#0B8F47] px-4 text-sm font-semibold text-white"
-                          : "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-[#0B8F47] hover:text-[#0B8F47]"
-                      }
-                      key={tab.id}
-                      onClick={() => showTab(tab.id)}
-                      type="button"
-                    >
-                      <tab.icon size={16} />
-                      {tab.label}
-                    </button>
-                  ))}
+                  {supplierTabs.map((tab) => {
+                    const className =
+                      activeTab === tab.id
+                        ? "inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#0B8F47] px-4 text-sm font-semibold text-white"
+                        : "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-[#0B8F47] hover:text-[#0B8F47]";
+
+                    return tab.href ? (
+                      <Link className={className} href={tab.href} key={tab.id}>
+                        <tab.icon size={16} />
+                        {tab.label}
+                      </Link>
+                    ) : (
+                      <button className={className} key={tab.id} onClick={() => showTab(tab.id)} type="button">
+                        <tab.icon size={16} />
+                        {tab.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </header>
@@ -313,21 +317,24 @@ function SupplierSidebar({
           </button>
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-          {supplierTabs.map((tab) => (
-            <button
-              className={
-                activeTab === tab.id
-                  ? "flex w-full items-center gap-3 rounded-lg bg-[#0B8F47] px-3 py-2.5 text-left text-sm font-semibold text-white"
-                  : "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-slate-300 hover:bg-white/8 hover:text-white"
-              }
-              key={tab.id}
-              onClick={() => onSelect(tab.id)}
-              type="button"
-            >
-              <tab.icon size={18} />
-              {tab.label}
-            </button>
-          ))}
+          {supplierTabs.map((tab) => {
+            const className =
+              activeTab === tab.id
+                ? "flex w-full items-center gap-3 rounded-lg bg-[#0B8F47] px-3 py-2.5 text-left text-sm font-semibold text-white"
+                : "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-slate-300 hover:bg-white/8 hover:text-white";
+
+            return tab.href ? (
+              <Link className={className} href={tab.href} key={tab.id}>
+                <tab.icon size={18} />
+                {tab.label}
+              </Link>
+            ) : (
+              <button className={className} key={tab.id} onClick={() => onSelect(tab.id)} type="button">
+                <tab.icon size={18} />
+                {tab.label}
+              </button>
+            );
+          })}
         </nav>
         <div className="m-4 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
           <p className="text-xs font-bold uppercase tracking-wide text-emerald-300">Tabbed workspace</p>
