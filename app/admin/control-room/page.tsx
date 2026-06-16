@@ -28,6 +28,7 @@ import { OrderCommandCenter } from "@/components/control-room/order-command-cent
 import { PendingActionsPanel } from "@/components/control-room/pending-actions-panel";
 import { RealTimeActivityFeed } from "@/components/control-room/real-time-activity-feed";
 import { ShippingControlPanel } from "@/components/control-room/shipping-control-panel";
+import { StatusPanel } from "@/components/control-room/status-panel";
 import { SupplierControlPanel } from "@/components/control-room/supplier-control-panel";
 import { VetOperationsPanel } from "@/components/control-room/vet-operations-panel";
 import { Badge } from "@/components/ui/badge";
@@ -36,15 +37,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import {
   broadcastActions,
+  b2bLeadMetrics,
+  buyerMetrics,
   controlRoomSummary,
   controlRoomKpis,
+  emergencyAlerts,
   healthMetrics,
   inventoryMetrics,
+  liveUsers,
+  notificationMetrics,
   orderMetrics,
   pendingActions,
   platformScore,
+  productMetrics,
   quickActions,
   realTimeActivities,
+  rightPanelMetrics,
   shippingMetrics,
   supplierMetrics,
   vetMetrics
@@ -66,6 +74,7 @@ const sidebarItems = [
   { label: "Settlements", href: "#settlements", icon: Wallet },
   { label: "Notifications", href: "#notifications", icon: Megaphone },
   { label: "CMS", href: "#cms", icon: FileText },
+  { label: "Support", href: "#support", icon: ShieldCheck },
   { label: "Reports", href: "#reports", icon: FileText },
   { label: "Settings", href: "#settings", icon: Settings }
 ];
@@ -124,7 +133,7 @@ export default function ControlRoomPage() {
                   <Badge className="bg-slate-100 text-slate-700">Control Room</Badge>
                   <Badge className="bg-amber-50 text-amber-700">Realtime-ready</Badge>
                 </div>
-                <h1 className="mt-2 text-2xl font-bold tracking-tight">Super Admin Control Room</h1>
+                <h1 className="mt-2 text-3xl font-black tracking-tight">Super Admin Control Room</h1>
               </div>
               <div className="flex flex-wrap items-center gap-3 2xl:justify-end">
                 <div className="relative min-w-0 xl:w-80">
@@ -148,15 +157,16 @@ export default function ControlRoomPage() {
           </header>
 
           <div className="px-4 py-6 sm:px-6" id="overview">
-            <section className="rounded-2xl bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/40" id="control-room">
+            <section className="overflow-hidden rounded-3xl bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/40" id="control-room">
               <div className="grid gap-5 2xl:grid-cols-[1fr_560px] 2xl:items-center">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">Main operating screen</p>
-                  <h2 className="mt-3 max-w-5xl text-2xl font-bold leading-tight sm:text-3xl">
-                    AnimKart marketplace control room for catalog, suppliers, inventory, shipping and service queues.
+                  <h2 className="mt-3 max-w-5xl text-3xl font-black leading-tight sm:text-5xl">
+                    Mission Control Center for buyers, suppliers, products, orders, shipping, vet services, payments and B2B growth.
                   </h2>
                   <p className="mt-3 max-w-4xl text-sm leading-6 text-slate-300">
-                    Real product catalog data is connected now. Order, vet, payment and shipping counters are ready for Supabase event tables and do not show dummy numbers.
+                    Built like the operating system of a funded marketplace: real product catalog data, Supabase-ready event queues,
+                    command panels, emergency alerts and founder-level health signals in one screen.
                   </p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -178,23 +188,57 @@ export default function ControlRoomPage() {
               </div>
             </section>
 
-            <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6">
               {controlRoomKpis.map((kpi) => (
                 <ControlRoomKpiCard key={kpi.id} kpi={kpi} />
               ))}
             </section>
 
-            <section className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_0.85fr]" id="health">
-              <MarketplaceHealthScore metrics={healthMetrics} score={platformScore} />
-              <Card>
-                <CardHeader>
-                  <CardTitle>Real-Time Activity Feed</CardTitle>
-                  <CardDescription>Live platform events, ready for Supabase realtime channels.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RealTimeActivityFeed activities={realTimeActivities} />
-                </CardContent>
-              </Card>
+            <section className="mt-6 grid gap-6 2xl:grid-cols-[1fr_360px]" id="health">
+              <div className="grid gap-6">
+                <MarketplaceHealthScore metrics={healthMetrics} score={platformScore} />
+                <section className="grid gap-6 xl:grid-cols-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Real-Time Activity Feed</CardTitle>
+                      <CardDescription>Supplier, product, order, buyer, vet, inventory, shipping and payment events.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <RealTimeActivityFeed activities={realTimeActivities} />
+                    </CardContent>
+                  </Card>
+                  <Card id="live-users">
+                    <CardHeader>
+                      <CardTitle>Live Users Widget</CardTitle>
+                      <CardDescription>Realtime online presence across buyer, supplier and vet surfaces.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <StatusPanel metrics={liveUsers} />
+                    </CardContent>
+                  </Card>
+                </section>
+              </div>
+
+              <aside className="grid gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Founder Side Panel</CardTitle>
+                    <CardDescription>Today&apos;s revenue, orders, critical alerts and uptime.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <StatusPanel metrics={rightPanelMetrics} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Emergency Alerts</CardTitle>
+                    <CardDescription>Incidents that need immediate operator attention.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <RealTimeActivityFeed activities={emergencyAlerts} />
+                  </CardContent>
+                </Card>
+              </aside>
             </section>
 
             <section className="mt-6 grid gap-6 2xl:grid-cols-[0.95fr_1.05fr]" id="actions">
@@ -221,17 +265,35 @@ export default function ControlRoomPage() {
             <section className="mt-6 grid gap-6 xl:grid-cols-2">
               <Card id="suppliers">
                 <CardHeader>
-                  <CardTitle>Supplier Control Panel</CardTitle>
-                  <CardDescription>Supplier activity, performance and inventory behavior.</CardDescription>
+                  <CardTitle>Supplier Command Center</CardTitle>
+                  <CardDescription>Approvals, verified suppliers, shipping setup, inventory freshness and top suppliers.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <SupplierControlPanel metrics={supplierMetrics} />
                 </CardContent>
               </Card>
+              <Card id="buyers">
+                <CardHeader>
+                  <CardTitle>Buyer Command Center</CardTitle>
+                  <CardDescription>New buyers, repeat buyers, B2B buyers, inactive accounts and top locations.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StatusPanel metrics={buyerMetrics} />
+                </CardContent>
+              </Card>
+              <Card id="products">
+                <CardHeader>
+                  <CardTitle>Product Command Center</CardTitle>
+                  <CardDescription>Approvals, rejections, stock issues, missing shipping and top products.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StatusPanel metrics={productMetrics} />
+                </CardContent>
+              </Card>
               <Card id="inventory">
                 <CardHeader>
-                  <CardTitle>Inventory Control Panel</CardTitle>
-                  <CardDescription>Low stock, out of stock, expired products and auto-hide readiness.</CardDescription>
+                  <CardTitle>Inventory Command Center</CardTitle>
+                  <CardDescription>Low stock, out of stock, expired products, stale updates and inventory accuracy.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <InventoryControlPanel metrics={inventoryMetrics} />
@@ -239,8 +301,8 @@ export default function ControlRoomPage() {
               </Card>
               <Card id="shipping">
                 <CardHeader>
-                  <CardTitle>Shipping Control Panel</CardTitle>
-                  <CardDescription>Failed shipping orders, high cost alerts and freight pending queues.</CardDescription>
+                  <CardTitle>Shipping Command Center</CardTitle>
+                  <CardDescription>Failed deliveries, high costs, freight orders, blocked pincodes and non-serviceability.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ShippingControlPanel metrics={shippingMetrics} />
@@ -248,11 +310,20 @@ export default function ControlRoomPage() {
               </Card>
               <Card id="vet">
                 <CardHeader>
-                  <CardTitle>Vet Operations Panel</CardTitle>
-                  <CardDescription>Consultations, active cases, prescriptions, completed cases and revenue.</CardDescription>
+                  <CardTitle>Vet Command Center</CardTitle>
+                  <CardDescription>New consultations, pending cases, completed cases, top vets and vet revenue.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <VetOperationsPanel metrics={vetMetrics} />
+                </CardContent>
+              </Card>
+              <Card id="b2b">
+                <CardHeader>
+                  <CardTitle>B2B Lead Command Center</CardTitle>
+                  <CardDescription>Generated leads, supplier responses, conversions, lead revenue and conversion rate.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StatusPanel metrics={b2bLeadMetrics} />
                 </CardContent>
               </Card>
             </section>
@@ -260,10 +331,11 @@ export default function ControlRoomPage() {
             <section className="mt-6 grid gap-6 2xl:grid-cols-[1fr_360px]">
               <Card id="notifications">
                 <CardHeader>
-                  <CardTitle>Notification Broadcast Center</CardTitle>
-                  <CardDescription>Send WhatsApp, email, SMS and push notification campaigns from one panel.</CardDescription>
+                  <CardTitle>Notifications Center</CardTitle>
+                  <CardDescription>WhatsApp, SMS, email, push notifications and recent notification volume.</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="grid gap-5 xl:grid-cols-2">
+                  <StatusPanel metrics={notificationMetrics} />
                   <NotificationBroadcastCenter actions={broadcastActions} />
                 </CardContent>
               </Card>
