@@ -211,7 +211,7 @@ export default function CheckoutPage() {
               <CardContent className="grid gap-4 md:grid-cols-2">
                 <label className="grid gap-2 text-sm font-semibold text-slate-700">
                   Buyer GST Number
-                  <Input placeholder="Example: 06ABCDE1234F1Z5" />
+                  <Input placeholder="06ABCDE1234F1Z5" />
                 </label>
                 <label className="grid gap-2 text-sm font-semibold text-slate-700">
                   Company Name

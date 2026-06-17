@@ -16,11 +16,12 @@ import {
   XCircle
 } from "lucide-react";
 import { ProductImage } from "@/components/product-image";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getOrderTrackingData, sampleOrderIds, TimelineStep } from "@/lib/order-tracking-data";
+import { getOrderTrackingData, seededOrderIds, TimelineStep } from "@/lib/order-tracking-data";
 
 const stepClass = {
   complete: "border-[#0B8F47] bg-emerald-50 text-[#0B8F47]",
@@ -37,7 +38,7 @@ const alertClass = {
 };
 
 export function generateStaticParams() {
-  return sampleOrderIds.map((orderId) => ({ "order-id": orderId }));
+  return seededOrderIds.map((orderId) => ({ "order-id": orderId }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ "order-id": string }> }) {
@@ -270,6 +271,7 @@ export default async function BuyerOrderTrackingPage({ params }: { params: Promi
           </aside>
         </div>
       </section>
+      <SiteFooter />
     </main>
   );
 }

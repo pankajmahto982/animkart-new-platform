@@ -140,7 +140,7 @@ export const productAnalytics: PanelMetric[] = [
 
 export const reviewDrawerSections: PanelMetric[] = [
   { label: "Product Images", value: "Gallery", detail: "Image quality, angle and clarity", status: "healthy" },
-  { label: "Product Videos", value: "Optional", detail: "Supplier demo or usage media", status: "watch" },
+  { label: "Product Videos", value: "Optional", detail: "Supplier usage media", status: "watch" },
   { label: "Product Name", value: "Required", detail: "Clean marketplace title", status: "healthy" },
   { label: "Category", value: "Required", detail: "AnimKart taxonomy mapping", status: "healthy" },
   { label: "Brand", value: "Required", detail: "Brand or supplier identity", status: "healthy" },

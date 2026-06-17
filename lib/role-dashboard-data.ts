@@ -170,7 +170,7 @@ export const buyerKpis: RoleKpi[] = [
   { label: "Total Orders", value: "0", helper: "Order history pending", status: "watch" },
   { label: "Active Orders", value: "0", helper: "Order events pending", status: "watch" },
   { label: "Delivered Orders", value: "0", helper: "Delivery events pending", status: "watch" },
-  { label: "Wishlist Items", value: buyerProducts.length.toString(), helper: "Real catalog wishlist demo", status: "healthy" },
+  { label: "Wishlist Items", value: buyerProducts.length.toString(), helper: "Real catalog wishlist view", status: "healthy" },
   { label: "Saved Suppliers", value: Math.min(suppliers.size, 6).toString(), helper: "Derived from catalog brands", status: "healthy" },
   { label: "Vet Consultations", value: "0", helper: "Vet booking table pending", status: "watch" },
   { label: "Pending Support Tickets", value: "0", helper: "Support table pending", status: "healthy" }

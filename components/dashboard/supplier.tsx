@@ -211,7 +211,7 @@ export function AmazonStyleAddProduct() {
             <div className="grid gap-4 md:grid-cols-2">
               <label className="grid gap-2">
                 <span className="text-sm font-semibold text-slate-700">Product title</span>
-                <Input placeholder="Example: Cattle calcium supplement 5L" />
+                <Input placeholder="Cattle calcium supplement 5L" />
               </label>
               <label className="grid gap-2">
                 <span className="text-sm font-semibold text-slate-700">SKU</span>
@@ -304,15 +304,15 @@ export function AmazonStyleAddProduct() {
                 <div className="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2">
                   <label className="grid gap-2">
                     <span className="text-sm font-semibold text-slate-700">Product weight</span>
-                    <Input placeholder="Example: 5 kg" />
+                    <Input placeholder="5 kg" />
                   </label>
                   <label className="grid gap-2">
                     <span className="text-sm font-semibold text-slate-700">Delivery charge</span>
-                    <Input placeholder="Example: Rs 120" />
+                    <Input placeholder="Rs 120" />
                   </label>
                   <label className="grid gap-2">
                     <span className="text-sm font-semibold text-slate-700">Free shipping above</span>
-                    <Input placeholder="Example: Rs 5,000" />
+                    <Input placeholder="Rs 5,000" />
                   </label>
                   <label className="grid gap-2">
                     <span className="text-sm font-semibold text-slate-700">Serviceable locations</span>

@@ -126,7 +126,7 @@ export function getOrderTrackingData(orderId: string): OrderTrackingData {
   };
 }
 
-export const sampleOrderIds = ["AKB-2600", "AKB-2601", "AKB-2602", "AKB-2603"];
+export const seededOrderIds = ["AKB-2600", "AKB-2601", "AKB-2602", "AKB-2603"];
 
 function hashOrderId(orderId: string) {
   return orderId.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);

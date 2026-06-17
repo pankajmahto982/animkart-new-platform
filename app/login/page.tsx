@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Chrome, KeyRound, LockKeyhole, Mail, Phone, ShieldCheck, Smartphone, UserRound } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,7 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950">
+      <SiteHeader />
       <section className="mx-auto grid min-h-screen max-w-[1500px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1fr_520px] lg:items-center">
         <div className="overflow-hidden rounded-3xl bg-slate-950 text-white shadow-xl shadow-slate-300/50">
           <div className="p-6 sm:p-8 xl:p-10">

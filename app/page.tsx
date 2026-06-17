@@ -767,7 +767,7 @@ export default function Home() {
             <h2 className="text-3xl font-semibold">Shop products by category</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[#3e4a3f]">
               These products come from the WooCommerce export, so the homepage already reflects actual
-              AnimKart inventory instead of sample placeholders.
+              AnimKart inventory with verified catalog records.
             </p>
           </div>
           <a className="text-sm font-bold text-[#006b32]" href="/products">

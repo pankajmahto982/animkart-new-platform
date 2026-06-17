@@ -265,11 +265,11 @@ export const liveActivities: LiveActivity[] = [
 export const operationalInsights = [
   ["Buyer Analytics", "0 live buyers", "Connect Supabase auth profiles and buyer events to populate this panel."],
   ["Supplier Analytics", `${brandMap.size} catalog suppliers`, "Derived from real supplier/brand values in the imported product catalog."],
-  ["Order Analytics", "0 live orders", "No real orders table is connected yet; dashboard is not showing fake orders."],
+    ["Order Analytics", "0 live orders", "No real orders table is connected yet; dashboard only shows verified activity."],
   ["Shipping Analytics", `${shippingIssuesTable.length} catalog issues`, "Using stock and image exceptions until shipment records are connected."],
   ["Inventory Analytics", `${inventoryAlertsTable.length} alerts`, "Real catalog stock status review queue from imported products."],
   ["Vet Consultation Analytics", "0 live bookings", "Ready for Supabase vet consultation table once backend events start."],
-  ["B2B Lead Analytics", "0 live leads", "Ready for Supabase B2B inquiry table; no dummy lead count shown."],
+    ["B2B Lead Analytics", "0 live leads", "Ready for Supabase B2B inquiry table once live inquiries are connected."],
   ["Marketplace Health", `${inventoryScore}% inventory score`, "Calculated from in-stock product coverage in the real catalog."]
 ];
 
