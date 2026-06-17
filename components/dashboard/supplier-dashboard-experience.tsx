@@ -114,7 +114,7 @@ export function SupplierDashboardExperience() {
   return (
     <SupplierDashboard>
       <main className="min-h-screen overflow-x-hidden bg-slate-100 text-slate-950">
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen flex-col xl:flex-row">
           <SupplierSidebar activeTab={activeTab} onSelect={showTab} />
           <section className="min-w-0 flex-1">
             <header className="border-b border-slate-200 bg-white">

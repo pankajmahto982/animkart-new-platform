@@ -77,7 +77,7 @@ export const metadata = {
 export default function SupplierInventoryPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-slate-100 text-slate-950">
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col xl:flex-row">
         <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-slate-950 text-white xl:block">
           <div className="sticky top-0 flex h-screen flex-col">
             <div className="border-b border-white/10 p-6">

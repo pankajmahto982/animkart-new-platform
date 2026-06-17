@@ -76,7 +76,7 @@ export const metadata = {
 export default function AdminCmsPage() {
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950">
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col xl:flex-row">
         <DashboardSidebar active="CMS" eyebrow="Content OS" items={sidebarItems} />
 
         <section className="min-w-0 flex-1">
@@ -166,7 +166,7 @@ export default function AdminCmsPage() {
               ))}
             </section>
 
-            <nav className="sticky top-0 z-30 mt-6 flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
+            <nav className="sticky top-0 z-30 mt-6 flex max-w-full gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur [contain:layout_paint]">
               {cmsTabs.map((tab) => (
                 <a
                   className="inline-flex h-10 shrink-0 items-center justify-center rounded-xl px-4 text-sm font-bold text-slate-700 hover:bg-emerald-50 hover:text-[#0B8F47]"

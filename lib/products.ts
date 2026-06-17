@@ -22,7 +22,25 @@ export type StoreProduct = {
   source: string;
 };
 
-export const products = wcProducts as StoreProduct[];
+function isUsableImageUrl(value: unknown): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const url = value.trim();
+
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/");
+}
+
+function cleanImageUrl(value: unknown) {
+  return isUsableImageUrl(value) ? value.trim() : "";
+}
+
+export const products = (wcProducts as StoreProduct[]).map((product) => ({
+  ...product,
+  image: cleanImageUrl(product.image),
+  images: Array.isArray(product.images) ? product.images.map(cleanImageUrl).filter(Boolean) : []
+}));
 
 export function formatINR(value: number) {
   return new Intl.NumberFormat("en-IN", {

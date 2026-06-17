@@ -24,7 +24,7 @@ export function DashboardSidebar({ active, eyebrow, items }: DashboardSidebarPro
             <span className="text-[11px] font-semibold uppercase tracking-wide text-[#0B8F47]">{eyebrow}</span>
           </span>
         </Link>
-        <nav className="-mx-3 flex gap-2 overflow-x-auto px-3 pb-1">
+        <nav className="-mx-3 flex max-w-full gap-2 overflow-x-auto px-3 pb-1 [contain:layout_paint]">
           {items.map((item) => {
             const isActive = item.label === active;
             const className = isActive

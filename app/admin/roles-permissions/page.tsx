@@ -63,7 +63,7 @@ export const metadata = {
 export default function RolesPermissionsPage() {
   return (
     <main className="min-h-screen bg-slate-100 text-slate-950">
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col xl:flex-row">
         <DashboardSidebar active="Settings" eyebrow="RBAC Console" items={sidebarItems} />
         <section className="min-w-0 flex-1">
           <header className="border-b border-slate-200 bg-white">

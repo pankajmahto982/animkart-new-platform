@@ -81,8 +81,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6">
-        <div className="grid gap-6 xl:grid-cols-[420px_1fr_360px]">
-          <aside className="space-y-4">
+        <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,420px)_minmax(0,1fr)_minmax(0,360px)]">
+          <aside className="min-w-0 space-y-4">
             <Card className="overflow-hidden">
               <CardContent className="p-4">
                 <div className="group relative aspect-square overflow-hidden rounded-xl bg-white ring-1 ring-slate-200">
@@ -118,7 +118,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             </Card>
           </aside>
 
-          <section className="space-y-5">
+          <section className="min-w-0 space-y-5">
             <Card>
               <CardContent className="p-5">
                 <div className="flex flex-wrap items-center gap-2">
@@ -234,7 +234,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             </Card>
           </section>
 
-          <aside className="space-y-5">
+          <aside className="min-w-0 space-y-5">
             <Card>
               <CardHeader>
                 <CardTitle>Supplier Information</CardTitle>
