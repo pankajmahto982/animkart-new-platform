@@ -13,20 +13,36 @@ This architecture is designed for PostgreSQL on Supabase with Next.js and TypeSc
 
 - Buyers: `buyers`, `buyer_addresses`
 - Suppliers: `suppliers`, `supplier_bank_details`, `supplier_documents`
-- Products: `products`, `product_approval_history`, `categories`
-- Inventory: `inventory`, `inventory_batches`
+- Products: `categories`, `brands`, `products`, `product_images`, `product_documents`, `product_approval_history`
+- Inventory: `inventory`, `inventory_logs`, `inventory_batches`
 - Orders: `orders`, `order_items`, `order_status_history`
-- Shipping: `shipping_rules`, `shipping_zones`, `shipments`
-- Payments: `payments`, `refunds`, `supplier_settlements`
+- Shipping: `shipping_rules`, `shipping_states`, `shipping_cities`, `shipping_pincodes`, `shipping_weight_slabs`, `blocked_locations`, `shipping_zones`, `shipments`
+- Payments: `payments`, `refunds`, `settlements`, `supplier_settlements`
 
 ## Operating System Modules
 
-- Vet: `vet_consultants`, `vet_consultations`, `prescriptions`
-- B2B: `b2b_leads`, `b2b_lead_responses`
-- CMS: `cms_pages`, `cms_banners`, `cms_offers`
-- Notifications: `notifications`
-- Support: `support_tickets`, `support_ticket_messages`
-- Analytics: `analytics_events`, `daily_metrics`
+- Vet: `vets`, `vet_consultants`, `vet_consultations`, `vet_prescriptions`, `prescriptions`
+- B2B: `b2b_leads`, `b2b_supplier_quotes`, `b2b_lead_responses`
+- CMS: `banners`, `blogs`, `cms_pages`, `cms_banners`, `cms_offers`
+- Notifications: `notifications`, `notification_templates`
+- Support: `support_tickets`, `ticket_messages`, `support_ticket_messages`
+- Analytics: `page_views`, `search_logs`, `analytics_events`, `daily_metrics`
+
+## Important Relationships
+
+- `users` -> `suppliers`
+- `users` -> `buyers`
+- `users` -> `vets`
+- `suppliers` -> `products`
+- `products` -> `inventory`
+- `buyers` -> `orders`
+- `orders` -> `order_items`
+- `orders` -> `payments`
+- `orders` -> `settlements`
+- `buyers` -> `vet_consultations`
+- `vets` -> `vet_consultations`
+- `buyers` -> `b2b_leads`
+- `b2b_leads` -> `b2b_supplier_quotes`
 
 ## Security Model
 
@@ -49,4 +65,8 @@ Master migration:
 
 `supabase/migrations/202606170001_master_database_architecture.sql`
 
-It is additive to the existing initial schema and extends current marketplace tables instead of deleting or replacing them.
+Marketplace module alignment migration:
+
+`supabase/migrations/202606170002_marketplace_module_alignment.sql`
+
+Both migrations are additive to the existing initial schema and extend current marketplace tables instead of deleting or replacing them.
