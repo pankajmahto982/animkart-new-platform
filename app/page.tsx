@@ -6,7 +6,6 @@ import {
   Bird,
   ChevronLeft,
   ChevronRight,
-  Droplets,
   Egg,
   HeartPulse,
   LockKeyhole,
@@ -294,95 +293,44 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="bg-[#EDF7F1] px-4 py-6 sm:px-6 lg:py-8">
-        <div className="mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-[1fr_0.92fr] lg:items-stretch">
-          <div className="flex min-h-[440px] flex-col justify-center rounded-xl bg-white p-6 shadow-sm ring-1 ring-[#D1D1D1]/70 sm:p-8 lg:p-10">
-            <div className="mb-6 flex flex-wrap gap-3">
-              <span className="rounded-full bg-[#EDF7F1] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1B6B3A]">
-                Trusted by farmers across India
-              </span>
-              <span className="rounded-full bg-[#FEF3DC] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#1A1A1A]">
-                GST billing + bulk quote
-              </span>
-            </div>
-            <h1 className="max-w-3xl text-4xl font-bold leading-[1.08] text-[#1A1A1A] sm:text-5xl">
-              Trusted veterinary medicines & supplements for your farm.
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[#3D3D3D]">
-              Shop livestock medicines, poultry care, cattle feed, pet products and farm essentials
-              from AnimKart&apos;s real catalog, with vet guidance and bulk quote support.
-            </p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-3">
-              {[
-                ["10k+", "farmers served"],
-                ["849", "catalog products"],
-                ["Fast", "pan-India support"]
-              ].map(([value, label]) => (
-                <div className="rounded-lg bg-[#F5F5F5] p-4 ring-1 ring-[#D1D1D1]/70" key={label}>
-                  <p className="text-2xl font-bold text-[#1B6B3A]">{value}</p>
-                  <p className="mt-1 text-xs font-semibold uppercase text-[#6B6B6B]">{label}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <a className="rounded-lg bg-[#1B6B3A] px-6 py-3 text-center text-base font-semibold text-white shadow-sm transition hover:bg-[#14522c]" href="/products">
-                Shop products
-              </a>
-              <a className="rounded-lg border border-[#1B6B3A] bg-white px-6 py-3 text-center text-base font-semibold text-[#1B6B3A] transition hover:bg-[#EDF7F1]" href="/vet">
-                Book a vet
-              </a>
-            </div>
+      <section className="bg-[#eaf5ff]">
+        <div className="relative mx-auto max-w-[1920px] overflow-hidden bg-white">
+          <div className="relative aspect-[2.4/1] min-h-[420px] sm:aspect-[2.65/1] lg:min-h-[520px]">
+            <Image
+              alt="AnimKart livestock poultry horse and pet care marketplace banner"
+              className="object-cover object-center"
+              fill
+              priority
+              sizes="100vw"
+              src="/images/animkart-hero-banner.png"
+            />
           </div>
-
-          <div className="grid gap-5 lg:grid-rows-[1fr_auto]">
-            <div className="relative min-h-[340px] overflow-hidden rounded-xl bg-[#1A1A1A] shadow-sm lg:min-h-[440px]">
-              <Image
-                alt="Healthy dairy cattle on Indian farm"
-                className="object-cover"
-                fill
-                priority
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=1400&q=90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/76 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Authentic catalog", icon: PackageCheck },
-                  { label: "GST billing", icon: BookOpen },
-                  { label: "Freight quote", icon: Truck }
-                ].map((item) => (
-                  <div className="rounded-lg border border-white/20 bg-white/90 p-4 backdrop-blur" key={item.label}>
-                    <item.icon className="text-[#1B6B3A]" size={22} />
-                    <p className="mt-2 text-sm font-bold">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-[#D1D1D1] bg-white p-5 shadow-sm" id="vet">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-xl font-extrabold text-[#0b1c30]">Book Expert Vet</h2>
-                <span className="rounded-full bg-[#16A34A] px-3 py-1 text-xs font-bold text-white">Waitlist open</span>
-              </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Poultry", icon: Egg },
-                  { label: "Aquaculture", icon: Droplets },
-                  { label: "Pet Care", icon: PawPrint }
-                ].map((item) => (
-                  <button
-                    className="flex items-center justify-between rounded-lg border border-[#D1D1D1] p-3 text-left transition hover:bg-[#EDF7F1]"
-                    key={item.label}
-                  >
-                    <span className="flex items-center gap-2 font-semibold text-[#1A1A1A]">
-                      <item.icon className="text-[#1B6B3A]" size={19} />
-                      {item.label}
-                    </span>
-                    <ChevronRight size={17} />
-                  </button>
-                ))}
-              </div>
-            </div>
+          <div className="absolute bottom-16 left-4 right-4 flex flex-col gap-3 sm:bottom-24 sm:left-16 sm:right-auto sm:flex-row">
+            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#057a15] px-6 text-base font-black text-white shadow-xl hover:bg-[#04650f]" href="/products">
+              <ShoppingCart size={20} />
+              Shop Products
+              <ChevronRight size={19} />
+            </a>
+            <a className="inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-[#0b4a92] bg-white/90 px-6 text-base font-black text-[#0b4a92] shadow-xl backdrop-blur hover:bg-white" href="/supplier/register">
+              <Store size={20} />
+              Become a Seller
+              <ChevronRight size={19} />
+            </a>
+          </div>
+          <div className="grid grid-cols-2 bg-[#084b9c] text-white sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              ["Animal Medicines", PackageCheck],
+              ["Feed & Supplements", Sprout],
+              ["Farm Equipment", Milk],
+              ["Pet Care", PawPrint],
+              ["Bird Care", Bird],
+              ["Many More", Menu]
+            ].map(([label, Icon]) => (
+              <a className="flex min-h-16 items-center justify-center gap-3 border-white/20 px-3 text-center text-sm font-black hover:bg-white/10 lg:border-r lg:text-base" href="/categories" key={label as string}>
+                <Icon size={22} />
+                {label as string}
+              </a>
+            ))}
           </div>
         </div>
       </section>

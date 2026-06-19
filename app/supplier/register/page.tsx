@@ -32,7 +32,7 @@ export default function SupplierRegisterPage() {
             ))}
           </div>
         </div>
-        <form className="rounded-xl border border-[#D1D1D1] bg-white p-6 shadow-sm">
+        <form action="/supplier/dashboard" className="rounded-xl border border-[#D1D1D1] bg-white p-6 shadow-sm" method="get">
           <h2 className="text-2xl font-semibold">Supplier application</h2>
           <div className="mt-5 grid gap-3">
             <input className="rounded-lg border border-[#D1D1D1] px-4 py-3 text-sm" placeholder="Business name" />
@@ -45,7 +45,7 @@ export default function SupplierRegisterPage() {
               <option>Pet care</option>
               <option>Equipment</option>
             </select>
-            <button className="rounded-lg bg-[#1B6B3A] px-5 py-3 text-sm font-semibold text-white">Submit application</button>
+            <button className="rounded-lg bg-[#1B6B3A] px-5 py-3 text-sm font-semibold text-white">Register & open dashboard</button>
           </div>
         </form>
       </section>
